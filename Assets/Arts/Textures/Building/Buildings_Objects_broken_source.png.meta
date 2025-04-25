@@ -1,0 +1,1038 @@
+fileFormatVersion: 2
+guid: 9630b00837a2ed043b20b3bd09a49a9e
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Buildings_Objects_broken_source_0
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 624
+        width: 172
+        height: 124
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ab2261c6d94f66c40b562bd2b7e7a681
+      internalID: 1085347852
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buildings_Objects_broken_source_1
+      rect:
+        serializedVersion: 2
+        x: 220
+        y: 622
+        width: 129
+        height: 129
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c449eab58c35e7f41ac85e4c3c9e6c28
+      internalID: -213417694
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buildings_Objects_broken_source_2
+      rect:
+        serializedVersion: 2
+        x: 370
+        y: 621
+        width: 175
+        height: 133
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9e834af75249b3c4e8aa0ec1da57bdd4
+      internalID: 1380503947
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buildings_Objects_broken_source_3
+      rect:
+        serializedVersion: 2
+        x: 612
+        y: 593
+        width: 149
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0201f5b27fb98db47a601ef18046f5f4
+      internalID: 780361684
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buildings_Objects_broken_source_4
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 474
+        width: 347
+        height: 122
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2f55efc2560b75442a4747fe199a1430
+      internalID: 792478044
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buildings_Objects_broken_source_5
+      rect:
+        serializedVersion: 2
+        x: 397
+        y: 474
+        width: 118
+        height: 122
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9115a43fa481a0843b4f9dc4e9bdea68
+      internalID: 986795566
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buildings_Objects_broken_source_6
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 308
+        width: 265
+        height: 139
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5d4db406087be1049be103187c8db558
+      internalID: 1811845523
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buildings_Objects_broken_source_7
+      rect:
+        serializedVersion: 2
+        x: 319
+        y: 308
+        width: 137
+        height: 139
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8271ea44961c4c647b45ee89fd12627f
+      internalID: 834254285
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buildings_Objects_broken_source_8
+      rect:
+        serializedVersion: 2
+        x: 575
+        y: 413
+        width: 99
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 457ec77bfc00ee144b7fbfc28ee6166b
+      internalID: 860641431
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buildings_Objects_broken_source_9
+      rect:
+        serializedVersion: 2
+        x: 717
+        y: 405
+        width: 79
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dbb284a1f399e1348ae2e22bd919db18
+      internalID: 1087669267
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buildings_Objects_broken_source_10
+      rect:
+        serializedVersion: 2
+        x: 786
+        y: 315
+        width: 17
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5e6e7a2a3f32e694382e06c1290820c7
+      internalID: 1610713095
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buildings_Objects_broken_source_11
+      rect:
+        serializedVersion: 2
+        x: 830
+        y: 356
+        width: 30
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8ad036b42debbc44d9093e8dce7dd9b3
+      internalID: -1731864913
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buildings_Objects_broken_source_12
+      rect:
+        serializedVersion: 2
+        x: 563
+        y: 323
+        width: 61
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fd97f5d3b027275468572382182b5217
+      internalID: -216505113
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buildings_Objects_broken_source_13
+      rect:
+        serializedVersion: 2
+        x: 646
+        y: 323
+        width: 29
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 03b87a5a3ff1e0b4e85c3c7081089a09
+      internalID: 145879565
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buildings_Objects_broken_source_14
+      rect:
+        serializedVersion: 2
+        x: 707
+        y: 327
+        width: 41
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 33d4dc994161f13408ba1d0102bed1d5
+      internalID: -1076784549
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buildings_Objects_broken_source_15
+      rect:
+        serializedVersion: 2
+        x: 835
+        y: 324
+        width: 21
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 03fe5cf4a13f4b34a8d968b0e430cdb5
+      internalID: 598028678
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buildings_Objects_broken_source_16
+      rect:
+        serializedVersion: 2
+        x: 631
+        y: 253
+        width: 58
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ed68d7094f1e8c8469c6bb116059eda7
+      internalID: -1569862166
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buildings_Objects_broken_source_17
+      rect:
+        serializedVersion: 2
+        x: 706
+        y: 256
+        width: 42
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7461621e59a136a45bd18685f6e47b57
+      internalID: 1512032328
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buildings_Objects_broken_source_18
+      rect:
+        serializedVersion: 2
+        x: 833
+        y: 283
+        width: 26
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6ed1d48366a9efb4298bad3f0a2b2247
+      internalID: -2045687854
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buildings_Objects_broken_source_19
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 149
+        width: 251
+        height: 133
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 37f07247e2efd0247897d0968b00b914
+      internalID: 229755650
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buildings_Objects_broken_source_20
+      rect:
+        serializedVersion: 2
+        x: 307
+        y: 149
+        width: 128
+        height: 133
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a02e9ec700795814fa91c192746e08f8
+      internalID: -1899866506
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buildings_Objects_broken_source_21
+      rect:
+        serializedVersion: 2
+        x: 583
+        y: 261
+        width: 20
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 11c1ad5c03acfd94e8d20980d54bf373
+      internalID: 1524296966
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buildings_Objects_broken_source_22
+      rect:
+        serializedVersion: 2
+        x: 781
+        y: 259
+        width: 27
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b164b587559351348b7fb9149b3c30f5
+      internalID: 1788714187
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buildings_Objects_broken_source_23
+      rect:
+        serializedVersion: 2
+        x: 837
+        y: 252
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1df3869ea991bf146b5683759d51b52e
+      internalID: -1345184688
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buildings_Objects_broken_source_24
+      rect:
+        serializedVersion: 2
+        x: 583
+        y: 175
+        width: 21
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c7740848f60286147aca02aa1b923f3b
+      internalID: -698627631
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buildings_Objects_broken_source_25
+      rect:
+        serializedVersion: 2
+        x: 649
+        y: 177
+        width: 23
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 41a9769c0bb03be47ba5df549ce7c645
+      internalID: -117464002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buildings_Objects_broken_source_26
+      rect:
+        serializedVersion: 2
+        x: 717
+        y: 175
+        width: 21
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 29b7ac1566d94534eb2cabc7998401be
+      internalID: 566831139
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buildings_Objects_broken_source_27
+      rect:
+        serializedVersion: 2
+        x: 784
+        y: 178
+        width: 21
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8a2d1977112537749828ee60c1e81474
+      internalID: 1178613056
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buildings_Objects_broken_source_28
+      rect:
+        serializedVersion: 2
+        x: 833
+        y: 213
+        width: 26
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c69912c040952ce48a2e7641faf3cc76
+      internalID: 1981790815
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buildings_Objects_broken_source_29
+      rect:
+        serializedVersion: 2
+        x: 837
+        y: 182
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 13be3eb83fc86364f94e52de99890e1b
+      internalID: -1838018036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buildings_Objects_broken_source_30
+      rect:
+        serializedVersion: 2
+        x: 584
+        y: 111
+        width: 18
+        height: 51
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 46ca6ea45d3c07d47b7ae325b4680cb7
+      internalID: 1546546681
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buildings_Objects_broken_source_31
+      rect:
+        serializedVersion: 2
+        x: 644
+        y: 120
+        width: 33
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d92224f2305b8d644b425f509cc2a399
+      internalID: -27279353
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buildings_Objects_broken_source_32
+      rect:
+        serializedVersion: 2
+        x: 711
+        y: 128
+        width: 33
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d34b37d4cc9dd3d4681af011129a9716
+      internalID: -701659958
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buildings_Objects_broken_source_33
+      rect:
+        serializedVersion: 2
+        x: 784
+        y: 126
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e32a0fd87656e704ebc508520f1bb29b
+      internalID: 1429205159
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buildings_Objects_broken_source_34
+      rect:
+        serializedVersion: 2
+        x: 833
+        y: 143
+        width: 26
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3723d3ddfdb1c064f9f6baa7c3c58330
+      internalID: 1630023351
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buildings_Objects_broken_source_35
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 23
+        width: 98
+        height: 98
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 34e0f357df4a034439b279a3c903763e
+      internalID: -988534319
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buildings_Objects_broken_source_36
+      rect:
+        serializedVersion: 2
+        x: 148
+        y: 24
+        width: 98
+        height: 97
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a1697873841973a4ba6e474b8e272c53
+      internalID: -716045875
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buildings_Objects_broken_source_37
+      rect:
+        serializedVersion: 2
+        x: 276
+        y: 23
+        width: 98
+        height: 98
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c0b2196e98981284cab1dc7be6dabdf4
+      internalID: 711211255
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buildings_Objects_broken_source_38
+      rect:
+        serializedVersion: 2
+        x: 837
+        y: 112
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d18a5ba9667fdbd45a1b702dec5d668a
+      internalID: 2121538160
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buildings_Objects_broken_source_39
+      rect:
+        serializedVersion: 2
+        x: 571
+        y: 41
+        width: 40
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5a2474e9abf4f9a4ea3eb8d30cb3f332
+      internalID: 1459585469
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buildings_Objects_broken_source_40
+      rect:
+        serializedVersion: 2
+        x: 638
+        y: 48
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dc545ea8a6986614cb9631daa0edb052
+      internalID: -867189419
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Buildings_Objects_broken_source_41
+      rect:
+        serializedVersion: 2
+        x: 704
+        y: 50
+        width: 46
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2ec90916308f26846ae0032ad03b3a21
+      internalID: -1982570326
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      Buildings_Objects_broken_source_0: 1085347852
+      Buildings_Objects_broken_source_1: -213417694
+      Buildings_Objects_broken_source_10: 1610713095
+      Buildings_Objects_broken_source_11: -1731864913
+      Buildings_Objects_broken_source_12: -216505113
+      Buildings_Objects_broken_source_13: 145879565
+      Buildings_Objects_broken_source_14: -1076784549
+      Buildings_Objects_broken_source_15: 598028678
+      Buildings_Objects_broken_source_16: -1569862166
+      Buildings_Objects_broken_source_17: 1512032328
+      Buildings_Objects_broken_source_18: -2045687854
+      Buildings_Objects_broken_source_19: 229755650
+      Buildings_Objects_broken_source_2: 1380503947
+      Buildings_Objects_broken_source_20: -1899866506
+      Buildings_Objects_broken_source_21: 1524296966
+      Buildings_Objects_broken_source_22: 1788714187
+      Buildings_Objects_broken_source_23: -1345184688
+      Buildings_Objects_broken_source_24: -698627631
+      Buildings_Objects_broken_source_25: -117464002
+      Buildings_Objects_broken_source_26: 566831139
+      Buildings_Objects_broken_source_27: 1178613056
+      Buildings_Objects_broken_source_28: 1981790815
+      Buildings_Objects_broken_source_29: -1838018036
+      Buildings_Objects_broken_source_3: 780361684
+      Buildings_Objects_broken_source_30: 1546546681
+      Buildings_Objects_broken_source_31: -27279353
+      Buildings_Objects_broken_source_32: -701659958
+      Buildings_Objects_broken_source_33: 1429205159
+      Buildings_Objects_broken_source_34: 1630023351
+      Buildings_Objects_broken_source_35: -988534319
+      Buildings_Objects_broken_source_36: -716045875
+      Buildings_Objects_broken_source_37: 711211255
+      Buildings_Objects_broken_source_38: 2121538160
+      Buildings_Objects_broken_source_39: 1459585469
+      Buildings_Objects_broken_source_4: 792478044
+      Buildings_Objects_broken_source_40: -867189419
+      Buildings_Objects_broken_source_41: -1982570326
+      Buildings_Objects_broken_source_5: 986795566
+      Buildings_Objects_broken_source_6: 1811845523
+      Buildings_Objects_broken_source_7: 834254285
+      Buildings_Objects_broken_source_8: 860641431
+      Buildings_Objects_broken_source_9: 1087669267
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
