@@ -12,12 +12,16 @@ public class WeaponData : ScriptableObject
 
     [Header("Shooting Info")]
     public GameObject bulletPrefab; 
-    public BulletType bulletType;   
+    public BulletType bulletType;
 
     [Header("Stats")]
-    public float fireRate = 0.5f;   
-    public float bulletSpeed = 20f; 
-    public int ammoPerShot = 1;      
+    public float fireRate;
+    public float bulletSpeed;
+    public int ammoPerShot;
+
+    [Header("Ammo")]
+    public int clipSize;
+    public int maxAmmo;
 
     public enum BulletType
     {

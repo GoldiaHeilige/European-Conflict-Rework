@@ -8,7 +8,9 @@ public class PlayerWeaponHandler : MonoBehaviour
 
     [Header("References")]
     public SpriteRenderer upperBodyRenderer; 
-    public PlayerShooting playerShooting;  
+    public PlayerShooting playerShooting;
+
+    public WeaponRuntimeData runtimeData { get; private set; }
 
     private void Start()
     {
@@ -21,12 +23,13 @@ public class PlayerWeaponHandler : MonoBehaviour
     public void EquipWeapon(WeaponData newWeapon)
     {
         currentWeaponData = newWeapon;
-        firePoint.localPosition = currentWeaponData.firePointOffset;
+        runtimeData = new WeaponRuntimeData(currentWeaponData);
 
         if (upperBodyRenderer != null)
             upperBodyRenderer.sprite = currentWeaponData.upperBodySprite;
+        if (firePoint != null)
+            firePoint.localPosition = currentWeaponData.firePointOffset;
 
-        if (playerShooting != null)
-            playerShooting.SetWeapon(currentWeaponData);
+        playerShooting.SetWeapon(runtimeData); 
     }
 }

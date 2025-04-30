@@ -20,3 +20,5 @@ MonoBehaviour:
   fireRate: 0.5
   bulletSpeed: 10
   ammoPerShot: 1
+  clipSize: 12
+  maxAmmo: 48
