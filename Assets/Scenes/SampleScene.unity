@@ -210,6 +210,8 @@ GameObject:
   - component: {fileID: 290682471}
   - component: {fileID: 290682472}
   - component: {fileID: 290682473}
+  - component: {fileID: 290682474}
+  - component: {fileID: 290682475}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -345,7 +347,35 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   firePoint: {fileID: 924107961}
-  ammoText: {fileID: 541867108}
+  playerReload: {fileID: 290682474}
+--- !u!114 &290682474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 290682462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15093d3e38f80c4449d8903d1498721a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &290682475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 290682462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8e5c988e77981841bc751ea410b08c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponList:
+  - {fileID: 11400000, guid: c8be0ea3ad3724b4aa25c5a6a6e5a4f1, type: 2}
+  - {fileID: 11400000, guid: 2f1e52478b510e549a6e95b143216c9e, type: 2}
+  weaponHandler: {fileID: 1430915233}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -704,6 +734,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 690040735}
+  - component: {fileID: 690040736}
   m_Layer: 5
   m_Name: AmmoDisplay
   m_TagString: Untagged
@@ -731,6 +762,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 140}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0}
+--- !u!114 &690040736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 690040734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 333e3c019552ce541926629881135ef5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ammoText: {fileID: 541867108}
 --- !u!1 &924107960
 GameObject:
   m_ObjectHideFlags: 0
@@ -1899,10 +1943,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38408518459725e438d3edd7cf517a7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentWeaponData: {fileID: 11400000, guid: c8be0ea3ad3724b4aa25c5a6a6e5a4f1, type: 2}
-  firePoint: {fileID: 924107961}
+  currentWeaponData: {fileID: 11400000, guid: 9a065d660266e73499055a58f421b86d, type: 2}
+  allWeapons:
+  - {fileID: 11400000, guid: c8be0ea3ad3724b4aa25c5a6a6e5a4f1, type: 2}
+  - {fileID: 11400000, guid: 2f1e52478b510e549a6e95b143216c9e, type: 2}
   upperBodyRenderer: {fileID: 1430915229}
+  firePoint: {fileID: 924107961}
   playerShooting: {fileID: 290682473}
+  playerReload: {fileID: 290682474}
+  ammoUI: {fileID: 690040736}
 --- !u!1 &1517027907
 GameObject:
   m_ObjectHideFlags: 0

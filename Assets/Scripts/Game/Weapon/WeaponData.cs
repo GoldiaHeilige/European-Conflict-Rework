@@ -18,6 +18,7 @@ public class WeaponData : ScriptableObject
     public float fireRate;
     public float bulletSpeed;
     public int ammoPerShot;
+    public float reloadTime;
 
     [Header("Ammo")]
     public int clipSize;

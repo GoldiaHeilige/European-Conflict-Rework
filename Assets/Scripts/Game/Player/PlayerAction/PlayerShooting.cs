@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
-using TMPro;
 
 public class PlayerShooting : MonoBehaviour
 {
     public Transform firePoint;
-    public TextMeshProUGUI ammoText;
+    public PlayerReload playerReload;
 
     private WeaponRuntimeData weaponRuntime;
     private float nextFireTime = 0f;
@@ -20,21 +19,11 @@ public class PlayerShooting : MonoBehaviour
 
         if (Input.GetButton("Fire1") && Time.time >= nextFireTime)
         {
-            if (weaponRuntime.CanFire())
+            if (weaponRuntime.CanFire() && (playerReload == null || !playerReload.IsReloading))
             {
                 Shoot();
                 nextFireTime = Time.time + weaponRuntime.data.fireRate;
             }
-        }
-
-        if (Input.GetKeyDown(KeyCode.R) && weaponRuntime.CanReload())
-        {
-            weaponRuntime.Reload();
-        }
-
-        if (ammoText != null)
-        {
-            ammoText.text = $"{weaponRuntime.currentAmmo} / {weaponRuntime.currentReserve}";
         }
     }
 
@@ -51,6 +40,6 @@ public class PlayerShooting : MonoBehaviour
             bullet.transform.rotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(fireDir.y, fireDir.x) * Mathf.Rad2Deg + 90f);
         }
 
-        weaponRuntime.ConsumeBullet(); 
+        weaponRuntime.ConsumeBullet();
     }
 }

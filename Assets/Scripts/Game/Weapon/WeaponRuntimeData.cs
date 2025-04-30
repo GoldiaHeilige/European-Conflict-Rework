@@ -6,13 +6,13 @@ public class WeaponRuntimeData
     public int currentAmmo;
     public int currentReserve;
 
+    public event System.Action OnAmmoChanged;
+
     public WeaponRuntimeData(WeaponData weaponData)
     {
         data = weaponData;
         currentAmmo = weaponData.clipSize;
         currentReserve = weaponData.maxAmmo;
-
-        Debug.Log($"WeaponRuntime created: {currentAmmo} / {currentReserve}");
     }
 
     public bool CanFire()
@@ -31,10 +31,12 @@ public class WeaponRuntimeData
         int toReload = Mathf.Min(needed, currentReserve);
         currentAmmo += toReload;
         currentReserve -= toReload;
+        OnAmmoChanged?.Invoke();
     }
 
     public void ConsumeBullet()
     {
         currentAmmo = Mathf.Max(currentAmmo - 1, 0);
+        OnAmmoChanged?.Invoke();
     }
 }
