@@ -3,10 +3,15 @@
 public class PlayerStateMachine : MonoBehaviour
 {
     public enum MainState { Alive, Dead }
-    public enum AliveSubState { Idle, Move }
-
     public MainState currentMainState { get; private set; } = MainState.Alive;
-    public AliveSubState currentAliveSubState { get; private set; } = AliveSubState.Idle;
+
+    public enum MovementState { Idle, Move }
+    public enum CombatState { None, Shooting }
+    public enum ActionState { None, Interact }
+
+    public MovementState currentMovementState { get; private set; } = MovementState.Idle;
+    public CombatState currentCombatState { get; private set; } = CombatState.None;
+    public ActionState currentActionState { get; private set; } = ActionState.None;
 
     private PlayerInputHandler inputHandler;
 
@@ -17,23 +22,46 @@ public class PlayerStateMachine : MonoBehaviour
 
     private void Update()
     {
-        if (currentMainState == MainState.Alive)
-        {
-            Vector2 input = inputHandler != null ? inputHandler.MoveInput : Vector2.zero;
+        if (currentMainState != MainState.Alive) return;
 
-            if (input.magnitude > 0.1f)
-                ChangeAliveSubState(AliveSubState.Move);
-            else
-                ChangeAliveSubState(AliveSubState.Idle);
-        }
+        HandleMovementState();
+        HandleCombatState();
     }
 
-    public void ChangeAliveSubState(AliveSubState newState)
+    private void HandleMovementState()
     {
-        if (currentAliveSubState == newState)
-            return;
+        if (inputHandler.MoveInput.magnitude > 0.1f)
+            ChangeMovementState(MovementState.Move);
+        else
+            ChangeMovementState(MovementState.Idle);
+    }
 
-        currentAliveSubState = newState;
-        Debug.Log("Sub-state changed to: " + currentAliveSubState);
+    private void HandleCombatState()
+    {
+        if (inputHandler.FireInput)
+            ChangeCombatState(CombatState.Shooting);
+        else
+            ChangeCombatState(CombatState.None);
+    }
+
+    public void ChangeMovementState(MovementState newState)
+    {
+        if (currentMovementState == newState) return;
+        currentMovementState = newState;
+        // Debug.Log($"Movement State: {newState}");
+    }
+
+    public void ChangeCombatState(CombatState newState)
+    {
+        if (currentCombatState == newState) return;
+        currentCombatState = newState;
+        // Debug.Log($"Combat State: {newState}");
+    }
+
+    public void ChangeActionState(ActionState newState)
+    {
+        if (currentActionState == newState) return;
+        currentActionState = newState;
+        // Debug.Log($"Action State: {newState}");
     }
 }

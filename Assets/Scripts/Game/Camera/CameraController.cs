@@ -3,15 +3,15 @@ using Cinemachine;
 
 public class CameraController : MonoBehaviour
 {
-    public Transform target; // Player
+    public Transform target; 
     public CinemachineVirtualCamera virtualCam;
 
     public float minZoom = 4f;
     public float maxZoom = 8f;
     public float zoomSpeed = 10f;
 
-    public float maxDisplacement = 4f; // tối đa offset camera ra xa theo hướng chuột
-    public float offsetLerpSpeed = 5f; // độ mượt khi di chuyển camera
+    public float maxDisplacement = 4f;
+    public float offsetLerpSpeed = 5f; 
 
     private CinemachineFramingTransposer framingTransposer;
     private Vector3 currentOffset = Vector3.zero;
@@ -22,7 +22,6 @@ public class CameraController : MonoBehaviour
         {
             virtualCam.Follow = target;
 
-            // Lấy component FramingTransposer để chỉnh offset động
             framingTransposer = virtualCam.GetCinemachineComponent<CinemachineFramingTransposer>();
         }
     }
@@ -31,23 +30,22 @@ public class CameraController : MonoBehaviour
     {
         if (virtualCam == null || target == null || framingTransposer == null) return;
 
-        // --- Xử lý displacement theo chuột ---
+        // Displacement logic
         Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mouseWorldPos.z = 0f;
 
         Vector2 dir = ((Vector2)mouseWorldPos - (Vector2)target.position).normalized;
         float distance = Vector2.Distance(target.position, mouseWorldPos);
 
-        // Scale offset theo khoảng cách chuột, không vượt quá maxDisplacement
+        // Scale offset based on mouse distance, not going pass maxDisplacement
         Vector3 targetOffset = (Vector3)(dir * Mathf.Min(distance, maxDisplacement));
 
-        // Lerp cho offset di chuyển mượt
+        // Lerp for smoother offset
         currentOffset = Vector3.Lerp(currentOffset, targetOffset, Time.deltaTime * offsetLerpSpeed);
 
-        // Đưa offset vào Cinemachine (chỉ dùng X, Y, Z = 0)
         framingTransposer.m_TrackedObjectOffset = new Vector3(currentOffset.x, currentOffset.y, 0);
 
-        // --- Xử lý zoom ---
+        // Zooming logic
         float targetZoom = Mathf.Clamp(minZoom + distance / 4f, minZoom, maxZoom);
         float currentZoom = virtualCam.m_Lens.OrthographicSize;
         float newZoom = Mathf.Lerp(currentZoom, targetZoom, Time.deltaTime * zoomSpeed);

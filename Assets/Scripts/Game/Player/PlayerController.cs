@@ -2,7 +2,6 @@
 
 public class PlayerController : EntityCtrl
 {
-    public SpriteRenderer weaponHolderRenderer;
     private PlayerStateMachine stateMachine;
     private PlayerInputHandler inputHandler;
 
@@ -22,17 +21,10 @@ public class PlayerController : EntityCtrl
     {
         if (stateMachine != null &&
             stateMachine.currentMainState == PlayerStateMachine.MainState.Alive &&
-            stateMachine.currentAliveSubState == PlayerStateMachine.AliveSubState.Move)
+            stateMachine.currentMovementState == PlayerStateMachine.MovementState.Move)
         {
             Vector2 movement = inputHandler != null ? inputHandler.MoveInput : Vector2.zero;
             transform.position += (Vector3)movement.normalized * moveSpeed * Time.deltaTime;
         }
-    }
-
-    public void EquipWeapon(Sprite weaponSprite, float weaponSpeedMultiplier)
-    {
-        if (weaponHolderRenderer != null)
-            weaponHolderRenderer.sprite = weaponSprite;
-        moveSpeed = baseMoveSpeed * weaponSpeedMultiplier;
     }
 }
