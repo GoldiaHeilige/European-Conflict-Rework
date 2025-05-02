@@ -1,36 +1,33 @@
-using UnityEngine;
+﻿using UnityEngine;
 
-public class EntityCtrl : MonoBehaviour
+public class EntityCtrl : MonoBehaviour, IDamageable
 {
     [Header("Entity Stats")]
-    public float maxHealth = 100f;
+    public float maxHealth;
     [HideInInspector] public float currentHealth;
 
-    public float baseMoveSpeed = 5f;
+    public float baseMoveSpeed;
     [HideInInspector] public float moveSpeed;
-
-    [Header("Components")]
-    public Animator animator;
 
     protected virtual void Awake()
     {
         currentHealth = maxHealth;
         moveSpeed = baseMoveSpeed;
-        if (animator == null)
-            animator = GetComponent<Animator>();
     }
 
-    public virtual void TakeDamage(float damage)
+    public virtual void TakeDame(DameMessage message)
     {
-        currentHealth -= damage;
+        currentHealth -= message.Dame;
+        Debug.Log($"📉 {gameObject.name} bị {message.Dame} damage từ {message.Attacker?.name}");
+
         if (currentHealth <= 0)
+        {
             Die();
+        }
     }
 
     protected virtual void Die()
     {
-        if (animator != null)
-            animator.SetTrigger("Die");
         Destroy(gameObject, 1.5f); 
     }
 }

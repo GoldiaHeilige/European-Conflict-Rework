@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 72f03f2908e225e40a34af0702ef1e84
+guid: 6a2f0ce6cc6950842b6f1f68b0ee75bc
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,13 +97,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Hero_Die_Sheets_0
+      name: SoldierLegs1_1_0
       rect:
         serializedVersion: 2
-        x: 37
-        y: 36
-        width: 22
-        height: 24
+        x: 9
+        y: 0
+        width: 15
+        height: 31
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -111,19 +111,61 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 89050452ee146fc439f2302c47719039
-      internalID: 808723101
+      spriteID: a5da7d080d1d3d144b8ed95b6af712c9
+      internalID: -1934750800
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Hero_Die_Sheets_1
+      name: SoldierLegs1_1_1
       rect:
         serializedVersion: 2
-        x: 132
-        y: 39
-        width: 20
+        x: 40
+        y: 3
+        width: 15
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 42297851759912a4abd1ce7721431520
+      internalID: 391884139
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SoldierLegs1_1_2
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 6
+        width: 15
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0997efaca56543d47ac563f4c4c8d795
+      internalID: 1774835245
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SoldierLegs1_1_3
+      rect:
+        serializedVersion: 2
+        x: 105
+        y: 2
+        width: 15
         height: 29
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -132,20 +174,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e3a85ef5ff6306644840f973d55c5ec1
-      internalID: 154768592
+      spriteID: 5f34b03fabce74046818db9bb59821f5
+      internalID: 1541369838
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Hero_Die_Sheets_2
+      name: SoldierLegs1_1_4
       rect:
         serializedVersion: 2
-        x: 227
-        y: 43
-        width: 25
-        height: 34
+        x: 137
+        y: 4
+        width: 15
+        height: 26
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -153,20 +195,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1995d78599c195b4992210d38e1c587d
-      internalID: 1090054753
+      spriteID: cbdd3c5127f9ae94a876c1a5cc43a416
+      internalID: 988505776
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Hero_Die_Sheets_3
+      name: SoldierLegs1_1_5
       rect:
         serializedVersion: 2
-        x: 322
-        y: 42
-        width: 27
-        height: 37
+        x: 169
+        y: 7
+        width: 15
+        height: 22
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -174,8 +216,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 55bdba4720790ab4f80ff62c159655ca
-      internalID: -2063209463
+      spriteID: ce3f58a3d33b59b4d8e91ca839b36d6c
+      internalID: 577145427
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SoldierLegs1_1_6
+      rect:
+        serializedVersion: 2
+        x: 201
+        y: 8
+        width: 14
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 656cc7045f1643849838ba49b109298f
+      internalID: 908919157
       vertices: []
       indices: 
       edges: []
@@ -191,10 +254,13 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Hero_Die_Sheets_0: 808723101
-      Hero_Die_Sheets_1: 154768592
-      Hero_Die_Sheets_2: 1090054753
-      Hero_Die_Sheets_3: -2063209463
+      SoldierLegs1_1_0: -1934750800
+      SoldierLegs1_1_1: 391884139
+      SoldierLegs1_1_2: 1774835245
+      SoldierLegs1_1_3: 1541369838
+      SoldierLegs1_1_4: 988505776
+      SoldierLegs1_1_5: 577145427
+      SoldierLegs1_1_6: 908919157
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

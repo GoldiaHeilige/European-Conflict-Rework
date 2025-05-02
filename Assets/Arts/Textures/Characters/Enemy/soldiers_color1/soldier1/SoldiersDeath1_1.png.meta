@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 72f03f2908e225e40a34af0702ef1e84
+guid: 7a6fc223defcc494da68fd7e22661779
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,13 +97,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Hero_Die_Sheets_0
+      name: SoldiersDeath1_1_0
       rect:
         serializedVersion: 2
-        x: 37
-        y: 36
+        x: 22
+        y: 25
         width: 22
-        height: 24
+        height: 20
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -111,19 +111,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 89050452ee146fc439f2302c47719039
-      internalID: 808723101
+      spriteID: 781b6c7c8fb89f4428e2170097d80cac
+      internalID: -1436504200
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Hero_Die_Sheets_1
+      name: SoldiersDeath1_1_1
       rect:
         serializedVersion: 2
-        x: 132
-        y: 39
-        width: 20
+        x: 85
+        y: 19
+        width: 21
         height: 29
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -132,20 +132,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e3a85ef5ff6306644840f973d55c5ec1
-      internalID: 154768592
+      spriteID: a76d3270183820f4e8e077f3a8721b2d
+      internalID: -939709873
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Hero_Die_Sheets_2
+      name: SoldiersDeath1_1_2
       rect:
         serializedVersion: 2
-        x: 227
-        y: 43
-        width: 25
-        height: 34
+        x: 148
+        y: 17
+        width: 20
+        height: 33
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -153,19 +153,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1995d78599c195b4992210d38e1c587d
-      internalID: 1090054753
+      spriteID: 0ee7b05043dbaf8499a34279ad52bdfe
+      internalID: 509845347
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Hero_Die_Sheets_3
+      name: SoldiersDeath1_1_3
       rect:
         serializedVersion: 2
-        x: 322
-        y: 42
-        width: 27
+        x: 212
+        y: 18
+        width: 25
         height: 37
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -174,8 +174,71 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 55bdba4720790ab4f80ff62c159655ca
-      internalID: -2063209463
+      spriteID: 16f0b248683535b469aff452a8ce2cc1
+      internalID: 2015423151
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SoldiersDeath1_1_4
+      rect:
+        serializedVersion: 2
+        x: 278
+        y: 20
+        width: 22
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 194cb8bc7a5e5cd4eb89388c7e383b31
+      internalID: 1614614779
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SoldiersDeath1_1_5
+      rect:
+        serializedVersion: 2
+        x: 341
+        y: 19
+        width: 25
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1606b0c4ee9816748b017ca0f954f441
+      internalID: 415566092
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SoldiersDeath1_1_6
+      rect:
+        serializedVersion: 2
+        x: 399
+        y: 17
+        width: 32
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9b57f4a813a263e43a5a9ab5ba56e6ec
+      internalID: -1710432752
       vertices: []
       indices: 
       edges: []
@@ -191,10 +254,13 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Hero_Die_Sheets_0: 808723101
-      Hero_Die_Sheets_1: 154768592
-      Hero_Die_Sheets_2: 1090054753
-      Hero_Die_Sheets_3: -2063209463
+      SoldiersDeath1_1_0: -1436504200
+      SoldiersDeath1_1_1: -939709873
+      SoldiersDeath1_1_2: 509845347
+      SoldiersDeath1_1_3: 2015423151
+      SoldiersDeath1_1_4: 1614614779
+      SoldiersDeath1_1_5: 415566092
+      SoldiersDeath1_1_6: -1710432752
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

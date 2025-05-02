@@ -10,13 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b7e20b02529c21a4da9fc1800f9f7f69, type: 3}
-  m_Name: RifleData
+  m_Name: RifleData_Enemy
   m_EditorClassIdentifier: 
   weaponName: Rifle_1
+  upperBodySprite: {fileID: -1484237756, guid: 4ae1397c2789dd04a83f146667b346a4, type: 3}
+  firePointOffset: {x: -0.025, y: -0.15}
   bulletPrefab: {fileID: 4160214242677169439, guid: ae9e54124ca27f74aa8c970707bb6704, type: 3}
   bulletType: 0
   damage: 25
-  fireRate: 0.1
+  fireRate: 0.5
   bulletSpeed: 10
   ammoPerShot: 1
   reloadTime: 5

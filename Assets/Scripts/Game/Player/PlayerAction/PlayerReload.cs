@@ -6,12 +6,12 @@ public class PlayerReload : MonoBehaviour
     private bool isReloading = false;
     private float reloadTimer = 0f;
 
+    public bool IsReloading => isReloading;
+
     public void SetWeapon(WeaponRuntimeData runtime)
     {
         weaponRuntime = runtime;
     }
-
-    public bool IsReloading => isReloading;
 
     private void Update()
     {
@@ -29,6 +29,7 @@ public class PlayerReload : MonoBehaviour
             {
                 weaponRuntime.Reload();
                 isReloading = false;
+                Debug.Log("Reload finishes");
             }
         }
     }
@@ -37,7 +38,6 @@ public class PlayerReload : MonoBehaviour
     {
         isReloading = true;
         reloadTimer = weaponRuntime.data.reloadTime;
-
-        Debug.Log("Reloading...");
+        Debug.Log($"Reloading...: {reloadTimer}s");
     }
 }

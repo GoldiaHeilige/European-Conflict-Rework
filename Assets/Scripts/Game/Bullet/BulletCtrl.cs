@@ -6,7 +6,7 @@ public class BulletCtrl : MonoBehaviour
     protected float moveSpeed;
     protected float lifeTime;
 
-    public void Initialize(Vector2 direction, float speed, float lifeTime)
+    public virtual void Initialize(Vector2 direction, float speed, float lifeTime)
     {
         this.moveDirection = direction.normalized;
         this.moveSpeed = speed;
