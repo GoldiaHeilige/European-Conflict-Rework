@@ -1,35 +1,20 @@
 ﻿using UnityEngine;
 
-public class PlayerShooting : MonoBehaviour
+public class PlayerShooting : WpnShootingBase
 {
-    public Transform firePoint;
-    public PlayerReload playerReload;
+    [SerializeField] private PlayerReload playerReload;
 
-    private WeaponRuntimeData weaponRuntime;
-    private float nextFireTime = 0f;
-
-    public void SetWeapon(WeaponRuntimeData runtime)
+    protected override bool ShouldShoot()
     {
-        weaponRuntime = runtime;
-        Debug.Log($"[PlayerShooting] Gắn weapon: {runtime.data.weaponName}");
+        if (playerReload != null && playerReload.IsReloading) return false;
+
+        return Input.GetButton("Fire1");
     }
 
-    private void Update()
+    protected override void Shoot()
     {
         if (weaponRuntime == null || weaponRuntime.data == null || firePoint == null) return;
 
-        if (Input.GetButton("Fire1") && Time.time >= nextFireTime)
-        {
-            if (weaponRuntime.CanFire() && (playerReload == null || !playerReload.IsReloading))
-            {
-                Shoot();
-                nextFireTime = Time.time + weaponRuntime.data.fireRate;
-            }
-        }
-    }
-
-    private void Shoot()
-    {
         GameObject bulletObj = Instantiate(weaponRuntime.data.bulletPrefab, firePoint.position, Quaternion.identity);
         Bullet_Kinetic bullet = bulletObj.GetComponent<Bullet_Kinetic>();
 

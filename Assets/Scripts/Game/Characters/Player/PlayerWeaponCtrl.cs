@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class PlayerWeaponHandler : MonoBehaviour
+public class PlayerWeaponCtrl : MonoBehaviour
 {
     public WeaponRuntimeData runtimeData { get; private set; }
 
@@ -8,7 +8,6 @@ public class PlayerWeaponHandler : MonoBehaviour
     public WeaponData currentWeaponData;
 
     [Header("References")]
-    public Transform firePoint;
     public PlayerShooting playerShooting;
     public PlayerReload playerReload;
     public AmmoTextUI ammoUI;

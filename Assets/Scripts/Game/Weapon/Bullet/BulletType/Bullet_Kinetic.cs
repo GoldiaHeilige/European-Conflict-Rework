@@ -9,8 +9,7 @@ public class Bullet_Kinetic : BulletCtrl
     {
         this.owner = owner;
         this.damage = damage;
-
-        Debug.Log($"🟡 Bullet_Kinetic: Gán owner = {owner?.name}, damage = {damage}");
+/*        Debug.Log($"Bullet_Kinetic: Gán owner = {owner?.name}, damage = {damage}");*/
     }
 
     public int GetDamage() => damage;
@@ -20,7 +19,7 @@ public class Bullet_Kinetic : BulletCtrl
     {
         if (collision.gameObject == owner) return;
 
-        Debug.Log($"🟢 Bullet_Kinetic: Va chạm với {collision.name}, tag = {collision.tag}");
+        /*Debug.Log($"🟢 Bullet_Kinetic: Va chạm với {collision.name}, tag = {collision.tag}");*/
 
         bool isHit = (owner.CompareTag("Player") && collision.CompareTag("Enemy")) ||
                      (owner.CompareTag("Enemy") && collision.CompareTag("Player"));
@@ -36,16 +35,18 @@ public class Bullet_Kinetic : BulletCtrl
                     Attacker = owner
                 };
                 target.TakeDame(message);
-                Debug.Log($"🔴 Gây {damage} damage từ {owner.name} → {collision.name}");
+                Debug.Log($"Gây {damage} damage từ {owner.name} → {collision.name}");
+            }
+            else
+            {
+                Debug.LogWarning("không tìm thấy IDamageable trên target");
             }
 
             Destroy(gameObject);
         }
-
-        if (!collision.CompareTag("Player") && !collision.CompareTag("Enemy"))
+        else if (!collision.CompareTag("Player") && !collision.CompareTag("Enemy"))
         {
             Destroy(gameObject);
         }
     }
-
 }

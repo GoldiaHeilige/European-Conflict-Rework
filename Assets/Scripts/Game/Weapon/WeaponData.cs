@@ -9,6 +9,7 @@ public class WeaponData : ScriptableObject
     [Header("Shooting Info")]
     public GameObject bulletPrefab; 
     public BulletType bulletType;
+    public float fireCooldown;
 
     [Header("Stats")]
     public int damage;

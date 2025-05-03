@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class PlayerModelCtrl : MonoBehaviour
+public class PlayerModelViewer : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer bodyRenderer;
 

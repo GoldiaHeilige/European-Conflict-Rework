@@ -15,8 +15,9 @@ MonoBehaviour:
   weaponName: Rifle_1
   bulletPrefab: {fileID: 4160214242677169439, guid: ae9e54124ca27f74aa8c970707bb6704, type: 3}
   bulletType: 0
+  fireCooldown: 0.2
   damage: 25
-  fireRate: 0.1
+  fireRate: 5
   bulletSpeed: 10
   ammoPerShot: 1
   reloadTime: 5

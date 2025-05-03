@@ -1,33 +1,31 @@
 ﻿using UnityEngine;
 
-public class EntityCtrl : MonoBehaviour, IDamageable
+public class EntityCtrl : MonoBehaviour
 {
-    [Header("Entity Stats")]
-    public float maxHealth;
-    [HideInInspector] public float currentHealth;
-
-    public float baseMoveSpeed;
-    [HideInInspector] public float moveSpeed;
+    protected EntityStats stats;
 
     protected virtual void Awake()
     {
-        currentHealth = maxHealth;
-        moveSpeed = baseMoveSpeed;
-    }
-
-    public virtual void TakeDame(DameMessage message)
-    {
-        currentHealth -= message.Dame;
-        Debug.Log($"📉 {gameObject.name} bị {message.Dame} damage từ {message.Attacker?.name}");
-
-        if (currentHealth <= 0)
+        stats = GetComponent<EntityStats>();
+        if (stats == null)
         {
-            Die();
+            Debug.LogError("thiếu EntityStats trên " + gameObject.name);
+        }
+        else
+        {
+            stats.OnDie += Die;
         }
     }
 
-    protected virtual void Die()
+    public virtual void TakeDamage(int amount, GameObject source = null)
     {
-        Destroy(gameObject, 1.5f); 
+        stats?.TakeDamage(amount, source);
     }
+
+    public virtual void Die()
+    {
+        Debug.Log($"{gameObject.name} đã chết (base Die)");
+    }
+
+    public float MoveSpeed => stats?.MoveSpeed ?? 0f;
 }

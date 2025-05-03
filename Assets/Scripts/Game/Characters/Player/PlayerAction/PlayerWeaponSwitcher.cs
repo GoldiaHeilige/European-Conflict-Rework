@@ -9,14 +9,17 @@ public class PlayerWeaponSwitcher : MonoBehaviour
     private int currentWeaponIndex = 0;
 
     [Header("References")]
-    public PlayerWeaponHandler weaponHandler;
+    public PlayerWeaponCtrl weaponController;
+
+    public PlayerReload playerReload; // ✅ Thêm tham chiếu để huỷ reload
 
     public static event Action<WeaponData> OnWeaponSwitched;
+
     private Dictionary<WeaponData, WeaponRuntimeData> runtimeDataMap = new();
 
     private void Start()
     {
-        if (weaponList.Length > 0 && weaponHandler != null)
+        if (weaponList.Length > 0 && weaponController != null)
         {
             EquipCurrentWeapon();
         }
@@ -36,8 +39,13 @@ public class PlayerWeaponSwitcher : MonoBehaviour
 
     private void SwitchWeapon(int index)
     {
-        if (index < weaponList.Length && weaponList[index] != null && weaponHandler != null)
+        if (index < weaponList.Length && weaponList[index] != null && weaponController != null)
         {
+            if (playerReload != null)
+            {
+                playerReload.CancelReload();
+            }
+
             currentWeaponIndex = index;
             EquipCurrentWeapon();
         }
@@ -51,8 +59,8 @@ public class PlayerWeaponSwitcher : MonoBehaviour
             runtimeDataMap[weapon] = new WeaponRuntimeData(weapon);
 
         WeaponRuntimeData runtime = runtimeDataMap[weapon];
-        weaponHandler.EquipWeapon(runtimeDataMap[weapon]);
 
+        weaponController.EquipWeapon(runtime);
         OnWeaponSwitched?.Invoke(weapon);
     }
 }

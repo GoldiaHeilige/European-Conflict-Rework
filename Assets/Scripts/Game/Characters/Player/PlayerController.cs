@@ -12,19 +12,19 @@ public class PlayerController : EntityCtrl
         inputHandler = GetComponent<PlayerInputHandler>();
     }
 
-    void Update()
+    private void Update()
     {
         HandleMovement();
     }
 
-    void HandleMovement()
+    private void HandleMovement()
     {
         if (stateMachine != null &&
             stateMachine.currentMainState == PlayerStateMachine.MainState.Alive &&
             stateMachine.currentMovementState == PlayerStateMachine.MovementState.Move)
         {
             Vector2 movement = inputHandler != null ? inputHandler.MoveInput : Vector2.zero;
-            transform.position += (Vector3)movement.normalized * moveSpeed * Time.deltaTime;
+            transform.position += (Vector3)movement.normalized * MoveSpeed * Time.deltaTime;
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class EnemyCtrl : EntityCtrl
+public class EnemyController : EntityCtrl
 {
     [Header("Enemy Settings")]
     public string enemyType;
@@ -15,7 +15,7 @@ public class EnemyCtrl : EntityCtrl
         if (other.CompareTag("PlayerBullet"))
         {
             BulletCtrl baseBullet = other.GetComponent<BulletCtrl>();
-            Debug.Log($"🟢 EnemyCtrl: Va chạm với đạn {other.gameObject.name}");
+/*            Debug.Log($"🟢 EnemyCtrl: Va chạm với đạn {other.gameObject.name}");*/
 
             if (baseBullet is Bullet_Kinetic kinetic)
             {
@@ -31,16 +31,20 @@ public class EnemyCtrl : EntityCtrl
             }
             else
             {
-                Debug.LogWarning("⚠Không phải Bullet_Kinetic, bỏ qua xử lý damage.");
+                Debug.LogWarning("Không phải Bullet_Kinetic, bỏ qua xử lý damage.");
             }
 
             Destroy(other.gameObject);
         }
     }
 
-    protected override void Die()
+    public void TakeDame(DameMessage msg)
     {
-        Debug.Log($"Enemy {enemyType} đã chết!");
+        TakeDamage(msg.Dame, msg.Attacker);
+    }
+
+    public override void Die()
+    {
         base.Die();
     }
 }
