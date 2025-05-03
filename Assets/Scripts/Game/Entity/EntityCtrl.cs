@@ -24,7 +24,7 @@ public class EntityCtrl : MonoBehaviour
 
     public virtual void Die()
     {
-        Debug.Log($"{gameObject.name} đã chết (base Die)");
+        /*Debug.Log($"{gameObject.name} đã chết (base Die)");*/
     }
 
     public float MoveSpeed => stats?.MoveSpeed ?? 0f;

@@ -15,7 +15,6 @@ public class EnemyStatsCtrl : MonoBehaviour
 
     private void HandleDeath()
     {
-        Debug.Log("Enemy đã chết");
         Destroy(gameObject);
     }
 }

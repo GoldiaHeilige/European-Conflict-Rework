@@ -21,7 +21,6 @@ public class EnemyWeaponCtrl : MonoBehaviour
 
         runtimeData = new WeaponRuntimeData(weaponData);
 
-        // Đạn vô hạn
         runtimeData.currentReserve = 9999;
 
         if (enemyShooting != null)

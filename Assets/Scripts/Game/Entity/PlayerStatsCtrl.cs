@@ -15,6 +15,6 @@ public class PlayerStatsCtrl : MonoBehaviour
 
     private void HandleDeath()
     {
-        Debug.Log("Player đã chết");
+
     }
 }

@@ -24,7 +24,6 @@ public class EntityDeathEffect : MonoBehaviour
     {
         Debug.Log($"[DieEffect] {gameObject.name} chết → xử lý hiệu ứng");
 
-        // Disable tất cả logic scripts
         foreach (var comp in GetComponents<MonoBehaviour>())
         {
             if (comp != this) comp.enabled = false;
@@ -45,7 +44,8 @@ public class EntityDeathEffect : MonoBehaviour
         if (deathAnimations.Length > 0)
         {
             int index = Random.Range(0, deathAnimations.Length);
-            GameObject animObj = Instantiate(deathAnimations[index], transform.position, Quaternion.Euler(0, 0, angle), transform);
+            GameObject animObj = Instantiate(deathAnimations[index], transform.position, Quaternion.Euler(0, 0, angle));
+            Debug.Log($"[DieEffect] Spawned anim: {animObj.name}");
         }
 
         StartCoroutine(DeathSequence());

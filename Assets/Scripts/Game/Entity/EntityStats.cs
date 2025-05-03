@@ -22,7 +22,6 @@ public class EntityStats : MonoBehaviour, IDamageable
     public void TakeDamage(int amount, GameObject source = null)
     {
         currentHP = Mathf.Max(currentHP - amount, 0);
-        Debug.Log($"🩸 {gameObject.name} bị tấn công - Mất {amount} HP (còn {currentHP})");
 
         OnHealthChanged?.Invoke(currentHP);
 
@@ -32,7 +31,6 @@ public class EntityStats : MonoBehaviour, IDamageable
         }
     }
 
-    // ✨ Thêm từ interface IDamageable
     public void TakeDame(DameMessage msg)
     {
         TakeDamage(msg.Dame, msg.Attacker);
