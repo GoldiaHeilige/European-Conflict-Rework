@@ -15,38 +15,31 @@ public class Bullet_Kinetic : BulletCtrl
     public int GetDamage() => damage;
     public GameObject GetOwner() => owner;
 
-    protected new virtual void OnTriggerEnter2D(Collider2D collision)
+    protected override void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject == owner) return;
+        var target = collision.GetComponentInParent<IDamageable>();
 
-        /*Debug.Log($"🟢 Bullet_Kinetic: Va chạm với {collision.name}, tag = {collision.tag}");*/
-
-        bool isHit = (owner.CompareTag("Player") && collision.CompareTag("Enemy")) ||
-                     (owner.CompareTag("Enemy") && collision.CompareTag("Player"));
-
-        if (isHit)
+        if (target != null)
         {
-            var target = collision.GetComponentInParent<IDamageable>();
-            if (target != null)
+            if (owner == null)
             {
-                var message = new DameMessage
-                {
-                    Dame = damage,
-                    Attacker = owner
-                };
-                target.TakeDame(message);
-                Debug.Log($"Gây {damage} damage từ {owner.name} → {collision.name}");
-            }
-            else
-            {
-                Debug.LogWarning("không tìm thấy IDamageable trên target");
+                Debug.LogWarning("❌ Bullet owner NULL – có thể chưa gán đúng!");
             }
 
-            Destroy(gameObject);
+            var message = new DameMessage
+            {
+                Dame = damage,
+                Attacker = owner
+            };
+
+            target.TakeDame(message);
+            Debug.Log($"Gây {damage} damage từ {owner?.name ?? "NULL"} → {collision.name}");
         }
-        else if (!collision.CompareTag("Player") && !collision.CompareTag("Enemy"))
+        else
         {
-            Destroy(gameObject);
+            Debug.LogWarning($"❌ Không tìm thấy IDamageable trên {collision.name}");
         }
+
+        Destroy(gameObject);
     }
 }

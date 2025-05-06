@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using static WeaponData;
 
 public class PlayerShooting : WpnShootingBase
 {
@@ -16,17 +17,29 @@ public class PlayerShooting : WpnShootingBase
         if (weaponRuntime == null || weaponRuntime.data == null || firePoint == null) return;
 
         GameObject bulletObj = Instantiate(weaponRuntime.data.bulletPrefab, firePoint.position, Quaternion.identity);
-        Bullet_Kinetic bullet = bulletObj.GetComponent<Bullet_Kinetic>();
+        Vector2 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 fireDir = (mouseWorldPos - (Vector2)firePoint.position).normalized;
 
-        if (bullet != null)
+        bulletObj.transform.rotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(fireDir.y, fireDir.x) * Mathf.Rad2Deg + 90f);
+
+        switch (weaponRuntime.data.bulletType)
         {
-            Vector2 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 fireDir = (mouseWorldPos - (Vector2)firePoint.position).normalized;
+            case BulletType.Kinetic:
+                Bullet_Kinetic kinetic = bulletObj.GetComponent<Bullet_Kinetic>();
+                if (kinetic != null)
+                {
+                    kinetic.Initialize(fireDir, weaponRuntime.data.bulletSpeed, 2f);
+                    kinetic.SetOwnerAndDamage(this.gameObject, weaponRuntime.data.damage);
+                }
+                break;
 
-            bullet.Initialize(fireDir, weaponRuntime.data.bulletSpeed, 2f);
-            bullet.SetOwnerAndDamage(this.gameObject, weaponRuntime.data.damage);
-
-            bullet.transform.rotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(fireDir.y, fireDir.x) * Mathf.Rad2Deg + 90f);
+            case BulletType.Explosive:
+                Bullet_Explosive explosive = bulletObj.GetComponent<Bullet_Explosive>();
+                if (explosive != null)
+                {
+                    explosive.Initialize(fireDir, weaponRuntime.data.bulletSpeed, 2f);
+                }
+                break;
         }
 
         weaponRuntime.ConsumeBullet();

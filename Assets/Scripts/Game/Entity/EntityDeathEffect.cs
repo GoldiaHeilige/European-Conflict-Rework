@@ -45,7 +45,7 @@ public class EntityDeathEffect : MonoBehaviour
         {
             int index = Random.Range(0, deathAnimations.Length);
             GameObject animObj = Instantiate(deathAnimations[index], transform.position, Quaternion.Euler(0, 0, angle));
-            Debug.Log($"[DieEffect] Spawned anim: {animObj.name}");
+            // Debug.Log($"[DieEffect] Spawned anim: {animObj.name}");
         }
 
         StartCoroutine(DeathSequence());
