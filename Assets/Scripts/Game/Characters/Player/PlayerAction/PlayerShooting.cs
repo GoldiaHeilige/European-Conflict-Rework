@@ -38,6 +38,7 @@ public class PlayerShooting : WpnShootingBase
                 if (explosive != null)
                 {
                     explosive.Initialize(fireDir, weaponRuntime.data.bulletSpeed, 2f);
+                    explosive.SetOwnerAndDamage(this.gameObject, weaponRuntime.data.damage); 
                 }
                 break;
         }

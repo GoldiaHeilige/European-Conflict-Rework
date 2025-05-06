@@ -2,37 +2,51 @@
 
 public class ExplosionDamage : MonoBehaviour
 {
-    public float radius = 2f;
-    public int damage = 30;
+    [SerializeField] private int damage;
+    [SerializeField] private float radius;
 
-    public void ApplyDamage(Vector2 position, GameObject source)
+    public void SetDamage(int value)
     {
-        Debug.Log("Explosion: bắt đầu gây sát thương!");
+        damage = value;
+        // Debug.Log($"[ExplosionDamage] Damage set to: {damage}");
+    }
 
-        Collider2D[] targets = Physics2D.OverlapCircleAll(position, radius);
-        foreach (var col in targets)
+    public void ApplyDamage(Vector2 center, GameObject source)
+    {
+        Collider2D[] hits = Physics2D.OverlapCircleAll(center, radius);
+        // Debug.Log($"[ExplosionDamage] Found {hits.Length} objects in radius {radius}");
+
+        int total = 0;
+
+        foreach (var hit in hits)
         {
-            if (col.gameObject == gameObject) continue;
+            if (hit == null || hit.gameObject == null) continue;
 
-            IDamageable damageable = col.GetComponentInParent<IDamageable>();
-            if (damageable != null)
+            if (hit.gameObject == gameObject)
+                continue;
+
+            if (hit.CompareTag("PlayerBullet") || hit.CompareTag("EnemyBullet"))
+                continue;
+
+            var target = hit.GetComponentInParent<IDamageable>();
+            if (target != null)
             {
-                damageable.TakeDame(new DameMessage
+                target.TakeDame(new DameMessage
                 {
                     Dame = damage,
                     Attacker = source
                 });
+
+                // Debug.Log($"Explosion gây {damage} dame lên {hit.name}");
+                total++;
             }
             else
             {
-                Debug.Log($"Không tìm thấy IDamageable trên {col.gameObject.name}");
+                Debug.LogWarning($"Không tìm thấy IDamageable trên {hit.name}");
             }
         }
+
+        // Debug.Log($"Explosion từ {(source ? source.name : "?")} gây damage cho {total} mục tiêu");
     }
 
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, radius);
-    }
 }

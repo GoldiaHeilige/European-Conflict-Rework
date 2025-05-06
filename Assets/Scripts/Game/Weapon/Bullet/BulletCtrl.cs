@@ -6,14 +6,26 @@ public class BulletCtrl : MonoBehaviour
     protected float moveSpeed;
     protected float lifeTime;
 
+    protected GameObject owner;
+    protected int damage;
+
     public virtual void Initialize(Vector2 direction, float speed, float lifeTime)
     {
-        this.moveDirection = direction.normalized;
-        this.moveSpeed = speed;
+        moveDirection = direction.normalized;
+        moveSpeed = speed;
         this.lifeTime = lifeTime;
 
-        Destroy(gameObject, this.lifeTime);
+        Destroy(gameObject, lifeTime);
     }
+
+    public virtual void SetOwnerAndDamage(GameObject owner, int damage)
+    {
+        this.owner = owner;
+        this.damage = damage;
+    }
+
+    public virtual GameObject GetOwner() => owner;
+    public virtual int GetDamage() => damage;
 
     protected virtual void Update()
     {
@@ -22,6 +34,5 @@ public class BulletCtrl : MonoBehaviour
 
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
-        Destroy(gameObject);
     }
 }

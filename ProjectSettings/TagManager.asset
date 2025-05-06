@@ -7,6 +7,8 @@ TagManager:
   - Enemy
   - PlayerBullet
   - EnemyBullet
+  - Breakable
+  - Static
   layers:
   - Default
   - TransparentFX

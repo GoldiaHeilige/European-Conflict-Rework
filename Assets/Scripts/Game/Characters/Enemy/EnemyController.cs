@@ -5,6 +5,8 @@ public class EnemyController : EntityCtrl
     [Header("Enemy Settings")]
     public string enemyType;
 
+    private bool isDead = false;
+
     private void Start()
     {
         // Debug.Log($"Spawn Enemy: {gameObject.name} loại {enemyType}");
@@ -14,37 +16,35 @@ public class EnemyController : EntityCtrl
     {
         if (other.CompareTag("PlayerBullet"))
         {
-            BulletCtrl baseBullet = other.GetComponent<BulletCtrl>();
-            // Debug.Log($"🟢 EnemyCtrl: Va chạm với đạn {other.gameObject.name}");
-
-            if (baseBullet is Bullet_Kinetic kinetic)
+            if (other.TryGetComponent<BulletCtrl>(out var baseBullet))
             {
-                // Debug.Log("Bullet là Bullet_Kinetic, xử lý gây damage");
-
-                var msg = new DameMessage
+                if (!(baseBullet is Bullet_Explosive))
                 {
-                    Dame = kinetic.GetDamage(),
-                    Attacker = kinetic.GetOwner()
-                };
+                    var msg = new DameMessage
+                    {
+                        Dame = baseBullet.GetDamage(),
+                        Attacker = baseBullet.GetOwner()
+                    };
 
-                TakeDame(msg);
+                    TakeDame(msg);
+                    Destroy(other.gameObject);
+                }
             }
-            else
-            {
-                Debug.LogWarning("Không phải Bullet_Kinetic, bỏ qua xử lý damage.");
-            }
-
-            Destroy(other.gameObject);
         }
     }
 
+
     public void TakeDame(DameMessage msg)
     {
+
         TakeDamage(msg.Dame, msg.Attacker);
     }
 
     public override void Die()
     {
+        if (isDead) return;
+        isDead = true;
+
         base.Die();
     }
 }

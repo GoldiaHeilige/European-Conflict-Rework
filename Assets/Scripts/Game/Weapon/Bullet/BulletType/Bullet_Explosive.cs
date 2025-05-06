@@ -2,11 +2,14 @@
 
 public class Bullet_Explosive : BulletCtrl
 {
-    [Header("Effect")]
-    public GameObject explosionEffectPrefab;
+    [SerializeField] private GameObject explosionPrefab;
 
-    private GameObject owner;
-    private int damage;
+    public override void SetOwnerAndDamage(GameObject owner, int damage)
+    {
+        base.SetOwnerAndDamage(owner, damage);
+        // Debug.Log($"[Bullet_Explosive] Set owner = {owner?.name ?? "?"}, damage = {damage}");
+    }
+
 
     protected override void OnTriggerEnter2D(Collider2D collision)
     {
@@ -16,33 +19,25 @@ public class Bullet_Explosive : BulletCtrl
 
     private void Explode()
     {
-        // 1. Explosion Effects
-        if (explosionEffectPrefab != null)
+        if (explosionPrefab != null)
         {
-            Instantiate(explosionEffectPrefab, transform.position, Quaternion.identity);
-        }
+            var explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
 
-        // 2. AOE damage
-        ExplosionDamage explosion = GetComponent<ExplosionDamage>();
-        if (explosion != null)
-        {
-            explosion.ApplyDamage(transform.position, gameObject);
+            var explosionDamage = explosion.GetComponent<ExplosionDamage>();
+
+            if (explosionDamage != null)
+            {
+                explosionDamage.SetDamage(damage);
+                explosionDamage.ApplyDamage(transform.position, owner);
+            }
+            else
+            {
+                Debug.LogWarning("❌ Prefab animation nổ không có ExplosionDamage");
+            }
         }
         else
         {
-            Debug.LogWarning("Không tìm thấy ExplosionDamage trên Bullet_Explosive");
+            Debug.LogWarning(" explosionPrefab là NULL trong Bullet_Explosive.");
         }
     }
-
-    public void SetOwnerAndDamage(GameObject owner, int damage)
-    {
-        this.owner = owner;
-        this.damage = damage;
-    }
-
-/*    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, 2f);
-    }*/
 }

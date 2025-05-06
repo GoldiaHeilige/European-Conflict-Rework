@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ExplosiveData_Enemy
   m_EditorClassIdentifier: 
   weaponName: RPG-7
-  bulletPrefab: {fileID: 478094145916680175, guid: 1a52f4c2e5c598f4db9dc88c14406719, type: 3}
+  bulletPrefab: {fileID: 5377655092422076474, guid: cb6b80b85ccfa884684f41d90fd71362, type: 3}
   bulletType: 1
   damage: 50
   fireRate: 1

@@ -15,6 +15,6 @@ public class PlayerHPDisplay : MonoBehaviour
 
     void UpdateHPText(int currentHP)
     {
-        hpText.text = $"HP: {currentHP}";
+        hpText.text = $"{currentHP}";
     }
 }
