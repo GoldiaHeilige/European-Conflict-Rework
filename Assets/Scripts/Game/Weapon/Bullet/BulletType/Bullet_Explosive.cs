@@ -28,6 +28,7 @@ public class Bullet_Explosive : BulletCtrl
             if (explosionDamage != null)
             {
                 explosionDamage.SetDamage(damage);
+                explosionDamage.SetBulletType(bulletType);
                 explosionDamage.ApplyDamage(transform.position, owner);
             }
             else

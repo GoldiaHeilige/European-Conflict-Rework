@@ -1,5 +1,11 @@
 ﻿using UnityEngine;
 
+public enum BulletType
+{
+    Kinetic,
+    Explosive
+}
+
 public class BulletCtrl : MonoBehaviour
 {
     protected Vector2 moveDirection;
@@ -8,6 +14,8 @@ public class BulletCtrl : MonoBehaviour
 
     protected GameObject owner;
     protected int damage;
+
+    protected BulletType bulletType = BulletType.Kinetic;
 
     public virtual void Initialize(Vector2 direction, float speed, float lifeTime)
     {
@@ -27,6 +35,14 @@ public class BulletCtrl : MonoBehaviour
     public virtual GameObject GetOwner() => owner;
     public virtual int GetDamage() => damage;
 
+    public virtual void SetBulletType(BulletType type)
+    {
+        bulletType = type;
+        Debug.Log($"[BulletCtrl] Set bullet type = {type}"); // ✅ Kiểm tra khi khởi tạo
+    }
+
+    public virtual BulletType GetBulletType() => bulletType;
+
     protected virtual void Update()
     {
         transform.Translate(moveDirection * moveSpeed * Time.deltaTime, Space.World);
@@ -34,5 +50,6 @@ public class BulletCtrl : MonoBehaviour
 
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
+
     }
 }

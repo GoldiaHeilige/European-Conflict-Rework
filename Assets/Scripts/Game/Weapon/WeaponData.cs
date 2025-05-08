@@ -7,8 +7,8 @@ public class WeaponData : ScriptableObject
     public string weaponName;
 
     [Header("Shooting Info")]
-    public GameObject bulletPrefab; 
-    public BulletType bulletType;
+    public GameObject bulletPrefab;
+    [SerializeField] public BulletType bulletType = BulletType.Kinetic;
 
     [Header("Stats")]
     public int damage;
@@ -20,10 +20,4 @@ public class WeaponData : ScriptableObject
     [Header("Ammo")]
     public int clipSize;
     public int maxAmmo;
-
-    public enum BulletType
-    {
-        Kinetic,
-        Explosive
-    }
 }

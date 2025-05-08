@@ -22,25 +22,12 @@ public class PlayerShooting : WpnShootingBase
 
         bulletObj.transform.rotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(fireDir.y, fireDir.x) * Mathf.Rad2Deg + 90f);
 
-        switch (weaponRuntime.data.bulletType)
+        BulletCtrl baseBullet = bulletObj.GetComponent<BulletCtrl>();
+        if (baseBullet != null)
         {
-            case BulletType.Kinetic:
-                Bullet_Kinetic kinetic = bulletObj.GetComponent<Bullet_Kinetic>();
-                if (kinetic != null)
-                {
-                    kinetic.Initialize(fireDir, weaponRuntime.data.bulletSpeed, 2f);
-                    kinetic.SetOwnerAndDamage(this.gameObject, weaponRuntime.data.damage);
-                }
-                break;
-
-            case BulletType.Explosive:
-                Bullet_Explosive explosive = bulletObj.GetComponent<Bullet_Explosive>();
-                if (explosive != null)
-                {
-                    explosive.Initialize(fireDir, weaponRuntime.data.bulletSpeed, 2f);
-                    explosive.SetOwnerAndDamage(this.gameObject, weaponRuntime.data.damage); 
-                }
-                break;
+            baseBullet.SetBulletType(weaponRuntime.data.bulletType);
+            baseBullet.SetOwnerAndDamage(this.gameObject, weaponRuntime.data.damage);
+            baseBullet.Initialize(fireDir, weaponRuntime.data.bulletSpeed, 2f);
         }
 
         weaponRuntime.ConsumeBullet();

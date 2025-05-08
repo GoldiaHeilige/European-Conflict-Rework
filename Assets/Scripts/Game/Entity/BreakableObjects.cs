@@ -30,6 +30,12 @@ public class Breakable : MonoBehaviour, IDamageable
     {
         if (isDestroyed) return;
 
+        if (resistType == BreakableResistType.ExplosiveOnly && msg.BulletType != BulletType.Explosive)
+        {
+            Debug.Log($" {gameObject.name} không bị phá bởi đạn loại {msg.BulletType}");
+            return;
+        }
+
         currentHp -= msg.Dame;
 
         if (currentHp <= 0)
@@ -37,6 +43,7 @@ public class Breakable : MonoBehaviour, IDamageable
             Die();
         }
     }
+
 
     private void Die()
     {

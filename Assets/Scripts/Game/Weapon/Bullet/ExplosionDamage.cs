@@ -5,10 +5,17 @@ public class ExplosionDamage : MonoBehaviour
     [SerializeField] private int damage;
     [SerializeField] private float radius;
 
+    private BulletType bulletType = BulletType.Explosive;
+
     public void SetDamage(int value)
     {
         damage = value;
         // Debug.Log($"[ExplosionDamage] Damage set to: {damage}");
+    }
+
+    public void SetBulletType(BulletType type)
+    {
+        bulletType = type;
     }
 
     public void ApplyDamage(Vector2 center, GameObject source)
@@ -34,7 +41,8 @@ public class ExplosionDamage : MonoBehaviour
                 target.TakeDame(new DameMessage
                 {
                     Dame = damage,
-                    Attacker = source
+                    Attacker = source,
+                    BulletType = bulletType
                 });
 
                 // Debug.Log($"Explosion gây {damage} dame lên {hit.name}");
