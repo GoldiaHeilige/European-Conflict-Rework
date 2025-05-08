@@ -38,7 +38,7 @@ public class BulletCtrl : MonoBehaviour
     public virtual void SetBulletType(BulletType type)
     {
         bulletType = type;
-        Debug.Log($"[BulletCtrl] Set bullet type = {type}"); // ✅ Kiểm tra khi khởi tạo
+/*        Debug.Log($"[BulletCtrl] Set bullet type = {type}");*/
     }
 
     public virtual BulletType GetBulletType() => bulletType;

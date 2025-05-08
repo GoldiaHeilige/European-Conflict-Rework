@@ -46,3 +46,18 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: FX
+    uniqueID: 3450316917
+    locked: 0
+  - name: Bullet
+    uniqueID: 2961976765
+    locked: 0
+  - name: Entity
+    uniqueID: 3226292821
+    locked: 0
+  - name: Environment
+    uniqueID: 1653760899
+    locked: 0
+  - name: Shadow
+    uniqueID: 303176685
+    locked: 0
