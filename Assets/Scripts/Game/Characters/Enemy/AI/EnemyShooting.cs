@@ -1,9 +1,11 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
 
 public class EnemyShooting : WpnShootingBase
 {
-    private Transform player;
+    [SerializeField] private BulletPoolManager bulletPoolManager;
 
+    private Transform player;
     public bool shouldShoot = false;
 
     protected override void Start()
@@ -24,28 +26,30 @@ public class EnemyShooting : WpnShootingBase
         Vector2 dir = new Vector2(Mathf.Cos((firePoint.eulerAngles.z - 90) * Mathf.Deg2Rad),
                                   Mathf.Sin((firePoint.eulerAngles.z - 90) * Mathf.Deg2Rad)).normalized;
 
-        GameObject bulletObj = Instantiate(weaponRuntime.data.bulletPrefab, firePoint.position, Quaternion.identity);
-        BulletCtrl baseBullet = bulletObj.GetComponent<BulletCtrl>();
+        GameObject prefab = weaponRuntime.data.bulletPrefab;
+        ObjectPool pool = bulletPoolManager.GetPoolForPrefab(prefab);
+        if (pool == null) return;
 
+        GameObject bulletObj = pool.Get();
+        bulletObj.transform.position = firePoint.position;
+        bulletObj.transform.rotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg + 90f);
+
+        BulletCtrl baseBullet = bulletObj.GetComponent<BulletCtrl>();
         if (baseBullet != null)
         {
+            baseBullet.SetBulletType(weaponRuntime.data.bulletType);
+            baseBullet.SetOwnerAndDamage(this.gameObject, weaponRuntime.data.damage);
+            baseBullet.SetBulletTag("EnemyBullet");
+            baseBullet.SetLayer(LayerMask.NameToLayer("EnemyBullet"));
             baseBullet.Initialize(dir, weaponRuntime.data.bulletSpeed, 2f);
-            baseBullet.transform.rotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg + 90);
         }
 
-        Bullet_Kinetic kinetic = bulletObj.GetComponent<Bullet_Kinetic>();
-        if (kinetic != null)
+        AutoReturnToPool auto = bulletObj.GetComponent<AutoReturnToPool>();
+        if (auto != null)
         {
-            kinetic.SetOwnerAndDamage(this.gameObject, weaponRuntime.data.damage);
-        }
-
-        Bullet_Explosive explosive = bulletObj.GetComponent<Bullet_Explosive>();
-        if (explosive != null)
-        {
-            explosive.SetOwnerAndDamage(this.gameObject, weaponRuntime.data.damage);
+            auto.Init(pool);
         }
 
         weaponRuntime.ConsumeBullet();
     }
-
 }

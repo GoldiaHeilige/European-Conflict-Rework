@@ -17,6 +17,18 @@ public class BulletCtrl : MonoBehaviour
 
     protected BulletType bulletType = BulletType.Kinetic;
 
+    [SerializeField] private string defaultTag;
+
+    public void SetBulletTag(string tag)
+    {
+        gameObject.tag = tag;
+    }
+
+    public void SetLayer(int layer)
+    {
+        gameObject.layer = layer;
+    }
+
     public virtual void Initialize(Vector2 direction, float speed, float lifeTime)
     {
         moveDirection = direction.normalized;
