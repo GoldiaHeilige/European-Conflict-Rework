@@ -10,6 +10,9 @@ public class PlayerShooting : WpnShootingBase
     protected override bool ShouldShoot()
     {
         if (playerReload != null && playerReload.IsReloading) return false;
+
+        if (Time.timeScale == 0) return false;
+
         return Input.GetButton("Fire1");
     }
 
