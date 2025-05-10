@@ -2,8 +2,12 @@
 
 public class PlayerRotation : MonoBehaviour
 {
+
+    public static bool allowMouseLook = true;
+
     void Update()
     {
+        if (!allowMouseLook) return;
         RotateTowardsMouse();
     }
 

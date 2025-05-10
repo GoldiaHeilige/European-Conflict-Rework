@@ -1,6 +1,7 @@
 
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.LowLevel;
 
 public class InterfaceManager : MonoBehaviour
 {
@@ -8,12 +9,13 @@ public class InterfaceManager : MonoBehaviour
     [SerializeField] private GameObject hudUI;
     [SerializeField] private GameObject inventoryUI;
     [SerializeField] private GameObject overlayUI;
+    [SerializeField] private InventoryUI inventoryUIHandler;
 
     private bool inventoryOpen = false;
 
     private void Start()
     {
-        CloseInventory(); // đảm bảo đúng trạng thái lúc đầu
+        CloseInventory();
     }
 
     private void Update()
@@ -39,10 +41,14 @@ public class InterfaceManager : MonoBehaviour
     private void OpenInventory()
     {
         inventoryOpen = true;
+        PlayerRotation.allowMouseLook = false;
 
         if (inventoryUI != null) inventoryUI.SetActive(true);
         if (overlayUI != null) overlayUI.SetActive(true);
         if (hudUI != null) hudUI.SetActive(false);
+
+        inventoryUIHandler.UpdateStats(100);
+        inventoryUIHandler.UpdateInventory(PlayerInventory.Instance.GetItems());
 
         Time.timeScale = 0f;
     }
@@ -50,6 +56,7 @@ public class InterfaceManager : MonoBehaviour
     private void CloseInventory()
     {
         inventoryOpen = false;
+        PlayerRotation.allowMouseLook = true;
 
         if (inventoryUI != null) inventoryUI.SetActive(false);
         if (overlayUI != null) overlayUI.SetActive(false);
