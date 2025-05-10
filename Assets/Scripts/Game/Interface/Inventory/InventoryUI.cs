@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
@@ -12,6 +12,23 @@ public class InventoryUI : MonoBehaviour
     public Transform slotParent;
     public InventorySlot[] slots;
 
+    private void OnEnable()
+    {
+        PlayerInventory.InventoryChanged += RefreshUI;
+    }
+
+    private void OnDisable()
+    {
+        PlayerInventory.InventoryChanged -= RefreshUI;
+    }
+
+    private void RefreshUI()
+    {
+        UpdateInventory(PlayerInventory.Instance.GetItems());
+        Debug.Log("UI đang refresh inventory...");
+    }
+
+
     public void UpdateStats(float hp)
     {
         hpText.text = $"{hp}";
@@ -19,10 +36,24 @@ public class InventoryUI : MonoBehaviour
 
     public void UpdateInventory(List<InventoryItemRuntime> items)
     {
+
         for (int i = 0; i < slots.Length; i++)
         {
-            if (i < items.Count) slots[i].SetItem(items[i]);
-            else slots[i].Clear();
+            if (i < items.Count)
+            {
+                if (slots[i] == null)
+                {
+                    Debug.LogError($"Slot {i} bị null!");
+                    continue;
+                }
+
+                slots[i].SetItem(items[i]);
+            }
+            else
+            {
+                if (slots[i] != null) slots[i].Clear();
+            }
         }
+
     }
 }

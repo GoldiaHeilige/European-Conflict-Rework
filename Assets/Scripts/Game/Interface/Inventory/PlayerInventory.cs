@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerInventory : MonoBehaviour
@@ -6,6 +6,10 @@ public class PlayerInventory : MonoBehaviour
     public static PlayerInventory Instance { get; private set; }
 
     private List<InventoryItemRuntime> items = new();
+
+    public delegate void OnInventoryChanged();
+
+    public static event OnInventoryChanged InventoryChanged;
 
     private void Awake()
     {
@@ -15,18 +19,36 @@ public class PlayerInventory : MonoBehaviour
 
     public List<InventoryItemRuntime> GetItems() => items;
 
-    public void AddItem(InventoryItemData itemData, int amount = 1)
+    public bool AddItem(InventoryItemData itemData, int amount = 1)
     {
+        int remaining = amount;
+
         if (itemData.stackable)
         {
-            var found = items.Find(i => i.itemData == itemData);
-            if (found != null)
+            // 1. Ưu tiên nhét vào stack đã có
+            foreach (var item in items)
             {
-                found.quantity = Mathf.Min(found.quantity + amount, itemData.maxStack);
-                return;
+                if (item.itemData == itemData && item.quantity < itemData.maxStack)
+                {
+                    int space = itemData.maxStack - item.quantity;
+                    int toAdd = Mathf.Min(space, remaining);
+                    item.quantity += toAdd;
+                    remaining -= toAdd;
+
+                    if (remaining <= 0) break;
+                }
             }
         }
 
-        items.Add(new InventoryItemRuntime(itemData, amount));
+        // 2. Thêm stack mới nếu vẫn còn dư
+        while (remaining > 0)
+        {
+            int toAdd = Mathf.Min(itemData.maxStack, remaining);
+            items.Add(new InventoryItemRuntime(itemData, toAdd));
+            remaining -= toAdd;
+        }
+
+        InventoryChanged?.Invoke();
+        return true;
     }
 }

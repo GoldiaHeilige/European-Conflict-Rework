@@ -22,10 +22,18 @@ public class PickupDetector : MonoBehaviour
     void DetectItemUnderMouse()
     {
         Vector2 mouseWorld = mainCam.ScreenToWorldPoint(Input.mousePosition);
-        RaycastHit2D hit = Physics2D.Raycast(mouseWorld, Vector2.zero, maxDistance, pickupLayer);
+        RaycastHit2D hit = Physics2D.Raycast(mouseWorld, Vector2.zero, Mathf.Infinity, pickupLayer);
 
         if (hit.collider != null && hit.collider.TryGetComponent(out PickupItem item))
         {
+            float dist = Vector2.Distance(transform.position, item.transform.position);
+            if (dist > maxDistance)
+            {
+                tooltipUI.SetActive(false);
+                currentItem = null;
+                return;
+            }
+
             item.isHovered = true;
             currentItem = item;
 
@@ -39,6 +47,7 @@ public class PickupDetector : MonoBehaviour
             tooltipUI.SetActive(false);
         }
     }
+
 
     void HandlePickupInput()
     {

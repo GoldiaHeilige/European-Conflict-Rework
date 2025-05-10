@@ -18,11 +18,9 @@ public class PickupItem : MonoBehaviour
 
     private void Update()
     {
-        // Glow viền khi đang bị hover
         if (isHovered) sr.color = glowColor;
         else sr.color = normalColor;
 
-        // Reset hover mỗi frame
         isHovered = false;
     }
 

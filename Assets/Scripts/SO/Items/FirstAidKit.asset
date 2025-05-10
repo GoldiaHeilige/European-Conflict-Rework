@@ -18,6 +18,6 @@ MonoBehaviour:
   category: 0
   worldPrefab: {fileID: 4056907214347485379, guid: 0f535de9ced07414e8c78ef9c06640d1, type: 3}
   stackable: 1
-  maxStack: 64
+  maxStack: 2
   equippable: 0
   equipSlot: 
