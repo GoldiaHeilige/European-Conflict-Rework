@@ -7,7 +7,7 @@ public class PlayerModelViewer : MonoBehaviour
     [System.Serializable]
     public struct ModelMapping
     {
-        public string weaponName;
+        public string weaponID;
         public Sprite bodySprite;
     }
 
@@ -27,7 +27,7 @@ public class PlayerModelViewer : MonoBehaviour
     {
         foreach (var mapping in modelMappings)
         {
-            if (mapping.weaponName == weaponData.weaponName)
+            if (mapping.weaponID == weaponData.weaponID)
             {
                 bodyRenderer.sprite = mapping.bodySprite;
                 break;

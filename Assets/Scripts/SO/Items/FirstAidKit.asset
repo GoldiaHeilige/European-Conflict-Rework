@@ -15,6 +15,7 @@ MonoBehaviour:
   itemName: Small Medkit
   icon: {fileID: 21300000, guid: 75b9be5b01ad0d844bd9e9b9dbd3dbe9, type: 3}
   description: A small first aid kit.
+  itemID: Med_Small
   category: 0
   worldPrefab: {fileID: 4056907214347485379, guid: 0f535de9ced07414e8c78ef9c06640d1, type: 3}
   stackable: 1

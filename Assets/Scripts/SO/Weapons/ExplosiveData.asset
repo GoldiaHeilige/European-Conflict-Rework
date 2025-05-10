@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7e20b02529c21a4da9fc1800f9f7f69, type: 3}
   m_Name: ExplosiveData
   m_EditorClassIdentifier: 
-  weaponName: RPG-7
+  weaponName: Grenade Launcher
+  weaponID: Launcher_1
   bulletPrefab: {fileID: 733963383181632197, guid: afae5fca4c875a24ba3f065a9bc2f6a6, type: 3}
   bulletType: 1
   damage: 200

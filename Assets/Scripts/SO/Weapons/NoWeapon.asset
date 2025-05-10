@@ -13,8 +13,7 @@ MonoBehaviour:
   m_Name: NoWeapon
   m_EditorClassIdentifier: 
   weaponName: NoWeapon
-  upperBodySprite: {fileID: -1118958810, guid: 4ae1397c2789dd04a83f146667b346a4, type: 3}
-  firePointOffset: {x: 0, y: 0}
+  weaponID: NoWeapon
   bulletPrefab: {fileID: 4160214242677169439, guid: ae9e54124ca27f74aa8c970707bb6704, type: 3}
   bulletType: 0
   damage: 0

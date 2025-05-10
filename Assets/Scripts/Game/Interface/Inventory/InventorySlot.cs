@@ -12,19 +12,19 @@ public class InventorySlot : MonoBehaviour
         Clear(); 
         if (item == null)
         {
-            Debug.LogError("❌ SetItem() nhận item NULL");
+            Debug.LogError("SetItem() nhận item NULL");
             return;
         }
 
         if (item.itemData == null)
         {
-            Debug.LogError("❌ itemData null!");
+            Debug.LogError("itemData null!");
             return;
         }
 
         if (iconHolderPrefab == null)
         {
-            Debug.LogError("❌ iconHolderPrefab chưa được gán trong slot!");
+            Debug.LogError("iconHolderPrefab chưa được gán trong slot!");
             return;
         }
 
@@ -33,7 +33,7 @@ public class InventorySlot : MonoBehaviour
         RectTransform rt = currentIconObj.GetComponent<RectTransform>();
         if (rt == null)
         {
-            Debug.LogError("❌ iconHolderPrefab KHÔNG có RectTransform!");
+            Debug.LogError("iconHolderPrefab KHÔNG có RectTransform!");
             return;
         }
 

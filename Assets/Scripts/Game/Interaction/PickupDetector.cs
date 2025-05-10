@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
 
 public class PickupDetector : MonoBehaviour
@@ -12,6 +12,7 @@ public class PickupDetector : MonoBehaviour
     public TextMeshProUGUI tooltipText;
 
     private PickupItem currentItem;
+    private bool canPickupCurrent = false;
 
     private void Update()
     {
@@ -37,9 +38,19 @@ public class PickupDetector : MonoBehaviour
             item.isHovered = true;
             currentItem = item;
 
+            canPickupCurrent = PlayerInventory.Instance.CanAddItem(item.itemData, item.amount);
+
             tooltipUI.SetActive(true);
-            tooltipText.text = $"<sprite=0> Press [F] to pickup {item.itemData.itemName}";
             tooltipUI.transform.position = Input.mousePosition;
+
+            if (canPickupCurrent)
+            {
+                tooltipText.text = $"<sprite=0> Press [F] to pickup {item.itemData.itemName}";
+            }
+            else
+            {
+                tooltipText.text = $"<color=red>Inventory Full</color>";
+            }
         }
         else
         {
@@ -48,10 +59,9 @@ public class PickupDetector : MonoBehaviour
         }
     }
 
-
     void HandlePickupInput()
     {
-        if (currentItem != null && Input.GetKeyDown(KeyCode.F))
+        if (currentItem != null && canPickupCurrent && Input.GetKeyDown(KeyCode.F))
         {
             currentItem.Pickup();
             currentItem = null;

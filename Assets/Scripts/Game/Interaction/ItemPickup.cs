@@ -10,6 +10,9 @@ public class PickupItem : MonoBehaviour
     private Color normalColor;
     public Color glowColor = Color.yellow;
 
+    private SpriteRenderer spriteRenderer;
+    private Coroutine flashRoutine;
+
     private void Start()
     {
         sr = GetComponent<SpriteRenderer>();

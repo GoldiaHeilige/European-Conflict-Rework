@@ -5,6 +5,7 @@ public class WeaponData : ScriptableObject
 {
     [Header("Basic Info")]
     public string weaponName;
+    public string weaponID;
 
     [Header("Shooting Info")]
     public GameObject bulletPrefab;

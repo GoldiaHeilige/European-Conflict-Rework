@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5765447814379327014}
   - component: {fileID: 452802077347948079}
   - component: {fileID: 6394368525482291834}
-  m_Layer: 8
+  m_Layer: 6
   m_Name: Pistol_AmmoBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}

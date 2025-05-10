@@ -51,4 +51,31 @@ public class PlayerInventory : MonoBehaviour
         InventoryChanged?.Invoke();
         return true;
     }
+
+    public bool CanAddItem(InventoryItemData itemData, int amount)
+    {
+        int remaining = amount;
+
+        if (itemData.stackable)
+        {
+            foreach (var item in items)
+            {
+                if (item.itemData == itemData && item.quantity < itemData.maxStack)
+                {
+                    int space = itemData.maxStack - item.quantity;
+                    int toAdd = Mathf.Min(space, remaining);
+                    remaining -= toAdd;
+
+                    if (remaining <= 0) return true;
+                }
+            }
+        }
+
+        int stackNeeded = Mathf.CeilToInt((float)remaining / itemData.maxStack);
+        int maxSlot = 4;
+        int availableSlot = maxSlot - items.Count;
+
+        return availableSlot >= stackNeeded;
+    }
+
 }

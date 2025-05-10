@@ -7,6 +7,7 @@ public class InventoryItemData : ScriptableObject
     public string itemName;
     public Sprite icon;
     public string description;
+    public string itemID;
 
     [Header("Category")]
     public ItemCategory category;
