@@ -17,7 +17,7 @@ public class InventoryItemData : ScriptableObject
 
     [Header("Equip")]
     public bool equippable;
-    public string equipSlot; // "PrimaryWeapon", "Helmet", etc.
+    public string equipSlot;
 }
 
 public enum ItemCategory

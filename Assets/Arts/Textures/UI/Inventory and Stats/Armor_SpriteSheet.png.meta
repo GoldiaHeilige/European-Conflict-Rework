@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e2c5e2961f291694e932c20e16bb426f
+guid: 3fe03739948c22a459aa3bb82489feaa
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,13 +97,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: texture_0
+      name: Armor_SpriteSheet_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 928
-        width: 760
-        height: 776
+        x: 12
+        y: 139
+        width: 40
+        height: 42
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -111,41 +111,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 37cc3d3937fe9254eb3eae46139efee1
-      internalID: -1569794477
+      spriteID: 6a1dd4a1b408ba64da6b59c6e62be658
+      internalID: 1517421362
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: texture_1
+      name: Armor_SpriteSheet_1
       rect:
         serializedVersion: 2
-        x: 836
-        y: 941
-        width: 894
-        height: 821
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 7a0fdb037dca74e4e84e21ca26473b23
-      internalID: 953523816
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: texture_2
-      rect:
-        serializedVersion: 2
-        x: 19
+        x: 8
         y: 72
-        width: 641
-        height: 695
+        width: 47
+        height: 49
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -153,8 +132,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e1f2a5f6bdcaba342af48caf69cc0ff1
-      internalID: 145642185
+      spriteID: 93fcc27b5a7207b4ea4134610bd2d37a
+      internalID: -1064224218
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Armor_SpriteSheet_2
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 6
+        width: 56
+        height: 51
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 62f6d371989857e498a8e83f66193f50
+      internalID: 927413228
       vertices: []
       indices: 
       edges: []
@@ -170,9 +170,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      texture_0: -1569794477
-      texture_1: 953523816
-      texture_2: 145642185
+      Armor_SpriteSheet_0: 1517421362
+      Armor_SpriteSheet_1: -1064224218
+      Armor_SpriteSheet_2: 927413228
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

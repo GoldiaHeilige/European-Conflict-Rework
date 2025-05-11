@@ -72,7 +72,7 @@ public class PlayerInventory : MonoBehaviour
         }
 
         int stackNeeded = Mathf.CeilToInt((float)remaining / itemData.maxStack);
-        int maxSlot = 4;
+        int maxSlot = 12;
         int availableSlot = maxSlot - items.Count;
 
         return availableSlot >= stackNeeded;
