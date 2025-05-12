@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4382e790317287b4da0640988cc08bde, type: 3}
-  m_Name: ArmorData
+  m_Name: Body_Light
   m_EditorClassIdentifier: 
   itemName: Light Plate Carrier
   icon: {fileID: 145642185, guid: e2c5e2961f291694e932c20e16bb426f, type: 3}
   description: A lightweight body armour.
   itemID: Armor_Light
   category: 0
-  worldPrefab: {fileID: 0}
+  worldPrefab: {fileID: 6481297625603345065, guid: 4ed7fa65aa625024bb779d541d3dd819, type: 3}
   stackable: 0
   maxStack: 1
   equippable: 1
