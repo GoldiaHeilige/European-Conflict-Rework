@@ -5,6 +5,8 @@ public class PlayerInventory : MonoBehaviour
 {
     public static PlayerInventory Instance { get; private set; }
 
+    [SerializeField] private int maxSlot = 14;
+
     private List<InventoryItemRuntime> items = new();
 
     public delegate void OnInventoryChanged();
@@ -17,7 +19,14 @@ public class PlayerInventory : MonoBehaviour
         else Destroy(gameObject);
     }
 
-    public List<InventoryItemRuntime> GetItems() => items;
+    public List<InventoryItemRuntime> GetItems()
+    {
+        while (items.Count < maxSlot)
+        {
+            items.Add(null);
+        }
+        return items;
+    }
 
     public bool AddItem(InventoryItemData itemData, int amount = 1)
     {
@@ -72,10 +81,24 @@ public class PlayerInventory : MonoBehaviour
         }
 
         int stackNeeded = Mathf.CeilToInt((float)remaining / itemData.maxStack);
-        int maxSlot = 12;
         int availableSlot = maxSlot - items.Count;
 
         return availableSlot >= stackNeeded;
+    }
+
+    public void SwapItemByIndex(int indexA, int indexB)
+    {
+        if (indexA < 0 || indexA >= maxSlot || indexB < 0 || indexB >= maxSlot)
+        {
+            Debug.LogWarning("SwapItemByIndex: Index nằm ngoài giới hạn!");
+            return;
+        }
+
+        var temp = items[indexA];
+        items[indexA] = items[indexB];
+        items[indexB] = temp;
+
+        InventoryChanged?.Invoke();
     }
 
 }

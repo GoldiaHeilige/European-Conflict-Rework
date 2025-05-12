@@ -25,7 +25,6 @@ public class InventoryUI : MonoBehaviour
     private void RefreshUI()
     {
         UpdateInventory(PlayerInventory.Instance.GetItems());
-        Debug.Log("UI đang refresh inventory...");
     }
 
 
@@ -36,24 +35,25 @@ public class InventoryUI : MonoBehaviour
 
     public void UpdateInventory(List<InventoryItemRuntime> items)
     {
-
         for (int i = 0; i < slots.Length; i++)
         {
+            if (slots[i] == null)
+            {
+                Debug.LogError($"Slot {i} bị null!");
+                continue;
+            }
+
+            slots[i].slotIndex = i;
+
             if (i < items.Count)
             {
-                if (slots[i] == null)
-                {
-                    Debug.LogError($"Slot {i} bị null!");
-                    continue;
-                }
-
                 slots[i].SetItem(items[i]);
             }
             else
             {
-                if (slots[i] != null) slots[i].Clear();
+                slots[i].Clear();
             }
         }
-
     }
+
 }

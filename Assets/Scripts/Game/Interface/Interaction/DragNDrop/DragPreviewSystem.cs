@@ -20,14 +20,13 @@ public class DragPreviewSystem : MonoBehaviour
     {
         if (sprite == null)
         {
-            Debug.LogWarning("❌ DragPreview sprite null!");
+            Debug.LogWarning("DragPreview sprite null!");
             return;
         }
 
         previewObject.SetActive(true);
         previewImage.sprite = sprite;
 
-        // Đảm bảo màu alpha đúng
         Color c = previewImage.color;
         c.a = 1f;
         previewImage.color = c;

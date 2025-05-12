@@ -9,6 +9,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, 
     private GameObject currentIconObj;
 
     private InventoryItemRuntime currentItem;
+    public int slotIndex;
 
     public void SetItem(InventoryItemRuntime item)
     {
@@ -18,7 +19,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, 
 
         if (item == null)
         {
-            Debug.LogWarning("SetItem() nhận item NULL");
+/*            Debug.LogWarning("SetItem() nhận item NULL");*/
             return;
         }
 
@@ -112,19 +113,24 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, 
         var sourceItem = dragSource.GetItem();
         var targetItem = this.GetItem();
 
-        Debug.Log($"DROP: Source = {sourceItem?.itemData.itemName}, Target = {(targetItem == null ? "EMPTY" : targetItem.itemData.itemName)}");
+/*        Debug.Log($"DROP: Source = {sourceItem?.itemData.itemName}, Target = {(targetItem == null ? "EMPTY" : targetItem.itemData.itemName)}");*/
 
         if (targetItem == null)
         {
             this.SetItem(sourceItem);
             dragSource.Clear();
-            return;
+        }
+        else
+        {
+            // swap UI
+            dragSource.SetItem(targetItem);
+            this.SetItem(sourceItem);
         }
 
-        // swap
-        dragSource.SetItem(targetItem);
-        this.SetItem(sourceItem);
+        // Đồng bộ logic runtime
+        PlayerInventory.Instance.SwapItemByIndex(dragSource.slotIndex, this.slotIndex);
     }
+
 
     public void OnPointerEnter(PointerEventData eventData)
     {
