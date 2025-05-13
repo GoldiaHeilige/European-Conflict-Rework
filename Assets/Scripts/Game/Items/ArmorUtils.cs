@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 public static class ArmorUtils
 {
@@ -21,7 +22,7 @@ public static class ArmorUtils
         foreach (var armor in armors)
         {
             if (!armor.armorData.weakAgainstAP)
-                return false; // không thể xuyên
+                return false;
 
             penetrationChance *= 1f - GetReductionChanceByTier(armor.armorData.armorTier);
         }
@@ -41,14 +42,16 @@ public static class ArmorUtils
     }
     public static void ApplyDamageTo(EntityStats target, int baseDamage, ArmorPenetration ap)
     {
-        var armorManager = target.GetComponent<EquippedArmorManager>();
+        var armorManager = target.GetComponentInParent<EquippedArmorManager>();
         if (armorManager == null)
         {
-            target.TakeDamage(baseDamage); 
+            Debug.LogWarning($"{target.name} không có EquippedArmorManager");
+            target.TakeDamage(baseDamage);
             return;
         }
 
-        var armors = armorManager.GetAllEquippedArmors();
+        var armors = armorManager.GetAllEquippedArmors().ToList();
+        Debug.Log($"{target.name} có {armors.Count} giáp đang mặc");
 
         bool isPenetrated = IsArmorPenetrated(armors);
 
@@ -56,9 +59,9 @@ public static class ArmorUtils
         {
             int durabilityDamage = Mathf.CeilToInt(baseDamage * GetDurabilityLossFactor(ap));
             foreach (var armor in armors)
-                armor.ReduceDurability(durabilityDamage);
-
-            Debug.Log("💥 Đạn bị giáp chặn! Không trừ máu.");
+            {
+                Debug.Log($"{armor.armorData.name}: durability {armor.currentDurability}, weakAP={armor.armorData.weakAgainstAP}");
+            }
         }
         else
         {
@@ -66,7 +69,7 @@ public static class ArmorUtils
                 armor.ReduceDurability(baseDamage);
 
             target.TakeDamage(baseDamage);
-            Debug.Log($"🔥 Đạn xuyên giáp! Gây {baseDamage} damage thẳng vào máu.");
+            Debug.Log($"Đạn xuyên giáp! Gây {baseDamage} damage thẳng vào máu.");
         }
     }
 

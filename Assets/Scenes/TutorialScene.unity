@@ -263,7 +263,7 @@ Transform:
   m_GameObject: {fileID: 17578045}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.33, y: 0, z: -10}
+  m_LocalPosition: {x: -0.05, y: 0.65, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -690,7 +690,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &254536033
 Transform:
   m_ObjectHideFlags: 0
@@ -1686,7 +1686,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.33, y: 0, z: -10}
+  m_LocalPosition: {x: -0.05, y: 0.65, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1756,7 +1756,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1906257841}
-  - {fileID: 2038404077}
   - {fileID: 1930026123}
   - {fileID: 1674585212}
   m_Father: {fileID: 0}
@@ -9384,7 +9383,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1973287867
 Transform:
   m_ObjectHideFlags: 0
@@ -10117,51 +10116,6 @@ MonoBehaviour:
   previewObject: {fileID: 2034581030}
   previewIcon: {fileID: 12529338}
   swapOverlay: {fileID: 706104031}
---- !u!1 &2038404075
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2038404077}
-  - component: {fileID: 2038404076}
-  m_Layer: 0
-  m_Name: PlayerInventory
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &2038404076
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2038404075}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49f88bf338a9ef5449c769e74b99e8d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxSlot: 14
---- !u!4 &2038404077
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2038404075}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 528285994}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2078916548
 GameObject:
   m_ObjectHideFlags: 0
@@ -10214,7 +10168,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2083861696
 Transform:
   m_ObjectHideFlags: 0
@@ -10428,11 +10382,11 @@ PrefabInstance:
       objectReference: {fileID: 448364650}
     - target: {fileID: 2904402115845590029, guid: e68286704d21bad4a834a271beae1745, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.33
+      value: -0.05
       objectReference: {fileID: 0}
     - target: {fileID: 2904402115845590029, guid: e68286704d21bad4a834a271beae1745, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.65
       objectReference: {fileID: 0}
     - target: {fileID: 2904402115845590029, guid: e68286704d21bad4a834a271beae1745, type: 3}
       propertyPath: m_LocalPosition.z
@@ -10465,6 +10419,10 @@ PrefabInstance:
     - target: {fileID: 2904402115845590029, guid: e68286704d21bad4a834a271beae1745, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2989661242132962106, guid: e68286704d21bad4a834a271beae1745, type: 3}
+      propertyPath: maxHP
+      value: 999
       objectReference: {fileID: 0}
     - target: {fileID: 3327939035984607071, guid: e68286704d21bad4a834a271beae1745, type: 3}
       propertyPath: mainCam

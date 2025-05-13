@@ -29,12 +29,10 @@ public class Bullet_Kinetic : BulletCtrl
         var stats = collision.GetComponentInParent<EntityStats>();
         if (stats != null)
         {
-            // Nếu là Entity có giáp → gọi ArmorUtils
             ArmorUtils.ApplyDamageTo(stats, damage, penetrationLevel);
         }
         else
         {
-            // Ngược lại: gọi cách cũ (IDamageable)
             var target = collision.GetComponentInParent<IDamageable>();
             if (target != null)
             {

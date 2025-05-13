@@ -6,11 +6,18 @@ public class EquippedArmorManager : MonoBehaviour
 
     private Dictionary<ArmorSlot, ArmorRuntime> equipped = new();
 
-    public void EquipArmor(ArmorData data)
+    public void EquipArmor(ArmorRuntime runtime)
     {
-        var runtime = new ArmorRuntime(data, this); 
-        equipped[data.armorSlot] = runtime;
+        if (runtime == null || runtime.armorData == null)
+        {
+            Debug.LogWarning("EquipArmor nhận runtime NULL hoặc thiếu dữ liệu");
+            return;
+        }
+
+        equipped[runtime.Slot] = runtime;
+        Debug.Log($"Trang bị lại giáp: {runtime.armorData.name} | Slot: {runtime.Slot} | Durability: {runtime.currentDurability}");
     }
+
 
 
     public void RemoveArmor(ArmorSlot slot)
