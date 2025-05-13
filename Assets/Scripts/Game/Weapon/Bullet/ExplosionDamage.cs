@@ -23,7 +23,7 @@ public class ExplosionDamage : MonoBehaviour
         Collider2D[] hits = Physics2D.OverlapCircleAll(center, radius);
         // Debug.Log($"[ExplosionDamage] Found {hits.Length} objects in radius {radius}");
 
-        int total = 0;
+/*        int total = 0;*/
 
         foreach (var hit in hits)
         {
@@ -35,26 +35,45 @@ public class ExplosionDamage : MonoBehaviour
             if (hit.CompareTag("PlayerBullet") || hit.CompareTag("EnemyBullet"))
                 continue;
 
-            var target = hit.GetComponentInParent<IDamageable>();
-            if (target != null)
+            var stats = hit.GetComponentInParent<EntityStats>();
+            if (stats != null)
             {
-                target.TakeDame(new DameMessage
-                {
-                    Dame = damage,
-                    Attacker = source,
-                    BulletType = bulletType
-                });
-
-                // Debug.Log($"Explosion gây {damage} dame lên {hit.name}");
-                total++;
+                ArmorUtils.ApplyDamageTo(stats, damage, ArmorPenetration.APHeavy);
             }
             else
             {
-                Debug.LogWarning($"Không tìm thấy IDamageable trên {hit.name}");
+                var target = hit.GetComponentInParent<IDamageable>();
+                if (target != null)
+                {
+                    target.TakeDame(new DameMessage
+                    {
+                        Dame = damage,
+                        Attacker = source,
+                        BulletType = bulletType
+                    });
+                }
+
+                /*            var target = hit.GetComponentInParent<IDamageable>();
+                            if (target != null)
+                            {
+                                target.TakeDame(new DameMessage
+                                {
+                                    Dame = damage,
+                                    Attacker = source,
+                                    BulletType = bulletType
+                                });
+
+                                // Debug.Log($"Explosion gây {damage} dame lên {hit.name}");
+                                total++;
+                            }*/
+                else
+                {
+                    Debug.LogWarning($"Không tìm thấy IDamageable trên {hit.name}");
+                }
             }
+
+            // Debug.Log($"Explosion từ {(source ? source.name : "?")} gây damage cho {total} mục tiêu");
         }
 
-        // Debug.Log($"Explosion từ {(source ? source.name : "?")} gây damage cho {total} mục tiêu");
     }
-
 }

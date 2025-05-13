@@ -16,8 +16,19 @@ public class BulletCtrl : MonoBehaviour
     protected int damage;
 
     protected BulletType bulletType = BulletType.Kinetic;
+    protected ArmorPenetration penetrationLevel = ArmorPenetration.APLight;
 
     [SerializeField] private string defaultTag;
+
+    public void SetArmorPenetration(ArmorPenetration ap)
+    {
+        penetrationLevel = ap;
+    }
+
+    public ArmorPenetration GetArmorPenetration()
+    {
+        return penetrationLevel;
+    }
 
     public void SetBulletTag(string tag)
     {

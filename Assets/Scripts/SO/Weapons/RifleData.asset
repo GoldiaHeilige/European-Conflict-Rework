@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: Assault Rifle
   weaponID: Rifle_1
+  weaponClass: 1
+  armorPenetration: 1
   bulletPrefab: {fileID: 4160214242677169439, guid: ae9e54124ca27f74aa8c970707bb6704, type: 3}
   bulletType: 0
   damage: 25

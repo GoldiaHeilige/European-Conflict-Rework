@@ -16,9 +16,13 @@ MonoBehaviour:
   icon: {fileID: 1517421362, guid: 3fe03739948c22a459aa3bb82489feaa, type: 3}
   description: A lightweight body armour.
   itemID: Armor_Light
-  category: 0
+  category: 3
   worldPrefab: {fileID: 6481297625603345065, guid: 4ed7fa65aa625024bb779d541d3dd819, type: 3}
   stackable: 0
   maxStack: 1
   equippable: 1
   armorSlot: 1
+  armorTier: 0
+  maxDurability: 100
+  weakAgainstAP: 1
+  damageReductionChance: 0.25

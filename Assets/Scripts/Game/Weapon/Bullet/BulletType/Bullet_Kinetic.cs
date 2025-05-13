@@ -2,25 +2,53 @@
 
 public class Bullet_Kinetic : BulletCtrl
 {
+    /*    protected override void OnTriggerEnter2D(Collider2D collision)
+        {
+            var target = collision.GetComponentInParent<IDamageable>();
+            if (target != null)
+            {
+                var message = new DameMessage
+                {
+                    Dame = damage,
+                    Attacker = owner
+                };
+                target.TakeDame(message);
+
+                // Debug.Log($"{owner?.name ?? "?"} gây {damage} damage → {collision.name}");
+            }
+            else
+            {
+                Debug.LogWarning($"Không tìm thấy IDamageable trên {collision.name}");
+            }
+
+            Destroy(gameObject);
+        }*/
+
     protected override void OnTriggerEnter2D(Collider2D collision)
     {
-        var target = collision.GetComponentInParent<IDamageable>();
-        if (target != null)
+        var stats = collision.GetComponentInParent<EntityStats>();
+        if (stats != null)
         {
-            var message = new DameMessage
-            {
-                Dame = damage,
-                Attacker = owner
-            };
-            target.TakeDame(message);
-
-            // Debug.Log($"{owner?.name ?? "?"} gây {damage} damage → {collision.name}");
+            // Nếu là Entity có giáp → gọi ArmorUtils
+            ArmorUtils.ApplyDamageTo(stats, damage, penetrationLevel);
         }
         else
         {
-            Debug.LogWarning($"Không tìm thấy IDamageable trên {collision.name}");
+            // Ngược lại: gọi cách cũ (IDamageable)
+            var target = collision.GetComponentInParent<IDamageable>();
+            if (target != null)
+            {
+                var message = new DameMessage
+                {
+                    Dame = damage,
+                    Attacker = owner,
+                    BulletType = BulletType.Kinetic
+                };
+                target.TakeDame(message);
+            }
         }
 
         Destroy(gameObject);
     }
+
 }

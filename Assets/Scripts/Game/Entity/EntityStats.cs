@@ -7,6 +7,7 @@ public class EntityStats : MonoBehaviour, IDamageable
     public float moveSpeed;
 
     private int currentHP;
+    private EquippedArmorManager armorManager;
 
     public int CurrentHP => currentHP;
     public float MoveSpeed => moveSpeed;
@@ -17,6 +18,7 @@ public class EntityStats : MonoBehaviour, IDamageable
     private void Awake()
     {
         currentHP = maxHP;
+        armorManager = GetComponent<EquippedArmorManager>();
     }
 
     public void TakeDamage(int amount, GameObject source = null)

@@ -7,6 +7,10 @@ public class WeaponData : ScriptableObject
     public string weaponName;
     public string weaponID;
 
+    [Header("Properties")]
+    public WeaponClass weaponClass;
+    public ArmorPenetration armorPenetration;
+
     [Header("Shooting Info")]
     public GameObject bulletPrefab;
     [SerializeField] public BulletType bulletType = BulletType.Kinetic;

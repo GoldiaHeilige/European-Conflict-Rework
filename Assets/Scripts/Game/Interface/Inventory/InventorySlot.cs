@@ -17,9 +17,9 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, 
 
         this.currentItem = item;
 
-        if (item == null)
+        if (item == null || item.itemData == null)
         {
-/*            Debug.LogWarning("SetItem() nhận item NULL");*/
+            Debug.LogWarning("SetItem(): item hoặc itemData null → bỏ qua");
             return;
         }
 

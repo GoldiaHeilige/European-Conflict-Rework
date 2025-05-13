@@ -12,10 +12,21 @@ public class InventoryUI : MonoBehaviour
     public Transform slotParent;
     public InventorySlot[] slots;
 
+    private void Awake()
+    {
+        Debug.Log("InventoryUI Awake");
+
+        if (PlayerInventory.Instance == null)
+            Debug.LogWarning("❗ PlayerInventory.Instance vẫn null khi InventoryUI Awake");
+    }
+
     private void OnEnable()
     {
         PlayerInventory.InventoryChanged += RefreshUI;
+        if (PlayerInventory.Instance != null)
+            RefreshUI();
     }
+
 
     private void OnDisable()
     {
@@ -45,7 +56,7 @@ public class InventoryUI : MonoBehaviour
 
             slots[i].slotIndex = i;
 
-            if (i < items.Count)
+            if (i < items.Count && items[i] != null && items[i].itemData != null)
             {
                 slots[i].SetItem(items[i]);
             }
@@ -55,5 +66,4 @@ public class InventoryUI : MonoBehaviour
             }
         }
     }
-
 }

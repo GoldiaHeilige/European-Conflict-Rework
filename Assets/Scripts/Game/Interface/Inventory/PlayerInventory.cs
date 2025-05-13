@@ -21,23 +21,35 @@ public class PlayerInventory : MonoBehaviour
 
     public List<InventoryItemRuntime> GetItems()
     {
-        while (items.Count < maxSlot)
+        List<InventoryItemRuntime> padded = new List<InventoryItemRuntime>(maxSlot);
+
+        for (int i = 0; i < maxSlot; i++)
         {
-            items.Add(null);
+            if (i < items.Count)
+                padded.Add(items[i]);
+            else
+                padded.Add(null);
         }
-        return items;
+
+        return padded;
     }
+
 
     public bool AddItem(InventoryItemData itemData, int amount = 1)
     {
+        if (itemData == null)
+        {
+            Debug.LogError("AddItem: itemData bị NULL");
+            return false;
+        }
+
         int remaining = amount;
 
         if (itemData.stackable)
         {
-            // 1. Ưu tiên nhét vào stack đã có
             foreach (var item in items)
             {
-                if (item.itemData == itemData && item.quantity < itemData.maxStack)
+                if (item != null && item.itemData == itemData && item.quantity < itemData.maxStack)
                 {
                     int space = itemData.maxStack - item.quantity;
                     int toAdd = Mathf.Min(space, remaining);
@@ -49,7 +61,6 @@ public class PlayerInventory : MonoBehaviour
             }
         }
 
-        // 2. Thêm stack mới nếu vẫn còn dư
         while (remaining > 0)
         {
             int toAdd = Mathf.Min(itemData.maxStack, remaining);
@@ -61,15 +72,22 @@ public class PlayerInventory : MonoBehaviour
         return true;
     }
 
+
     public bool CanAddItem(InventoryItemData itemData, int amount)
     {
+        if (itemData == null)
+        {
+            Debug.LogWarning("CanAddItem: itemData bị NULL");
+            return false;
+        }
+
         int remaining = amount;
 
         if (itemData.stackable)
         {
             foreach (var item in items)
             {
-                if (item.itemData == itemData && item.quantity < itemData.maxStack)
+                if (item != null && item.itemData == itemData && item.quantity < itemData.maxStack)
                 {
                     int space = itemData.maxStack - item.quantity;
                     int toAdd = Mathf.Min(space, remaining);
@@ -81,7 +99,7 @@ public class PlayerInventory : MonoBehaviour
         }
 
         int stackNeeded = Mathf.CeilToInt((float)remaining / itemData.maxStack);
-        int availableSlot = maxSlot - items.Count;
+        int availableSlot = maxSlot - items.FindAll(i => i != null).Count;
 
         return availableSlot >= stackNeeded;
     }
@@ -90,9 +108,13 @@ public class PlayerInventory : MonoBehaviour
     {
         if (indexA < 0 || indexA >= maxSlot || indexB < 0 || indexB >= maxSlot)
         {
-            Debug.LogWarning("SwapItemByIndex: Index nằm ngoài giới hạn!");
+            Debug.LogWarning("SwapItemByIndex: Index nằm ngoài giới hạn logic!");
             return;
         }
+
+        // Đảm bảo danh sách đủ slot
+        while (items.Count < maxSlot)
+            items.Add(null);
 
         var temp = items[indexA];
         items[indexA] = items[indexB];
@@ -100,5 +122,4 @@ public class PlayerInventory : MonoBehaviour
 
         InventoryChanged?.Invoke();
     }
-
 }
