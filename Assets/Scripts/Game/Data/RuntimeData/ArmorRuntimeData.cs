@@ -3,48 +3,36 @@ using UnityEngine;
 
 public class ArmorRuntime
 {
-    public ArmorData armorData;
-    public int currentDurability;
-    private EquippedArmorManager ownerManager;
+    public ArmorData armorData { get; private set; }
+    public InventoryItemRuntime sourceItem { get; private set; }
+    public EquippedArmorManager ownerManager { get; private set; }
+
+    private int durability;
 
     public ArmorSlot Slot => armorData.armorSlot;
+    public int currentDurability => durability;
 
-    public ArmorRuntime(ArmorData data, EquippedArmorManager owner)
+    public ArmorRuntime(ArmorData data, EquippedArmorManager manager, InventoryItemRuntime source)
     {
         armorData = data;
-        currentDurability = data.maxDurability;
-        ownerManager = owner;
+        sourceItem = source;
+        ownerManager = manager;
+        durability = source.durability > 0 ? source.durability : data.maxDurability;
+    }
+
+
+    public int GetProtection()
+    {
+        return 0;
     }
 
     public void ReduceDurability(int amount)
     {
-        currentDurability -= amount;
-        currentDurability = Mathf.Max(currentDurability, 0);
-
-        if (currentDurability <= 0)
+        durability = Mathf.Max(0, durability - amount);
+        sourceItem.durability = durability;
+        if (durability <= 0)
         {
             ownerManager.RemoveArmor(Slot);
-
-            var inv = GameObject.FindWithTag("Player")?.GetComponent<PlayerInventory>();
-            inv?.RemoveItemByReference(armorData);
-
-            ArmorSlotUI[] slots = GameObject.FindObjectsOfType<ArmorSlotUI>();
-            foreach (var slot in slots)
-            {
-                if (slot.armorSlotType == this.Slot && slot.HasItem())
-                {
-                    var runtime = slot.GetItem();
-                    if (runtime != null && runtime.itemData == armorData)
-                    {
-                        slot.Clear();
-                        Debug.Log($"🧹 Slot {Slot} được clear vì giáp {armorData.name} bị vỡ");
-                    }
-                }
-            }
-
-            Debug.Log($"💥 Giáp {armorData.name} đã vỡ và bị xoá hoàn toàn.");
         }
     }
-
-    public bool IsBroken => currentDurability <= 0;
 }

@@ -29,7 +29,28 @@ public class PickupItem : MonoBehaviour
 
     public void Pickup()
     {
-        PlayerInventory.Instance.AddItem(itemData, amount);
-        Destroy(gameObject);
+        bool success = false;
+
+        if (itemData.stackable)
+        {
+            success = PlayerInventory.Instance.AddStackableItem(itemData, amount);
+        }
+        else
+        {
+            var item = InventoryItemFactory.Create(itemData, 1); // ✅ dùng Factory để đảm bảo runtimeId duy nhất
+            success = PlayerInventory.Instance.AddUniqueItem(item);
+        }
+
+        if (success)
+        {
+            PlayerInventory.InventoryChanged?.Invoke(); // đảm bảo luôn update
+            Destroy(gameObject);
+        }
+        else
+        {
+            Debug.Log("Kho đầy, không thể nhặt item: " + itemData.itemID);
+        }
+
+        Debug.Log("[PICKUP] gọi xong AddUniqueItem, trước khi Destroy");
     }
 }

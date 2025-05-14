@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
 using TMPro;
 
 public class PickupDetector : MonoBehaviour
@@ -38,7 +39,15 @@ public class PickupDetector : MonoBehaviour
             item.isHovered = true;
             currentItem = item;
 
-            canPickupCurrent = PlayerInventory.Instance.CanAddItem(item.itemData, item.amount);
+            if (PlayerInventory.Instance != null)
+            {
+                canPickupCurrent = PlayerInventory.Instance.CanAddItem(item.itemData, item.amount);
+            }
+            else
+            {
+                canPickupCurrent = false;
+                Debug.LogWarning("[PickupDetector] PlayerInventory.Instance is null, cannot check CanAddItem.");
+            }
 
             tooltipUI.SetActive(true);
             tooltipUI.transform.position = Input.mousePosition;

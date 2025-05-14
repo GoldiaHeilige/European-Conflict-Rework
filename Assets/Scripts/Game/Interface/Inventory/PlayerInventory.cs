@@ -7,132 +7,176 @@ public class PlayerInventory : MonoBehaviour
 {
     public static PlayerInventory Instance { get; private set; }
 
+    [HideInInspector]
     public List<InventoryItemRuntime> items = new();
     public int maxSlot = 14;
+    public int maxSlotDisplay = 12;
     public static System.Action InventoryChanged;
+
+    public void RaiseInventoryChanged(string reason)
+    {
+        Debug.Log($"[InventoryChanged] Triggered bởi: {reason}");
+        InventoryChanged?.Invoke();
+    }
 
     private void Awake()
     {
-        if (Instance == null)
+        if (Instance != null && Instance != this)
         {
-            Instance = this;
+            Destroy(gameObject);
+            return;
         }
-        else
+
+        Instance = this;
+
+        if (items == null || items.Count == 0)
         {
-            Debug.LogWarning("⚠️ Nhiều hơn một PlayerInventory trong scene!");
+            items = new List<InventoryItemRuntime>();
+            EnsureSlotCount();
         }
+
+        Debug.Log("[PlayerInventory] Awake hoàn tất");
     }
 
-    public bool AddItem(InventoryItemData itemData, int amount = 1)
+    public void EnsureSlotCount()
     {
-        if (itemData == null) return false;
-
-        int remaining = amount;
-
-        if (itemData.stackable)
-        {
-            foreach (var item in items)
-            {
-                if (item != null && item.itemData == itemData && item.quantity < item.itemData.maxStack)
-                {
-                    int space = item.itemData.maxStack - item.quantity;
-                    int toAdd = Mathf.Min(space, remaining);
-                    item.quantity += toAdd;
-                    remaining -= toAdd;
-                    if (remaining <= 0) break;
-                }
-            }
-        }
-
-        while (remaining > 0)
-        {
-            int toAdd = Mathf.Min(itemData.maxStack, remaining);
-            items.Add(new InventoryItemRuntime(itemData, toAdd));
-            remaining -= toAdd;
-        }
-
-        InventoryChanged?.Invoke();
-        return true;
+        while (items.Count < maxSlot)
+            items.Add(null);
     }
 
     public bool CanAddItem(InventoryItemData itemData, int amount)
     {
-        if (itemData == null) return false;
+        EnsureSlotCount();
 
-        int remaining = amount;
+        if (itemData == null)
+        {
+            Debug.LogWarning("[CanAddItem] itemData null");
+            return false;
+        }
+
+        Debug.Log($"[CanAddItem] Checking: {itemData.itemID} | stackable: {itemData.stackable}");
 
         if (itemData.stackable)
         {
-            foreach (var item in items)
+            for (int i = 0; i < maxSlotDisplay; i++)
             {
-                if (item != null && item.itemData == itemData && item.quantity < item.itemData.maxStack)
+                var slotItem = items[i];
+                if (slotItem != null &&
+                    slotItem.itemData != null &&
+                    slotItem.itemData.itemID == itemData.itemID &&
+                    slotItem.quantity < slotItem.itemData.maxStack)
                 {
-                    int space = item.itemData.maxStack - item.quantity;
-                    int toAdd = Mathf.Min(space, remaining);
-                    remaining -= toAdd;
-                    if (remaining <= 0) return true;
+                    int space = slotItem.itemData.maxStack - slotItem.quantity;
+                    Debug.Log($"[CanAddItem] Found stackable room in slot {i} (space: {space})");
+                    if (space >= amount) return true;
                 }
             }
         }
 
-        int stackNeeded = Mathf.CeilToInt((float)remaining / itemData.maxStack);
-        int availableSlot = maxSlot - items.Count(item => item != null);
-        return availableSlot >= stackNeeded;
+        for (int i = 0; i < maxSlotDisplay; i++)
+        {
+            var slotItem = items[i];
+            string raw = slotItem == null ? "null" : (slotItem.itemData == null ? "itemData null" : slotItem.itemData.itemID);
+            Debug.Log($"[CanAddItem] Slot {i} = {raw}");
+
+            if (slotItem == null || slotItem.itemData == null)
+            {
+                Debug.Log($"[CanAddItem] Found empty slot {i}");
+                return true;
+            }
+        }
+
+        Debug.LogWarning("[CanAddItem] Inventory full");
+        return false;
+    }
+
+
+    public bool AddStackableItem(InventoryItemData itemData, int amount)
+    {
+        EnsureSlotCount();
+        int remaining = amount;
+
+        for (int i = 0; i < maxSlotDisplay; i++)
+        {
+            var slotItem = items[i];
+            if (slotItem != null && slotItem.itemData != null && slotItem.itemData.itemID == itemData.itemID && slotItem.quantity < slotItem.itemData.maxStack)
+            {
+                int space = slotItem.itemData.maxStack - slotItem.quantity;
+                int toAdd = Mathf.Min(space, remaining);
+                slotItem.quantity += toAdd;
+                remaining -= toAdd;
+                Debug.Log($"[InventoryChanged] Triggered từ AddStackableItem 1 | Slot 0 = {items[0]?.itemData?.itemID ?? "null"}");
+                InventoryChanged?.Invoke();
+                if (remaining <= 0) return true;
+            }
+        }
+
+        for (int i = 0; i < maxSlotDisplay; i++)
+        {
+            if (items[i] == null)
+            {
+                int toAdd = Mathf.Min(itemData.maxStack, remaining);
+                items[i] = InventoryItemFactory.Create(itemData, toAdd);
+                remaining -= toAdd;
+                Debug.Log($"[InventoryChanged] Triggered từ AddStackableItem 2 | Slot 0 = {items[0]?.itemData?.itemID ?? "null"}");
+                InventoryChanged?.Invoke();
+                if (remaining <= 0) return true;
+            }
+        }
+
+        return false;
+    }
+
+    public bool AddUniqueItem(InventoryItemRuntime newItem)
+    {
+        EnsureSlotCount();
+        for (int i = 0; i < maxSlotDisplay; i++)
+        {
+            if (items[i] == null)
+            {
+                items[i] = newItem; // ❌ Đừng clone ở đây nữa
+                Debug.Log($"[AddUniqueItem] Added item: {newItem.itemData?.itemID} | ID: {newItem.runtimeId}");
+                InventoryChanged?.Invoke();
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    public bool ReturnItemToInventory(InventoryItemRuntime item)
+    {
+        EnsureSlotCount();
+        for (int i = 0; i < maxSlotDisplay; i++)
+        {
+            if (items[i] == null)
+            {
+                items[i] = item; // ✅ không còn clone nữa
+                Debug.Log($"[ReturnItemToInventory] Gán lại bản gốc: {item.runtimeId}");
+                InventoryChanged?.Invoke();
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    public void RemoveExactItem(InventoryItemRuntime target)
+    {
+        for (int i = 0; i < items.Count; i++)
+        {
+            if (items[i] == target)
+            {
+                items[i] = null;
+                Debug.Log($"[InventoryChanged] Triggered từ RemoveExactItem | Slot 0 = {items[0]?.itemData?.itemID ?? "null"}");
+                InventoryChanged?.Invoke();
+                return;
+            }
+        }
     }
 
     public List<InventoryItemRuntime> GetItems()
     {
-        List<InventoryItemRuntime> result = new();
-        for (int i = 0; i < maxSlot; i++)
-        {
-            if (i < items.Count) result.Add(items[i]);
-            else result.Add(null);
-        }
-        return result;
-    }
-
-    public void RemoveItemByReference(InventoryItemData data)
-    {
-        for (int i = 0; i < items.Count; i++)
-        {
-            if (items[i] != null && items[i].itemData == data)
-            {
-                items[i] = null;
-                InventoryChanged?.Invoke();
-                Debug.Log($"🗑️ Giáp {data.name} đã bị xoá khỏi inventory");
-                break;
-            }
-        }
-    }
-
-    public void UpdateDurability(InventoryItemData data, int durability)
-    {
-        foreach (var item in items)
-        {
-            if (item != null && item.itemData == data)
-            {
-                item.durability = durability;
-                Debug.Log($"🔄 Cập nhật durability giáp {data.name} về {durability}");
-                break;
-            }
-        }
-    }
-
-    public void SwapItemByIndex(int indexA, int indexB)
-    {
-        if (indexA < 0 || indexA >= maxSlot || indexB < 0 || indexB >= maxSlot)
-        {
-            Debug.LogWarning("SwapItemByIndex: Index nằm ngoài giới hạn!");
-            return;
-        }
-
-        while (items.Count < maxSlot)
-            items.Add(null);
-
-        var temp = items[indexA];
-        items[indexA] = items[indexB];
-        items[indexB] = temp;
-
-        InventoryChanged?.Invoke();
+        return items;
     }
 }
