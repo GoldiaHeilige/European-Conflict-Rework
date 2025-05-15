@@ -1,55 +1,37 @@
-﻿
 using UnityEngine;
 
-public class EnemyShooting : WpnShootingBase
+public class EnemyShooting : MonoBehaviour
 {
-    [SerializeField] private BulletPoolManager bulletPoolManager;
+    [SerializeField] private Transform firePoint;
 
-    private Transform player;
-    public bool shouldShoot = false;
+    private WeaponRuntimeData runtime;
 
-    protected override void Start()
+    public void SetWeapon(WeaponRuntimeData data)
     {
-        base.Start();
-        player = GameObject.FindGameObjectWithTag("Player")?.transform;
+        runtime = data;
     }
 
-    protected override bool ShouldShoot()
+    public void TryShootAt(Vector3 targetPosition)
     {
-        return shouldShoot && player != null;
-    }
+        if (runtime == null || !runtime.CanFire()) return;
 
-    protected override void Shoot()
-    {
-        if (weaponRuntime == null || weaponRuntime.data == null || firePoint == null) return;
+        AmmoData ammo = runtime.currentAmmoType;
+        if (ammo == null || ammo.bulletPrefab == null) return;
 
-        Vector2 dir = new Vector2(Mathf.Cos((firePoint.eulerAngles.z - 90) * Mathf.Deg2Rad),
-                                  Mathf.Sin((firePoint.eulerAngles.z - 90) * Mathf.Deg2Rad)).normalized;
+        GameObject bulletObj = Instantiate(ammo.bulletPrefab, firePoint.position, Quaternion.identity);
+        Vector2 dir = ((Vector2)(targetPosition - firePoint.position)).normalized;
 
-        GameObject prefab = weaponRuntime.data.bulletPrefab;
-        ObjectPool pool = bulletPoolManager.GetPoolForPrefab(prefab);
-        if (pool == null) return;
-
-        GameObject bulletObj = pool.Get();
-        bulletObj.transform.position = firePoint.position;
         bulletObj.transform.rotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg + 90f);
 
-        BulletCtrl baseBullet = bulletObj.GetComponent<BulletCtrl>();
-        if (baseBullet != null)
+        BulletCtrl bullet = bulletObj.GetComponent<BulletCtrl>();
+        if (bullet != null)
         {
-            baseBullet.SetBulletType(weaponRuntime.data.bulletType);
-            baseBullet.SetOwnerAndDamage(this.gameObject, weaponRuntime.data.damage);
-            baseBullet.SetBulletTag("EnemyBullet");
-            baseBullet.SetLayer(LayerMask.NameToLayer("EnemyBullet"));
-            baseBullet.Initialize(dir, weaponRuntime.data.bulletSpeed, 2f);
+            bullet.SetAmmoInfo(gameObject, ammo);
+            bullet.SetBulletTag("EnemyBullet");
+            bullet.SetLayer(LayerMask.NameToLayer("EnemyBullet"));
+            bullet.Initialize(dir, ammo.baseDamage, 2f);
         }
 
-        AutoReturnToPool auto = bulletObj.GetComponent<AutoReturnToPool>();
-        if (auto != null)
-        {
-            auto.Init(pool);
-        }
-
-        weaponRuntime.ConsumeBullet();
+        runtime.ConsumeBullet();
     }
 }

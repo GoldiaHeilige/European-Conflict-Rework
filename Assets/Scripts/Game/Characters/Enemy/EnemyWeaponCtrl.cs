@@ -1,37 +1,29 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 public class EnemyWeaponCtrl : MonoBehaviour
 {
-    [Header("Weapon")]
-    public WeaponData weaponData;
+    [Header("Config")]
+    public WeaponData defaultWeapon;
+    public AmmoData defaultAmmo;
+
+    [Header("Runtime")]
+    public WeaponRuntimeData runtimeData;
 
     [Header("References")]
-    public EnemyShooting enemyShooting;
-    public EnemyReload enemyReload;
+    public EnemyShooting shooting;
+    public EnemyReload reload;
 
-    private WeaponRuntimeData runtimeData;
-
-    private void Start()
+    public void EquipDefaultWeapon()
     {
-        if (weaponData == null)
+        if (defaultWeapon == null || defaultAmmo == null)
         {
-            Debug.LogWarning("EnemyWeaponCtrl: weaponData bị thiếu!");
+            Debug.LogError("Thiếu cấu hình defaultWeapon hoặc defaultAmmo cho enemy.");
             return;
         }
 
-        runtimeData = new WeaponRuntimeData(weaponData);
+        runtimeData = new WeaponRuntimeData(defaultWeapon, defaultAmmo);
 
-        runtimeData.currentReserve = 9999;
-
-        if (enemyShooting != null)
-            enemyShooting.SetWeapon(runtimeData);
-
-        if (enemyReload != null)
-            enemyReload.SetWeapon(runtimeData);
-    }
-
-    public WeaponRuntimeData GetRuntimeData()
-    {
-        return runtimeData;
+        shooting?.SetWeapon(runtimeData);
+        reload?.SetWeapon(runtimeData);
     }
 }

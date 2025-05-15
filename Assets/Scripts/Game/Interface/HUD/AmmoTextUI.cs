@@ -1,38 +1,32 @@
-﻿using TMPro;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class AmmoTextUI : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI ammoText;
+    [SerializeField] public TextMeshProUGUI clipText;
+    [SerializeField] private PlayerWeaponCtrl weaponCtrl;
+    [SerializeField] private PlayerInventory inventory;
 
-    private WeaponRuntimeData runtimeData;
+    private WeaponRuntimeData runtime;
 
-    public void Bind(WeaponRuntimeData data)
+    public void Bind(WeaponRuntimeData runtimeData)
     {
-        if (runtimeData != null)
-        {
-            runtimeData.OnAmmoChanged -= UpdateUI;
-        }
-
-        runtimeData = data;
-        runtimeData.OnAmmoChanged += UpdateUI;
-
-        UpdateUI();
+        runtime = runtimeData;
     }
 
-    private void OnDisable()
+    private void Update()
     {
-        if (runtimeData != null)
+        if (runtime == null || runtime.currentAmmoType == null)
         {
-            runtimeData.OnAmmoChanged -= UpdateUI;
+            clipText.text = "-- / --";
+            Debug.LogWarning("[HUD] runtime hoặc currentAmmoType NULL");
+            return;
         }
-    }
 
-    private void UpdateUI()
-    {
-        if (ammoText != null && runtimeData != null)
-        {
-            ammoText.text = $"{runtimeData.currentAmmo} / {runtimeData.currentReserve}";
-        }
+        int reserve = inventory.GetAmmoCount(runtime.currentAmmoType);
+        clipText.text = $"{runtime.ammoInClip} / {reserve}";
+        Debug.Log($"[HUD] currentAmmoType = {runtime.currentAmmoType.name}, ammoName = {runtime.currentAmmoType.ammoName}");
+
     }
 }

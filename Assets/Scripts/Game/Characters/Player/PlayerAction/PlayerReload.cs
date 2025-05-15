@@ -2,10 +2,25 @@
 
 public class PlayerReload : WpnReloadBase
 {
+
+    private void Awake()
+    {
+        SetInventory(PlayerInventory.Instance); 
+    }
+
     public bool IsReloading => isReloading;
 
     protected override bool ShouldReload()
     {
-        return Input.GetKeyDown(KeyCode.R) && weaponRuntime != null && weaponRuntime.CanReload();
+        return Input.GetKeyDown(KeyCode.R) &&
+               weaponRuntime != null &&
+               weaponRuntime.CanReload(playerInventory);
+    }
+
+    protected override void FinishReload()
+    {
+        isReloading = false;
+        weaponRuntime?.Reload(playerInventory);
+        Debug.Log($"{gameObject.name} đã thay đạn xong.");
     }
 }

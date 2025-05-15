@@ -12,8 +12,9 @@ GameObject:
   - component: {fileID: 5765447814379327014}
   - component: {fileID: 452802077347948079}
   - component: {fileID: 6394368525482291834}
+  - component: {fileID: -2810311215653238224}
   m_Layer: 6
-  m_Name: Pistol_AmmoBox
+  m_Name: AR_FMJ_Crate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -143,7 +144,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f737249ed0563f9408f6fc81c59756b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemData: {fileID: 11400000, guid: 9bb6a88f9df9831468714d110d17e425, type: 2}
-  amount: 1
+  itemData: {fileID: 11400000, guid: b96a73a006880be4c8fc080603caeace, type: 2}
+  amount: 30
   isHovered: 0
   glowColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+--- !u!114 &-2810311215653238224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4056907214347485379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 201aa9fb20a03e64ab0f40d927fbb910, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemData: {fileID: 11400000, guid: b96a73a006880be4c8fc080603caeace, type: 2}

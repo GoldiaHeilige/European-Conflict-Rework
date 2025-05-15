@@ -3,40 +3,50 @@ using UnityEngine;
 public class WeaponRuntimeData
 {
     public WeaponData data;
-    public int currentAmmo;
-    public int currentReserve;
+    public AmmoData currentAmmoType;
+    public int ammoInClip;
 
     public event System.Action OnAmmoChanged;
 
-    public WeaponRuntimeData(WeaponData weaponData)
+    public WeaponRuntimeData(WeaponData weaponData, AmmoData startingAmmo)
     {
         data = weaponData;
-        currentAmmo = weaponData.clipSize;
-        currentReserve = weaponData.maxAmmo;
+        currentAmmoType = startingAmmo;
+        ammoInClip = data.clipSize;
     }
 
-    public bool CanFire()
+    public bool CanFire() => ammoInClip > 0;
+
+    public bool CanReload(PlayerInventory inventory)
     {
-        return currentAmmo > 0;
+        int inInventory = inventory.GetAmmoCount(currentAmmoType);
+        return ammoInClip < data.clipSize && inInventory > 0;
     }
 
-    public bool CanReload()
+    public void Reload(PlayerInventory inventory)
     {
-        return currentAmmo < data.clipSize && currentReserve > 0;
-    }
+        int need = data.clipSize - ammoInClip;
+        int available = inventory.GetAmmoCount(currentAmmoType);
+        int toReload = Mathf.Min(need, available);
 
-    public void Reload()
-    {
-        int needed = data.clipSize - currentAmmo;
-        int toReload = Mathf.Min(needed, currentReserve);
-        currentAmmo += toReload;
-        currentReserve -= toReload;
+        ammoInClip += toReload;
+        inventory.RemoveAmmo(currentAmmoType, toReload);
         OnAmmoChanged?.Invoke();
     }
 
     public void ConsumeBullet()
     {
-        currentAmmo = Mathf.Max(currentAmmo - 1, 0);
+        ammoInClip = Mathf.Max(ammoInClip - 1, 0);
+        OnAmmoChanged?.Invoke();
+    }
+
+    public void ChangeAmmoType(AmmoData newAmmo, PlayerInventory inventory)
+    {
+        inventory.AddAmmo(currentAmmoType, ammoInClip);
+        currentAmmoType = newAmmo;
+
+        ammoInClip = Mathf.Min(data.clipSize, inventory.GetAmmoCount(newAmmo));
+        inventory.RemoveAmmo(newAmmo, ammoInClip);
         OnAmmoChanged?.Invoke();
     }
 }

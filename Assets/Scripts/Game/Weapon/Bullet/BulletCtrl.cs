@@ -1,10 +1,4 @@
-﻿using UnityEngine;
-
-public enum BulletType
-{
-    Kinetic,
-    Explosive
-}
+using UnityEngine;
 
 public class BulletCtrl : MonoBehaviour
 {
@@ -13,31 +7,14 @@ public class BulletCtrl : MonoBehaviour
     protected float lifeTime;
 
     protected GameObject owner;
-    protected int damage;
-
-    protected BulletType bulletType = BulletType.Kinetic;
-    protected ArmorPenetration penetrationLevel = ArmorPenetration.APLight;
+    protected AmmoData ammoData;
 
     [SerializeField] private string defaultTag;
 
-    public void SetArmorPenetration(ArmorPenetration ap)
+    public virtual void SetAmmoInfo(GameObject owner, AmmoData ammo)
     {
-        penetrationLevel = ap;
-    }
-
-    public ArmorPenetration GetArmorPenetration()
-    {
-        return penetrationLevel;
-    }
-
-    public void SetBulletTag(string tag)
-    {
-        gameObject.tag = tag;
-    }
-
-    public void SetLayer(int layer)
-    {
-        gameObject.layer = layer;
+        this.owner = owner;
+        this.ammoData = ammo;
     }
 
     public virtual void Initialize(Vector2 direction, float speed, float lifeTime)
@@ -45,26 +22,18 @@ public class BulletCtrl : MonoBehaviour
         moveDirection = direction.normalized;
         moveSpeed = speed;
         this.lifeTime = lifeTime;
-
         Destroy(gameObject, lifeTime);
     }
 
-    public virtual void SetOwnerAndDamage(GameObject owner, int damage)
+    public virtual void SetBulletTag(string tag)
     {
-        this.owner = owner;
-        this.damage = damage;
+        gameObject.tag = tag;
     }
 
-    public virtual GameObject GetOwner() => owner;
-    public virtual int GetDamage() => damage;
-
-    public virtual void SetBulletType(BulletType type)
+    public virtual void SetLayer(int layer)
     {
-        bulletType = type;
-/*        Debug.Log($"[BulletCtrl] Set bullet type = {type}");*/
+        gameObject.layer = layer;
     }
-
-    public virtual BulletType GetBulletType() => bulletType;
 
     protected virtual void Update()
     {
@@ -73,6 +42,14 @@ public class BulletCtrl : MonoBehaviour
 
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
+        GameObject target = collision.GetComponentInParent<EntityStats>()?.gameObject ??
+                            (collision.GetComponentInParent<IDamageable>() as Component)?.gameObject;
 
+        if (target != null && ammoData != null)
+        {
+            DamageResolver.ApplyDamage(target, ammoData, owner);
+        }
+
+        Destroy(gameObject);
     }
 }

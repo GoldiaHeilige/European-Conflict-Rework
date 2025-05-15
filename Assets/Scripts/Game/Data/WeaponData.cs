@@ -9,14 +9,8 @@ public class WeaponData : ScriptableObject
 
     [Header("Properties")]
     public WeaponClass weaponClass;
-    public ArmorPenetration armorPenetration;
-
-    [Header("Shooting Info")]
-    public GameObject bulletPrefab;
-    [SerializeField] public BulletType bulletType = BulletType.Kinetic;
 
     [Header("Stats")]
-    public int damage;
     public float fireRate;
     public float bulletSpeed;
     public int ammoPerShot;
@@ -24,5 +18,4 @@ public class WeaponData : ScriptableObject
 
     [Header("Ammo")]
     public int clipSize;
-    public int maxAmmo;
 }

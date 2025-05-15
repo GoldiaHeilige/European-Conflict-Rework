@@ -17,10 +17,10 @@ public class EntityCtrl : MonoBehaviour
         }
     }
 
-    public virtual void TakeDamage(int amount, GameObject source = null)
+/*    public virtual void TakeDamage(int amount, GameObject source = null)
     {
         stats?.TakeDamage(amount, source);
-    }
+    }*/
 
     public virtual void Die()
     {

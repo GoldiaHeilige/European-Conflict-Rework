@@ -4,6 +4,9 @@ public abstract class WpnReloadBase : MonoBehaviour
 {
     protected WeaponRuntimeData weaponRuntime;
 
+    // ❌ Không serialize ở lớp cha để tránh xung đột
+    protected PlayerInventory playerInventory;
+
     protected bool isReloading = false;
     protected float reloadTimer = 0f;
 
@@ -29,6 +32,11 @@ public abstract class WpnReloadBase : MonoBehaviour
         weaponRuntime = runtime;
     }
 
+    public void SetInventory(PlayerInventory inventory)
+    {
+        playerInventory = inventory;
+    }
+
     protected virtual void StartReload()
     {
         isReloading = true;
@@ -39,7 +47,7 @@ public abstract class WpnReloadBase : MonoBehaviour
     protected virtual void FinishReload()
     {
         isReloading = false;
-        weaponRuntime?.Reload();
+        weaponRuntime?.Reload(playerInventory);
         Debug.Log($"{gameObject.name} đã thay đạn xong.");
     }
 

@@ -15,6 +15,14 @@ public class PlayerStatsCtrl : MonoBehaviour
 
     private void HandleDeath()
     {
+        Debug.Log("Player đã chết!");
 
+        var controller = GetComponent<PlayerController>();
+        if (controller != null)
+        {
+            controller.enabled = false;
+        }
+
+        // Có thể thêm hiệu ứng hoặc chuyển scene ở đây
     }
 }

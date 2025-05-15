@@ -7,7 +7,7 @@ public class ArmorRuntime
     public InventoryItemRuntime sourceItem { get; private set; }
     public EquippedArmorManager ownerManager { get; private set; }
 
-    private int durability;
+    public int durability;
 
     public ArmorSlot Slot => armorData.armorSlot;
     public int currentDurability => durability;
@@ -23,8 +23,9 @@ public class ArmorRuntime
 
     public int GetProtection()
     {
-        return 0;
+        return armorData.armorRating;
     }
+
 
     public void ReduceDurability(int amount)
     {

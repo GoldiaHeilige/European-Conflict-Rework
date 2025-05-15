@@ -22,7 +22,6 @@ MonoBehaviour:
   maxStack: 1
   equippable: 1
   armorSlot: 0
-  armorTier: 0
-  maxDurability: 100
+  armorRating: 10
+  maxDurability: 50
   weakAgainstAP: 1
-  damageReductionChance: 0.25

@@ -4,10 +4,12 @@
 public class BreakableData : ScriptableObject
 {
     [Tooltip("Object Settings")]
-    public BulletType[] validBulletTypes;
-    public int maxHp = 100;
+    public AmmoData[] validAmmoTypes;
 
-    [Header("On destroyed Sprite & Effects")]
+    public int maxHp = 50;
+
+    [Header("On Destroyed Effects")]
     public GameObject destroyedPrefab;
     public GameObject destroyEffect;
 }
+

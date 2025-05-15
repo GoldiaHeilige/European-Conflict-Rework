@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class DameMessage
 {
-    public int Dame;
+    public int Damage;
     public GameObject Attacker;
-    public BulletType BulletType;
+    public AmmoData AmmoUsed; 
 }
+

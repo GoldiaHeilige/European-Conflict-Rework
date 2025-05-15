@@ -1,15 +1,8 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 public class Bullet_Explosive : BulletCtrl
 {
     [SerializeField] private GameObject explosionPrefab;
-
-    public override void SetOwnerAndDamage(GameObject owner, int damage)
-    {
-        base.SetOwnerAndDamage(owner, damage);
-        // Debug.Log($"[Bullet_Explosive] Set owner = {owner?.name ?? "?"}, damage = {damage}");
-    }
-
 
     protected override void OnTriggerEnter2D(Collider2D collision)
     {
@@ -22,23 +15,16 @@ public class Bullet_Explosive : BulletCtrl
         if (explosionPrefab != null)
         {
             var explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
-
             var explosionDamage = explosion.GetComponent<ExplosionDamage>();
 
-            if (explosionDamage != null)
+            if (explosionDamage != null && ammoData != null)
             {
-                explosionDamage.SetDamage(damage);
-                explosionDamage.SetBulletType(bulletType);
-                explosionDamage.ApplyDamage(transform.position, owner);
+                explosionDamage.ApplyDamage(transform.position, owner, ammoData);
             }
             else
             {
-                Debug.LogWarning("❌ Prefab animation nổ không có ExplosionDamage");
+                Debug.LogWarning("❌ Prefab nổ thiếu hoặc ammoData NULL");
             }
-        }
-        else
-        {
-            Debug.LogWarning(" explosionPrefab là NULL trong Bullet_Explosive.");
         }
     }
 }

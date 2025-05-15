@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 public class EnemyStatsCtrl : MonoBehaviour
 {
@@ -9,12 +9,13 @@ public class EnemyStatsCtrl : MonoBehaviour
         stats = GetComponent<EntityStats>();
         if (stats != null)
         {
-            stats.OnDie += HandleDeath;
+            stats.OnDie += OnDeath;
         }
     }
 
-    private void HandleDeath()
+    private void OnDeath()
     {
+        Debug.Log("Enemy chết.");
         Destroy(gameObject);
     }
 }

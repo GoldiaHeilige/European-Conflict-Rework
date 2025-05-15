@@ -6,7 +6,10 @@ public class InventoryItemData : ScriptableObject
     [Header("Basic Info")]
     public string itemName;
     public Sprite icon;
+
+    [TextArea]
     public string description;
+
     public string itemID;
 
     [Header("Category")]

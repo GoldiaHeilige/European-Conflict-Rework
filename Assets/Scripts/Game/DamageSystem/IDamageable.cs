@@ -1,4 +1,4 @@
 public interface IDamageable
 {
-    public void TakeDame(DameMessage message);
+    void TakeDame(DameMessage message);
 }

@@ -7,11 +7,15 @@ public class PlayerInventory : MonoBehaviour
 {
     public static PlayerInventory Instance { get; private set; }
 
-    [HideInInspector]
-    public List<InventoryItemRuntime> items = new();
     public int maxSlot = 14;
     public int maxSlotDisplay = 12;
     public static System.Action InventoryChanged;
+
+    [HideInInspector]
+    public List<InventoryItemRuntime> items = new();
+
+    public List<AmmoData> knownAmmoTypes;
+    private Dictionary<AmmoData, int> ammoCounts = new();
 
     public void RaiseInventoryChanged(string reason)
     {
@@ -36,6 +40,11 @@ public class PlayerInventory : MonoBehaviour
         }
 
         Debug.Log("[PlayerInventory] Awake hoàn tất");
+
+        foreach (var ammo in knownAmmoTypes)
+        {
+            ammoCounts[ammo] = 0; // Init with 0
+        }
     }
 
     public void EnsureSlotCount()
@@ -134,8 +143,7 @@ public class PlayerInventory : MonoBehaviour
         {
             if (items[i] == null)
             {
-                items[i] = newItem; // ❌ Đừng clone ở đây nữa
-                Debug.Log($"[AddUniqueItem] Added item: {newItem.itemData?.itemID} | ID: {newItem.runtimeId}");
+                items[i] = newItem;
                 InventoryChanged?.Invoke();
                 return true;
             }
@@ -175,8 +183,57 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
+    public AmmoData GetDefaultAmmoFor(WeaponClass weaponClass)
+    {
+        foreach (var ammo in knownAmmoTypes)
+        {
+            if (ammo.compatibleWeapon == weaponClass)
+            {
+                // Ưu tiên FMJ nếu có
+                if (ammo.ammoName.ToLower().Contains("fmj"))
+                    return ammo;
+            }
+        }
+
+        // Không có FMJ → trả ammo bất kỳ phù hợp weaponClass
+        Debug.LogWarning($"Không tìm thấy FMJ cho {weaponClass}, dùng bất kỳ đạn nào khớp weaponClass");
+        return knownAmmoTypes.FirstOrDefault(a => a.compatibleWeapon == weaponClass);
+    }
+
+
     public List<InventoryItemRuntime> GetItems()
     {
         return items;
+    }
+
+
+    public void AddAmmo(AmmoData incomingAmmo, int amount)
+    {
+        var matchedAmmo = knownAmmoTypes.FirstOrDefault(a => a.ammoName == incomingAmmo.ammoName);
+        if (matchedAmmo == null)
+        {
+            Debug.LogWarning($"[AddAmmo] Không tìm thấy ammoName: {incomingAmmo.ammoName}");
+            return;
+        }
+
+        if (!ammoCounts.ContainsKey(matchedAmmo)) ammoCounts[matchedAmmo] = 0;
+        ammoCounts[matchedAmmo] += amount;
+    }
+
+
+    public bool RemoveAmmo(AmmoData ammo, int amount)
+    {
+        if (!ammoCounts.ContainsKey(ammo) || ammoCounts[ammo] < amount) return false;
+        ammoCounts[ammo] -= amount;
+        return true;
+    }
+
+    /*    public int GetAmmoCount(AmmoData ammo) => ammoCounts.TryGetValue(ammo, out var count) ? count : 0;*/
+
+    public int GetAmmoCount(AmmoData ammo)
+    {
+        var matched = knownAmmoTypes.FirstOrDefault(a => a.ammoName == ammo.ammoName);
+        return matched != null && ammoCounts.TryGetValue(matched, out int count) ? count : 0;
+
     }
 }

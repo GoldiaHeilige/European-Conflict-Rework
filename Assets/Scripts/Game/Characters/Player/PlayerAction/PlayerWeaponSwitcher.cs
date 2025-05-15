@@ -56,11 +56,14 @@ public class PlayerWeaponSwitcher : MonoBehaviour
         var weapon = weaponList[currentWeaponIndex];
 
         if (!runtimeDataMap.ContainsKey(weapon))
-            runtimeDataMap[weapon] = new WeaponRuntimeData(weapon);
+        {
+            AmmoData defaultAmmo = PlayerInventory.Instance?.GetDefaultAmmoFor(weapon.weaponClass);
+            runtimeDataMap[weapon] = new WeaponRuntimeData(weapon, defaultAmmo);
+        }
 
         WeaponRuntimeData runtime = runtimeDataMap[weapon];
-
         weaponController.EquipWeapon(runtime);
         OnWeaponSwitched?.Invoke(weapon);
     }
+
 }

@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 856368aec082bd54b8ceae12d1ed291b, type: 3}
+  m_Name: Ammo_HG_FMJ
+  m_EditorClassIdentifier: 
+  itemName: Handgun FMJ Ammo Crate
+  icon: {fileID: 21300000, guid: d18f33d9458d8174d89c0ecde45eca9c, type: 3}
+  description: A small crate of Full Metal Jacket rounds for handgun.
+  itemID: Ammo_HG_FMJ
+  category: 1
+  worldPrefab: {fileID: 4056907214347485379, guid: 54cc83fc73473724e989e3200b4f3bf4, type: 3}
+  stackable: 1
+  maxStack: 128
+  equippable: 0
+  linkedAmmoData: {fileID: 11400000, guid: 07594dac85f7a594db8e3007e61e4b08, type: 2}

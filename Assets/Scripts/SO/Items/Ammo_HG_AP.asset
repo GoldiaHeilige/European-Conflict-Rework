@@ -9,16 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49041d4dc9b5928438acf67d1a6cc28a, type: 3}
-  m_Name: AmmoBox
+  m_Script: {fileID: 11500000, guid: 856368aec082bd54b8ceae12d1ed291b, type: 3}
+  m_Name: Ammo_HG_AP
   m_EditorClassIdentifier: 
-  itemName: Pistol Ammo Box
+  itemName: Handgun AP Ammo Crate
   icon: {fileID: 21300000, guid: d18f33d9458d8174d89c0ecde45eca9c, type: 3}
-  description: A small crate of ammo.
-  itemID: Ammo_Pistol
+  description: A small crate of Armor Piercing rounds for handgun.
+  itemID: Ammo_HG_AP
   category: 1
-  worldPrefab: {fileID: 4056907214347485379, guid: 54cc83fc73473724e989e3200b4f3bf4, type: 3}
+  worldPrefab: {fileID: 4056907214347485379, guid: d96681b5ee0aca444a2425626ae2862f, type: 3}
   stackable: 1
-  maxStack: 2
+  maxStack: 128
   equippable: 0
-  equipSlot: 
+  linkedAmmoData: {fileID: 11400000, guid: 77e4d7be50dc99b49b0a891ee2037689, type: 2}

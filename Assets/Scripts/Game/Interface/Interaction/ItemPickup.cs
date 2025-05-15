@@ -41,6 +41,8 @@ public class PickupItem : MonoBehaviour
             success = PlayerInventory.Instance.AddUniqueItem(item);
         }
 
+        GetComponent<AmmoPickup>()?.OnPickedUp();
+
         if (success)
         {
             PlayerInventory.InventoryChanged?.Invoke(); // đảm bảo luôn update

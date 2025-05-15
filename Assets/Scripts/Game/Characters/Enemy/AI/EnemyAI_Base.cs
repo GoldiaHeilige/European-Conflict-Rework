@@ -2,23 +2,12 @@ using UnityEngine;
 
 public abstract class EnemyAI_Base : MonoBehaviour
 {
-    protected EnemyShooting shooting;
-    protected EnemyReload reloading;
-    protected Transform player;
+    protected EnemyController controller;
 
-    protected virtual void Start()
+    protected virtual void Awake()
     {
-        shooting = GetComponent<EnemyShooting>();
-        reloading = GetComponent<EnemyReload>();
-        player = GameObject.FindGameObjectWithTag("Player")?.transform;
+        controller = GetComponent<EnemyController>();
     }
 
-    protected virtual void Update()
-    {
-        if (player == null || shooting == null || reloading == null) return;
-
-        HandleAI();
-    }
-
-    protected abstract void HandleAI();
+    protected abstract void Update();
 }

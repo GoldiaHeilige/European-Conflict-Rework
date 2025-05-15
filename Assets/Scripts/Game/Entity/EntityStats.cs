@@ -3,7 +3,7 @@ using System;
 
 public class EntityStats : MonoBehaviour, IDamageable
 {
-    public int maxHP;
+    public int health;
     public float moveSpeed;
 
     private int currentHP;
@@ -17,24 +17,32 @@ public class EntityStats : MonoBehaviour, IDamageable
 
     private void Awake()
     {
-        currentHP = maxHP;
+        currentHP = health;
         armorManager = GetComponent<EquippedArmorManager>();
     }
 
-    public void TakeDamage(int amount, GameObject source = null)
+    public void ApplyDamage(float amount)
     {
-        currentHP = Mathf.Max(currentHP - amount, 0);
+        health -= Mathf.RoundToInt(amount);
+        OnHealthChanged?.Invoke(health);
 
-        OnHealthChanged?.Invoke(currentHP);
+        Debug.Log($"{gameObject.name} mất {amount} máu (còn lại: {health})");
 
-        if (currentHP <= 0)
+        if (health <= 0)
         {
-            OnDie?.Invoke();
+            Die();
         }
     }
 
-    public void TakeDame(DameMessage msg)
+    public void TakeDame(DameMessage message)
     {
-        TakeDamage(msg.Dame, msg.Attacker);
+        ApplyDamage(message.Damage);
+    }
+
+    private void Die()
+    {
+        Debug.Log($"{gameObject.name} đã chết.");
+        OnDie?.Invoke(); // gọi sự kiện
+        Destroy(gameObject);
     }
 }

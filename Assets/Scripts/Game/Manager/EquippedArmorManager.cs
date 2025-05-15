@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 public class EquippedArmorManager : MonoBehaviour
 {
+    [HideInInspector]
     public ArmorSlotUI[] slots;
 
     private ArmorRuntime[] equipped;

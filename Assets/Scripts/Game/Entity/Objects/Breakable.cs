@@ -17,22 +17,22 @@ public class Breakable : MonoBehaviour, IDamageable
     {
         if (isDestroyed) return;
 
-        if (!IsBulletValid(msg.BulletType))
+        if (!IsAmmoValid(msg.AmmoUsed))
         {
-            Debug.Log($"{gameObject.name} không bị phá bởi đạn loại {msg.BulletType}");
+            Debug.Log($"{gameObject.name} không bị phá bởi loại đạn {msg.AmmoUsed?.name ?? "NULL"}");
             return;
         }
 
-        currentHp -= msg.Dame;
+        currentHp -= msg.Damage;
         if (currentHp <= 0)
         {
             Die();
         }
     }
 
-    private bool IsBulletValid(BulletType bulletType)
+    private bool IsAmmoValid(AmmoData ammo)
     {
-        return data.validBulletTypes != null && data.validBulletTypes.Contains(bulletType);
+        return ammo != null && data.validAmmoTypes != null && data.validAmmoTypes.Contains(ammo);
     }
 
     private void Die()

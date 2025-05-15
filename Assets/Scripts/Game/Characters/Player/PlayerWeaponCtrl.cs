@@ -37,6 +37,7 @@ public class PlayerWeaponCtrl : MonoBehaviour
         if (ammoUI != null)
         {
             ammoUI.Bind(runtimeData);
+            Debug.Log($"[WEAPON EQUIP] Đã gán runtime weapon: {newRuntime.data.weaponName} với ammo: {newRuntime.currentAmmoType?.ammoName}");
         }
         else
         {
