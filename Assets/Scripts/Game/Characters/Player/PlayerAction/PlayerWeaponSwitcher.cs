@@ -1,69 +1,44 @@
 ﻿using UnityEngine;
 using System;
-using System.Collections.Generic;
 
 public class PlayerWeaponSwitcher : MonoBehaviour
 {
-    [Header("Weapons")]
-    public WeaponData[] weaponList;
-    private int currentWeaponIndex = 0;
-
     [Header("References")]
     public PlayerWeaponCtrl weaponController;
-
-    public PlayerReload playerReload; // ✅ Thêm tham chiếu để huỷ reload
-
-    public static event Action<WeaponData> OnWeaponSwitched;
-
-    private Dictionary<WeaponData, WeaponRuntimeData> runtimeDataMap = new();
-
-    private void Start()
-    {
-        if (weaponList.Length > 0 && weaponController != null)
-        {
-            EquipCurrentWeapon();
-        }
-    }
+    public PlayerInventory inventory;
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            SwitchWeapon(0);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2) && weaponList.Length > 1)
-        {
-            SwitchWeapon(1);
-        }
+        if (Input.GetKeyDown(KeyCode.Alpha1)) Equip(0);
+        else if (Input.GetKeyDown(KeyCode.Alpha2)) Equip(1);
+        else if (Input.GetKeyDown(KeyCode.Q)) ToggleWeapon();
     }
 
-    private void SwitchWeapon(int index)
+    private void Equip(int index)
     {
-        if (index < weaponList.Length && weaponList[index] != null && weaponController != null)
-        {
-            if (playerReload != null)
-            {
-                playerReload.CancelReload();
-            }
+        if (index < 0 || index >= inventory.weaponSlots.Length) return;
 
-            currentWeaponIndex = index;
-            EquipCurrentWeapon();
+        var weapon = inventory.weaponSlots[index];
+        if (weapon == null || weapon.baseData == null)
+        {
+            Debug.LogWarning($"[WeaponSwitcher] Equip slot {index} bị null hoặc thiếu baseData");
+            return;
         }
+
+        inventory.EquipWeaponSlot(index);
+        weaponController.EquipWeapon(weapon);
+        PlayerInventory.Instance.currentWeaponIndex = index;
     }
 
-    private void EquipCurrentWeapon()
+
+
+    private void ToggleWeapon()
     {
-        var weapon = weaponList[currentWeaponIndex];
-
-        if (!runtimeDataMap.ContainsKey(weapon))
+        int otherIndex = inventory.currentWeaponIndex == 0 ? 1 : 0;
+        var other = inventory.weaponSlots[otherIndex];
+        if (other != null)
         {
-            AmmoData defaultAmmo = PlayerInventory.Instance?.GetDefaultAmmoFor(weapon.weaponClass);
-            runtimeDataMap[weapon] = new WeaponRuntimeData(weapon, defaultAmmo);
+            Equip(otherIndex);
         }
-
-        WeaponRuntimeData runtime = runtimeDataMap[weapon];
-        weaponController.EquipWeapon(runtime);
-        OnWeaponSwitched?.Invoke(weapon);
     }
-
 }

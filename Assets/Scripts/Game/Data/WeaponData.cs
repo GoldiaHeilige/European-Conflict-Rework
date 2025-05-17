@@ -1,12 +1,8 @@
 ﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewWeaponData", menuName = "Weapons/Weapon Data")]
-public class WeaponData : ScriptableObject
+public class WeaponData : InventoryItemData
 {
-    [Header("Basic Info")]
-    public string weaponName;
-    public string weaponID;
-
     [Header("Properties")]
     public WeaponClass weaponClass;
 
@@ -18,4 +14,5 @@ public class WeaponData : ScriptableObject
 
     [Header("Ammo")]
     public int clipSize;
+    public AmmoData defaultAmmoType;
 }

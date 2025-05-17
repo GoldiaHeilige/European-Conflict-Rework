@@ -10,9 +10,6 @@ public class PickupItem : MonoBehaviour
     private Color normalColor;
     public Color glowColor = Color.yellow;
 
-    private SpriteRenderer spriteRenderer;
-    private Coroutine flashRoutine;
-
     private void Start()
     {
         sr = GetComponent<SpriteRenderer>();
@@ -21,9 +18,7 @@ public class PickupItem : MonoBehaviour
 
     private void Update()
     {
-        if (isHovered) sr.color = glowColor;
-        else sr.color = normalColor;
-
+        sr.color = isHovered ? glowColor : normalColor;
         isHovered = false;
     }
 
@@ -31,13 +26,19 @@ public class PickupItem : MonoBehaviour
     {
         bool success = false;
 
-        if (itemData.stackable)
+        if (itemData is WeaponData weaponData)
+        {
+            var ammo = PlayerInventory.Instance.GetDefaultAmmoFor(weaponData.weaponClass);
+            var runtimeWeapon = new WeaponRuntimeItem(weaponData, ammo);
+            success = PlayerInventory.Instance.AddUniqueItem(runtimeWeapon); // ✅ FIX
+        }
+        else if (itemData.stackable)
         {
             success = PlayerInventory.Instance.AddStackableItem(itemData, amount);
         }
         else
         {
-            var item = InventoryItemFactory.Create(itemData, 1); // ✅ dùng Factory để đảm bảo runtimeId duy nhất
+            var item = InventoryItemFactory.Create(itemData, 1);
             success = PlayerInventory.Instance.AddUniqueItem(item);
         }
 
@@ -45,14 +46,15 @@ public class PickupItem : MonoBehaviour
 
         if (success)
         {
-            PlayerInventory.InventoryChanged?.Invoke(); // đảm bảo luôn update
+            PlayerInventory.InventoryChanged?.Invoke();
             Destroy(gameObject);
         }
         else
         {
-            Debug.Log("Kho đầy, không thể nhặt item: " + itemData.itemID);
+            Debug.Log($"[PICKUP] Kho đầy hoặc không thể nhặt item: {itemData.itemID}");
         }
 
-        Debug.Log("[PICKUP] gọi xong AddUniqueItem, trước khi Destroy");
+        Debug.Log("[PICKUP] Đã xử lý Pickup()");
     }
+
 }

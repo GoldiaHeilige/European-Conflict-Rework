@@ -3,35 +3,11 @@
 public class PlayerModelViewer : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer bodyRenderer;
+    [SerializeField] private WeaponVisualProfileDB visualDB;
 
-    [System.Serializable]
-    public struct ModelMapping
+    public void UpdateSprite(WeaponRuntimeItem runtimeWeapon)
     {
-        public string weaponID;
-        public Sprite bodySprite;
-    }
-
-    public ModelMapping[] modelMappings;
-
-    private void OnEnable()
-    {
-        PlayerWeaponSwitcher.OnWeaponSwitched += HandleWeaponSwitched;
-    }
-
-    private void OnDisable()
-    {
-        PlayerWeaponSwitcher.OnWeaponSwitched -= HandleWeaponSwitched;
-    }
-
-    private void HandleWeaponSwitched(WeaponData weaponData)
-    {
-        foreach (var mapping in modelMappings)
-        {
-            if (mapping.weaponID == weaponData.weaponID)
-            {
-                bodyRenderer.sprite = mapping.bodySprite;
-                break;
-            }
-        }
+        var sprite = visualDB.GetSpriteFor(runtimeWeapon);
+        bodyRenderer.sprite = sprite;
     }
 }

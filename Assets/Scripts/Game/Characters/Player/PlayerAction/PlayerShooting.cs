@@ -6,6 +6,11 @@ public class PlayerShooting : WpnShootingBase
     [SerializeField] private BulletPoolManager bulletPoolManager;
     [SerializeField] private PlayerInventory playerInventory;
 
+    public override void SetWeapon(WeaponRuntimeItem runtime)
+    {
+        weaponRuntime = runtime;
+    }
+
     protected override bool ShouldShoot()
     {
         if (playerReload != null && playerReload.IsReloading) return false;
@@ -15,7 +20,7 @@ public class PlayerShooting : WpnShootingBase
 
     protected override void Shoot()
     {
-        if (weaponRuntime == null || weaponRuntime.data == null || firePoint == null) return;
+        if (weaponRuntime == null || weaponRuntime.baseData == null || firePoint == null) return;
         if (!weaponRuntime.CanFire()) return;
 
         AmmoData ammo = weaponRuntime.currentAmmoType;

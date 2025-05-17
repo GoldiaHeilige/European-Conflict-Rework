@@ -9,10 +9,15 @@ public class PlayerInventory : MonoBehaviour
 
     public int maxSlot = 14;
     public int maxSlotDisplay = 12;
+    public WeaponRuntimeItem equippedWeapon;
+    public PlayerModelViewer modelViewer;
     public static System.Action InventoryChanged;
 
     [HideInInspector]
     public List<InventoryItemRuntime> items = new();
+
+    public WeaponRuntimeItem[] weaponSlots = new WeaponRuntimeItem[2]; // 0 = Primary, 1 = Secondary
+    public int currentWeaponIndex = 0;
 
     public List<AmmoData> knownAmmoTypes;
     private Dictionary<AmmoData, int> ammoCounts = new();
@@ -100,48 +105,43 @@ public class PlayerInventory : MonoBehaviour
     }
 
 
-    public bool AddStackableItem(InventoryItemData itemData, int amount)
+    public bool AddStackableItem(InventoryItemData data, int quantity)
     {
         EnsureSlotCount();
-        int remaining = amount;
 
+        // Ưu tiên stack vào item đã có
         for (int i = 0; i < maxSlotDisplay; i++)
         {
-            var slotItem = items[i];
-            if (slotItem != null && slotItem.itemData != null && slotItem.itemData.itemID == itemData.itemID && slotItem.quantity < slotItem.itemData.maxStack)
+            if (items[i] != null && items[i].itemData == data)
             {
-                int space = slotItem.itemData.maxStack - slotItem.quantity;
-                int toAdd = Mathf.Min(space, remaining);
-                slotItem.quantity += toAdd;
-                remaining -= toAdd;
-                Debug.Log($"[InventoryChanged] Triggered từ AddStackableItem 1 | Slot 0 = {items[0]?.itemData?.itemID ?? "null"}");
+                items[i].quantity += quantity;
                 InventoryChanged?.Invoke();
-                if (remaining <= 0) return true;
+                return true;
             }
         }
 
+        // Nếu không stack được thì tìm slot trống
         for (int i = 0; i < maxSlotDisplay; i++)
         {
-            if (items[i] == null)
+            if (items[i] == null || items[i].itemData == null)
             {
-                int toAdd = Mathf.Min(itemData.maxStack, remaining);
-                items[i] = InventoryItemFactory.Create(itemData, toAdd);
-                remaining -= toAdd;
-                Debug.Log($"[InventoryChanged] Triggered từ AddStackableItem 2 | Slot 0 = {items[0]?.itemData?.itemID ?? "null"}");
+                var newItem = InventoryItemFactory.Create(data, quantity);
+                items[i] = newItem;
                 InventoryChanged?.Invoke();
-                if (remaining <= 0) return true;
+                return true;
             }
         }
 
         return false;
     }
 
+
     public bool AddUniqueItem(InventoryItemRuntime newItem)
     {
         EnsureSlotCount();
         for (int i = 0; i < maxSlotDisplay; i++)
         {
-            if (items[i] == null)
+            if (items[i] == null || items[i].itemData == null)
             {
                 items[i] = newItem;
                 InventoryChanged?.Invoke();
@@ -150,6 +150,7 @@ public class PlayerInventory : MonoBehaviour
         }
         return false;
     }
+
 
 
     public bool ReturnItemToInventory(InventoryItemRuntime item)
@@ -167,7 +168,6 @@ public class PlayerInventory : MonoBehaviour
         }
         return false;
     }
-
 
     public void RemoveExactItem(InventoryItemRuntime target)
     {
@@ -206,6 +206,19 @@ public class PlayerInventory : MonoBehaviour
         return items;
     }
 
+    public void EquipWeapon(WeaponRuntimeItem runtimeWeapon)
+    {
+        equippedWeapon = runtimeWeapon;
+        modelViewer.UpdateSprite(runtimeWeapon);
+        InventoryChanged?.Invoke(); 
+    }
+
+
+    public void UnequipWeapon()
+    {
+        equippedWeapon = null;
+        modelViewer.UpdateSprite(null);
+    }
 
     public void AddAmmo(AmmoData incomingAmmo, int amount)
     {
@@ -219,6 +232,52 @@ public class PlayerInventory : MonoBehaviour
         if (!ammoCounts.ContainsKey(matchedAmmo)) ammoCounts[matchedAmmo] = 0;
         ammoCounts[matchedAmmo] += amount;
     }
+
+    public void AssignWeaponToSlot(WeaponRuntimeItem weapon, int slotIndex)
+    {
+        if (slotIndex < 0 || slotIndex >= weaponSlots.Length) return;
+
+        weaponSlots[slotIndex] = weapon;
+        InventoryChanged?.Invoke();
+    }
+    public void EquipWeaponSlot(int index)
+    {
+        if (index < 0 || index >= weaponSlots.Length) return;
+
+        var weapon = weaponSlots[index];
+        if (weapon == null || weapon.baseData == null) return;
+
+        equippedWeapon = weapon;
+        currentWeaponIndex = index; // cập nhật index đang cầm
+        weaponSlots[index] = null;
+
+        modelViewer.UpdateSprite(equippedWeapon);
+        Debug.Log($"[Inventory] Trang bị vũ khí {equippedWeapon.baseData.itemName} từ slot {index}.");
+    }
+
+
+
+    public void UnequipWeaponSlot(int index)
+    {
+        if (index < 0 || index >= weaponSlots.Length) return;
+
+        var unequippedItem = weaponSlots[index];
+        if (unequippedItem != null)
+        {
+            // Nếu đang cầm vũ khí này thì chuyển về tay không
+            if (equippedWeapon == unequippedItem)
+            {
+                equippedWeapon = null;
+                modelViewer.UpdateSprite(null);
+                currentWeaponIndex = -1;
+                Debug.Log($"[UnequipWeaponSlot] Đã gỡ vũ khí đang trang bị từ slot {index}, chuyển về tay không.");
+            }
+
+            weaponSlots[index] = null;
+            InventoryChanged?.Invoke();
+        }
+    }
+
 
 
     public bool RemoveAmmo(AmmoData ammo, int amount)

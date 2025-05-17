@@ -2,46 +2,29 @@
 
 public class PlayerWeaponCtrl : MonoBehaviour
 {
-    public WeaponRuntimeData runtimeData { get; private set; }
-
-    [Header("Weapon & Runtime")]
-    public WeaponData currentWeaponData;
+    public WeaponRuntimeItem runtimeItem { get; private set; }
 
     [Header("References")]
     public PlayerShooting playerShooting;
     public PlayerReload playerReload;
     public AmmoTextUI ammoUI;
+    public PlayerModelViewer modelViewer;
 
-    private void Start()
+    public void EquipWeapon(WeaponRuntimeItem newItem)
     {
-
-    }
-
-    public void EquipWeapon(WeaponRuntimeData newRuntime)
-    {
-        if (newRuntime == null || newRuntime.data == null)
+        if (newItem == null || newItem.baseData == null)
         {
-            Debug.LogError("WeaponRuntimeData null hoặc chưa có data");
+            Debug.LogError("WeaponRuntimeItem null hoặc thiếu baseData");
             return;
         }
 
-        runtimeData = newRuntime;
-        currentWeaponData = newRuntime.data;
+        runtimeItem = newItem;
 
-        if (playerShooting != null)
-            playerShooting.SetWeapon(runtimeData);
+        playerShooting?.SetWeapon(runtimeItem); // CHUYỂN TOÀN BỘ sang dùng WeaponRuntimeItem
+        playerReload?.SetWeapon(runtimeItem);
+        ammoUI?.Bind(runtimeItem);
+        modelViewer?.UpdateSprite(runtimeItem);
 
-        if (playerReload != null)
-            playerReload.SetWeapon(runtimeData);
-
-        if (ammoUI != null)
-        {
-            ammoUI.Bind(runtimeData);
-            Debug.Log($"[WEAPON EQUIP] Đã gán runtime weapon: {newRuntime.data.weaponName} với ammo: {newRuntime.currentAmmoType?.ammoName}");
-        }
-        else
-        {
-            Debug.LogWarning("ammoUI NULL – chưa kéo đúng object có AmmoTextUI vào WeaponHandler");
-        }
+        Debug.Log($"[WEAPON EQUIP] Đã gán weapon: {newItem.baseData.itemName}, GUID: {newItem.guid}");
     }
 }

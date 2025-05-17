@@ -1,6 +1,5 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
+﻿using TMPro;
+using UnityEngine;
 
 public class AmmoTextUI : MonoBehaviour
 {
@@ -8,9 +7,9 @@ public class AmmoTextUI : MonoBehaviour
     [SerializeField] private PlayerWeaponCtrl weaponCtrl;
     [SerializeField] private PlayerInventory inventory;
 
-    private WeaponRuntimeData runtime;
+    private WeaponRuntimeItem runtime;
 
-    public void Bind(WeaponRuntimeData runtimeData)
+    public void Bind(WeaponRuntimeItem runtimeData)
     {
         runtime = runtimeData;
     }
@@ -20,13 +19,10 @@ public class AmmoTextUI : MonoBehaviour
         if (runtime == null || runtime.currentAmmoType == null)
         {
             clipText.text = "-- / --";
-            Debug.LogWarning("[HUD] runtime hoặc currentAmmoType NULL");
             return;
         }
 
         int reserve = inventory.GetAmmoCount(runtime.currentAmmoType);
         clipText.text = $"{runtime.ammoInClip} / {reserve}";
-        Debug.Log($"[HUD] currentAmmoType = {runtime.currentAmmoType.name}, ammoName = {runtime.currentAmmoType.ammoName}");
-
     }
 }

@@ -12,16 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7e20b02529c21a4da9fc1800f9f7f69, type: 3}
   m_Name: RifleData
   m_EditorClassIdentifier: 
-  weaponName: Assault Rifle
-  weaponID: Rifle_1
+  itemName: Assault Rifle
+  icon: {fileID: 21300000, guid: 3394c7117d7c3a740add627b3322bf95, type: 3}
+  description: Test
+  itemID: AR_1
+  category: 2
+  worldPrefab: {fileID: 4056907214347485379, guid: 60b64371e5ee73842ba51fd5152db89a, type: 3}
+  stackable: 0
+  maxStack: 1
+  equippable: 1
   weaponClass: 1
-  armorPenetration: 1
-  bulletPrefab: {fileID: 4160214242677169439, guid: ae9e54124ca27f74aa8c970707bb6704, type: 3}
-  bulletType: 0
-  damage: 25
   fireRate: 5
   bulletSpeed: 10
   ammoPerShot: 1
   reloadTime: 5
   clipSize: 30
-  maxAmmo: 120
+  defaultAmmoType: {fileID: 11400000, guid: 55db89c5d4ca3834e9fd47c1709a5b48, type: 2}

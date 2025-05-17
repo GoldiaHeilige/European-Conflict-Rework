@@ -2,13 +2,17 @@
 
 public class PlayerReload : WpnReloadBase
 {
-
     private void Awake()
     {
-        SetInventory(PlayerInventory.Instance); 
+        SetInventory(PlayerInventory.Instance);
     }
 
     public bool IsReloading => isReloading;
+
+    public override void SetWeapon(WeaponRuntimeItem runtime)
+    {
+        weaponRuntime = runtime;
+    }
 
     protected override bool ShouldReload()
     {

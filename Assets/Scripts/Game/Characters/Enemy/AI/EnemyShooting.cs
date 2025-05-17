@@ -4,9 +4,9 @@ public class EnemyShooting : MonoBehaviour
 {
     [SerializeField] private Transform firePoint;
 
-    private WeaponRuntimeData runtime;
+    private WeaponRuntimeItem runtime;
 
-    public void SetWeapon(WeaponRuntimeData data)
+    public void SetWeapon(WeaponRuntimeItem data)
     {
         runtime = data;
     }

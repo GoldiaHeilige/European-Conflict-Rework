@@ -7,7 +7,7 @@ public class EnemyWeaponCtrl : MonoBehaviour
     public AmmoData defaultAmmo;
 
     [Header("Runtime")]
-    public WeaponRuntimeData runtimeData;
+    public WeaponRuntimeItem runtimeData;
 
     [Header("References")]
     public EnemyShooting shooting;
@@ -21,7 +21,7 @@ public class EnemyWeaponCtrl : MonoBehaviour
             return;
         }
 
-        runtimeData = new WeaponRuntimeData(defaultWeapon, defaultAmmo);
+        runtimeData = new WeaponRuntimeItem(defaultWeapon, defaultAmmo);
 
         shooting?.SetWeapon(runtimeData);
         reload?.SetWeapon(runtimeData);

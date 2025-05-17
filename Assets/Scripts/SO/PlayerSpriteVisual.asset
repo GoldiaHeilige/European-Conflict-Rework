@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddcb5a15ca053964685879aec389437a, type: 3}
+  m_Name: PlayerSpriteVisual
+  m_EditorClassIdentifier: 
+  unarmedSprite: {fileID: 684517534, guid: 4ae1397c2789dd04a83f146667b346a4, type: 3}
+  entries:
+  - weapon: {fileID: 11400000, guid: c8be0ea3ad3724b4aa25c5a6a6e5a4f1, type: 2}
+    sprite: {fileID: 428174635, guid: 4ae1397c2789dd04a83f146667b346a4, type: 3}
+  - weapon: {fileID: 11400000, guid: ade67df590d49e34eb6fa1f3841fa369, type: 2}
+    sprite: {fileID: -1118958810, guid: 4ae1397c2789dd04a83f146667b346a4, type: 3}
+  - weapon: {fileID: 11400000, guid: 2f1e52478b510e549a6e95b143216c9e, type: 2}
+    sprite: {fileID: -1484237756, guid: 4ae1397c2789dd04a83f146667b346a4, type: 3}
