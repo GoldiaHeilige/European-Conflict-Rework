@@ -27,9 +27,7 @@ public class PlayerWeaponSwitcher : MonoBehaviour
 
         inventory.EquipWeaponSlot(index);
         weaponController.EquipWeapon(weapon);
-        PlayerInventory.Instance.currentWeaponIndex = index;
     }
-
 
 
     private void ToggleWeapon()

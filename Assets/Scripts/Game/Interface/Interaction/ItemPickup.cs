@@ -26,21 +26,13 @@ public class PickupItem : MonoBehaviour
     {
         bool success = false;
 
-        if (itemData is WeaponData weaponData)
-        {
-            var ammo = PlayerInventory.Instance.GetDefaultAmmoFor(weaponData.weaponClass);
-            var runtimeWeapon = new WeaponRuntimeItem(weaponData, ammo);
-            success = PlayerInventory.Instance.AddUniqueItem(runtimeWeapon); // ✅ FIX
-        }
-        else if (itemData.stackable)
-        {
+        // preview tạo sẵn item (không cần dùng, chỉ để gọi stack check)
+        var item = InventoryItemFactory.Create(itemData, amount, log: false);
+
+        if (itemData.stackable)
             success = PlayerInventory.Instance.AddStackableItem(itemData, amount);
-        }
         else
-        {
-            var item = InventoryItemFactory.Create(itemData, 1);
             success = PlayerInventory.Instance.AddUniqueItem(item);
-        }
 
         GetComponent<AmmoPickup>()?.OnPickedUp();
 

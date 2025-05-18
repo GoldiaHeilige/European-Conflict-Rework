@@ -109,31 +109,37 @@ public class PlayerInventory : MonoBehaviour
     {
         EnsureSlotCount();
 
-        // Ưu tiên stack vào item đã có
-        for (int i = 0; i < maxSlotDisplay; i++)
+        int remaining = quantity;
+
+        // Ưu tiên cộng vào các stack đã có
+        for (int i = 0; i < maxSlotDisplay && remaining > 0; i++)
         {
-            if (items[i] != null && items[i].itemData == data)
+            var item = items[i];
+            if (item != null && item.itemData == data && item.quantity < data.maxStack)
             {
-                items[i].quantity += quantity;
-                InventoryChanged?.Invoke();
-                return true;
+                int canAdd = Mathf.Min(data.maxStack - item.quantity, remaining);
+                item.quantity += canAdd;
+                remaining -= canAdd;
             }
         }
 
-        // Nếu không stack được thì tìm slot trống
-        for (int i = 0; i < maxSlotDisplay; i++)
+        // Tạo stack mới nếu còn dư
+        for (int i = 0; i < maxSlotDisplay && remaining > 0; i++)
         {
             if (items[i] == null || items[i].itemData == null)
             {
-                var newItem = InventoryItemFactory.Create(data, quantity);
+                int toCreate = Mathf.Min(data.maxStack, remaining);
+                var newItem = InventoryItemFactory.Create(data, toCreate, log: true); 
                 items[i] = newItem;
-                InventoryChanged?.Invoke();
-                return true;
+                remaining -= toCreate;
             }
         }
 
-        return false;
+        InventoryChanged?.Invoke();
+
+        return remaining == 0;
     }
+
 
 
     public bool AddUniqueItem(InventoryItemRuntime newItem)
@@ -160,7 +166,7 @@ public class PlayerInventory : MonoBehaviour
         {
             if (items[i] == null)
             {
-                items[i] = item; // ✅ không còn clone nữa
+                items[i] = item; 
                 Debug.Log($"[ReturnItemToInventory] Gán lại bản gốc: {item.runtimeId}");
                 InventoryChanged?.Invoke();
                 return true;
@@ -173,11 +179,11 @@ public class PlayerInventory : MonoBehaviour
     {
         for (int i = 0; i < items.Count; i++)
         {
-            if (items[i] == target)
+            if (items[i] != null && items[i].runtimeId == target.runtimeId)
             {
+                Debug.Log($"[RemoveExactItem] Xoá đúng item {target.runtimeId} ở slot {i}");
                 items[i] = null;
-                Debug.Log($"[InventoryChanged] Triggered từ RemoveExactItem | Slot 0 = {items[0]?.itemData?.itemID ?? "null"}");
-                InventoryChanged?.Invoke();
+                RaiseInventoryChanged("RemoveExactItem");
                 return;
             }
         }
@@ -210,7 +216,7 @@ public class PlayerInventory : MonoBehaviour
     {
         equippedWeapon = runtimeWeapon;
         modelViewer.UpdateSprite(runtimeWeapon);
-        InventoryChanged?.Invoke(); 
+        InventoryChanged?.Invoke();
     }
 
 
@@ -240,6 +246,7 @@ public class PlayerInventory : MonoBehaviour
         weaponSlots[slotIndex] = weapon;
         InventoryChanged?.Invoke();
     }
+
     public void EquipWeaponSlot(int index)
     {
         if (index < 0 || index >= weaponSlots.Length) return;
@@ -248,14 +255,11 @@ public class PlayerInventory : MonoBehaviour
         if (weapon == null || weapon.baseData == null) return;
 
         equippedWeapon = weapon;
-        currentWeaponIndex = index; // cập nhật index đang cầm
-        weaponSlots[index] = null;
-
+        currentWeaponIndex = index;
         modelViewer.UpdateSprite(equippedWeapon);
+
         Debug.Log($"[Inventory] Trang bị vũ khí {equippedWeapon.baseData.itemName} từ slot {index}.");
     }
-
-
 
     public void UnequipWeaponSlot(int index)
     {
@@ -273,7 +277,6 @@ public class PlayerInventory : MonoBehaviour
                 Debug.Log($"[UnequipWeaponSlot] Đã gỡ vũ khí đang trang bị từ slot {index}, chuyển về tay không.");
             }
 
-            weaponSlots[index] = null;
             InventoryChanged?.Invoke();
         }
     }
@@ -295,4 +298,33 @@ public class PlayerInventory : MonoBehaviour
         return matched != null && ammoCounts.TryGetValue(matched, out int count) ? count : 0;
 
     }
+
+    public void PrintInventoryDebug(string prefix = "")
+    {
+        Debug.Log($"[DEBUG] --- {prefix} INVENTORY ---");
+
+        for (int i = 0; i < items.Count; i++)
+        {
+            var item = items[i];
+            if (item != null)
+            {
+                Debug.Log($"[INV] Slot {i} | ID: {item.runtimeId} | {item.itemData?.itemID}");
+            }
+        }
+
+        for (int i = 0; i < weaponSlots.Length; i++)
+        {
+            var item = weaponSlots[i];
+            if (item != null)
+            {
+                Debug.Log($"[WPN] Slot {i} | ID: {item.runtimeId} | {item.baseData?.itemID}");
+            }
+        }
+
+        if (equippedWeapon != null)
+        {
+            Debug.Log($"[EQUIPPED] {equippedWeapon.runtimeId} | {equippedWeapon.baseData?.itemID}");
+        }
+    }
+
 }

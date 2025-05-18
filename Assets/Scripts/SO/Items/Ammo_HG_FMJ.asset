@@ -19,6 +19,6 @@ MonoBehaviour:
   category: 1
   worldPrefab: {fileID: 4056907214347485379, guid: 54cc83fc73473724e989e3200b4f3bf4, type: 3}
   stackable: 1
-  maxStack: 128
+  maxStack: 24
   equippable: 0
   linkedAmmoData: {fileID: 11400000, guid: 07594dac85f7a594db8e3007e61e4b08, type: 2}

@@ -74,74 +74,51 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, 
         var sourceSlot = InventorySlotDragHandler.currentDraggingSlot;
         if (sourceSlot == null || sourceSlot == this) return;
 
-        var sourceItem = sourceSlot.GetItem();
-        var targetItem = this.GetItem();
+        // ❌ Không xử lý nếu đang thả vào ArmorSlot hoặc WeaponSlot
+        if (this is ArmorSlotUI || this is WeaponSlotUI) return;
+
+        var targetIndex = this.slotIndex;
         var inventory = PlayerInventory.Instance.items;
 
-        // Chỉ xử lý nếu slot này là slot inventory (không phải ArmorSlotUI)
-        if (this is ArmorSlotUI) return;
+        // ✅ Nếu kéo từ WeaponSlotUI về kho
+        if (sourceSlot is WeaponSlotUI weaponSlot)
+        {
+            int sourceWeaponIndex = weaponSlot.slotType == WeaponSlotType.Primary ? 0 : 1;
+            var weapon = PlayerInventory.Instance.weaponSlots[sourceWeaponIndex];
 
-        int targetIndex = this.slotIndex;
+            if (weapon != null)
+            {
+                // Xoá khỏi weaponSlots
+                PlayerInventory.Instance.weaponSlots[sourceWeaponIndex] = null;
+
+                // Gán bản gốc vào inventory
+                inventory[targetIndex] = weapon;
+                Debug.Log($"[OnDrop] Đưa vũ khí từ weapon slot {sourceWeaponIndex} về inventory slot {targetIndex}");
+
+                PlayerInventory.Instance.RaiseInventoryChanged("Kéo vũ khí từ weapon slot về kho");
+            }
+
+            return; // ❗ Ngăn xử lý tiếp
+        }
+
+        // ✳️ Nếu không phải từ WeaponSlot → xử lý mặc định
+        var sourceItem = sourceSlot.GetItem();
+        var targetItem = this.GetItem();
 
         if (targetItem == null)
         {
             inventory[targetIndex] = sourceItem;
-
-            // Nếu source là slot trong kho thì clear nó
-            if (!(sourceSlot is ArmorSlotUI))
-            {
-                inventory[sourceSlot.slotIndex] = null;
-            }
-            else
-            {
-                // Nếu kéo từ giáp về kho, gỡ khỏi giáp
-                var player = GameObject.FindWithTag("Player");
-                var armorManager = player?.GetComponent<EquippedArmorManager>();
-                if (armorManager != null && sourceSlot is ArmorSlotUI armorSlot)
-                {
-                    armorManager.RemoveArmor(armorSlot.armorSlotType);
-                    armorSlot.UpdateSlot(); // cập nhật lại slot giáp
-                }
-            }
+            inventory[sourceSlot.slotIndex] = null;
         }
         else
         {
-            if (sourceSlot is ArmorSlotUI armorSlot)
-            {
-                // 🧠 Gỡ A khỏi slot giáp
-                var player = GameObject.FindWithTag("Player");
-                var armorManager = player?.GetComponent<EquippedArmorManager>();
-                if (armorManager != null)
-                {
-                    // Lưu lại B
-                    var armorA = armorManager.GetArmor(armorSlot.armorSlotType);
-                    var itemA = armorA?.sourceItem;
-                    var itemB = targetItem;
-
-                    // 1. Gán B (trong kho) lên slot giáp
-                    if (itemB is InventoryItemRuntime bItem)
-                    {
-                        var armorData = bItem.itemData as ArmorData;
-                        var newArmorRuntime = new ArmorRuntime(armorData, armorManager, bItem);
-                        armorManager.EquipArmor(newArmorRuntime, armorSlot);
-                        armorSlot.UpdateSlot();
-                    }
-
-                    // 2. Gán A (giáp đang mặc) vào inventory
-                    inventory[targetIndex] = itemA;
-                }
-            }
-            else
-            {
-                // 💡 swap bình thường giữa inventory ↔ inventory
-                inventory[sourceSlot.slotIndex] = targetItem;
-                inventory[targetIndex] = sourceItem;
-            }
+            inventory[sourceSlot.slotIndex] = targetItem;
+            inventory[targetIndex] = sourceItem;
         }
-
 
         PlayerInventory.InventoryChanged?.Invoke();
     }
+
 
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -160,4 +137,10 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, 
     {
         SlotHighlightPreview.Instance.Hide();
     }
+
+    public InventoryItemRuntime GetItemFromInventorySlot()
+    {
+        return PlayerInventory.Instance.items[slotIndex];
+    }
+
 }

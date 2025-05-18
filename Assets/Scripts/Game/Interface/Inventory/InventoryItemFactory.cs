@@ -2,7 +2,7 @@
 
 public static class InventoryItemFactory
 {
-    public static InventoryItemRuntime Create(InventoryItemData itemData, int quantity = 1)
+    public static InventoryItemRuntime Create(InventoryItemData itemData, int quantity = 1, bool log = true)
     {
         int? durability = null;
 
@@ -11,19 +11,19 @@ public static class InventoryItemFactory
             durability = armor.maxDurability;
         }
 
-        var newItem = new InventoryItemRuntime(itemData, quantity, durability);
-        Debug.Log($"📦 Create → ID: {newItem.runtimeId} | {itemData?.itemID} | Durability: {newItem.durability}");
+        if (itemData is WeaponData weaponData)
+        {
+            var ammo = PlayerInventory.Instance.GetDefaultAmmoFor(weaponData.weaponClass);
+            var weaponItem = new WeaponRuntimeItem(weaponData, ammo);
+            if (log)
+                Debug.LogWarning($"🧨 WeaponRuntimeItem CREATED từ Factory — ID: {weaponItem.runtimeId} | Data: {itemData.itemID}");
+            return weaponItem;
+        }
 
+        var newItem = new InventoryItemRuntime(itemData, quantity, durability);
+        if (log)
+            Debug.Log($"📦 InventoryItemRuntime CREATED từ Factory — ID: {newItem.runtimeId} | {itemData?.itemID}");
         return newItem;
     }
-
-    public static InventoryItemRuntime Clone(InventoryItemRuntime source)
-    {
-        if (source == null) return null;
-
-        var clone = new InventoryItemRuntime(source.itemData, source.quantity, source.durability);
-        Debug.Log($"[🌀 Clone] From: {source.runtimeId} → {clone.runtimeId} | itemData: {source.itemData?.itemID ?? "NULL"}");
-
-        return clone;
-    }
 }
+

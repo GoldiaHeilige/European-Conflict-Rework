@@ -18,13 +18,13 @@ public class ArmorSlotUI : InventorySlot
         var armorData = draggedItem.itemData as ArmorData;
         if (armorData == null || armorData.armorSlot != armorSlotType)
         {
-            Debug.Log("❌ Không thể thả item vào slot giáp sai loại.");
+            Debug.Log("Không thể thả item vào slot giáp sai loại.");
             return;
         }
 
         if (draggedItem.durability <= 0)
         {
-            Debug.Log("❌ Không thể trang bị giáp đã vỡ.");
+            Debug.Log("Không thể trang bị giáp đã vỡ.");
             return;
         }
 
@@ -40,7 +40,7 @@ public class ArmorSlotUI : InventorySlot
             if (inv.items[i] != null && inv.items[i].runtimeId == draggedItem.runtimeId)
             {
                 inv.items[i] = null;
-                PlayerInventory.Instance.RaiseInventoryChanged("Equip giap xong thi xoa slot");
+                PlayerInventory.Instance.RaiseInventoryChanged("");
                 break;
             }
         }
@@ -54,8 +54,8 @@ public class ArmorSlotUI : InventorySlot
 
         // Trang bị bản gốc
         var armorRuntime = new ArmorRuntime(armorData, armorManager, draggedItem);
-        Debug.Log($"[DROP] dùng lại bản gốc: {draggedItem.runtimeId}");
-        Debug.Log($"[DEBUG] ArmorRuntime tạo xong: {armorRuntime.sourceItem.runtimeId}");
+/*        Debug.Log($"[DROP] dùng lại bản gốc: {draggedItem.runtimeId}");
+        Debug.Log($"[DEBUG] ArmorRuntime tạo xong: {armorRuntime.sourceItem.runtimeId}");*/
         armorManager.EquipArmor(armorRuntime, this);
 
         UpdateSlot(); // Cập nhật icon sau khi mặc

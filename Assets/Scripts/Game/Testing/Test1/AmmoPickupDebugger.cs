@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿/*using UnityEngine;
 
 public class AmmoPickupDebugger : MonoBehaviour
 {
@@ -38,3 +38,4 @@ public class AmmoPickupDebugger : MonoBehaviour
         }
     }
 }
+*/

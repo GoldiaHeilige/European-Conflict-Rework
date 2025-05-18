@@ -18,7 +18,18 @@ public class WeaponSlotUI : InventorySlot
         if (dragSource == null || dragSource == this)
             return;
 
-        var draggedItem = dragSource.GetItem();
+        InventoryItemRuntime draggedItem;
+
+        // ✅ Lấy bản gốc từ inventory nếu kéo từ kho
+        if (dragSource.slotIndex < PlayerInventory.Instance.maxSlotDisplay)
+        {
+            draggedItem = dragSource.GetItemFromInventorySlot();
+        }
+        else
+        {
+            draggedItem = dragSource.GetItem();
+        }
+
         if (draggedItem == null || !(draggedItem.itemData is WeaponData))
         {
             Debug.LogWarning("[WeaponSlotUI] Item không hợp lệ hoặc không phải WeaponData.");
@@ -31,30 +42,35 @@ public class WeaponSlotUI : InventorySlot
             return;
         }
 
-
-        int arrayIndex = GetWeaponArrayIndex();
-        Debug.Log($"[WeaponSlotUI] SlotType={slotType}, ArrayIndex={arrayIndex}, Length={PlayerInventory.Instance.weaponSlots.Length}");
         var inv = PlayerInventory.Instance;
+        int arrayIndex = GetWeaponArrayIndex();
 
-        // Gỡ khỏi inventory
-        for (int i = 0; i < inv.items.Count; i++)
+        // ❗ 1. Loại bỏ bản trùng ở items[] (kho)
+        inv.RemoveExactItem(runtime);
+
+        // ❗ 2. Loại bỏ bản trùng ở mọi weaponSlots
+        for (int i = 0; i < inv.weaponSlots.Length; i++)
         {
-            if (inv.items[i] != null && inv.items[i].runtimeId == runtime.runtimeId)
+            if (inv.weaponSlots[i] != null && inv.weaponSlots[i].runtimeId == runtime.runtimeId)
             {
-                inv.items[i] = null;
-                inv.RaiseInventoryChanged("Equip weapon xong thì xóa khỏi kho");
-                break;
+                inv.weaponSlots[i] = null;
+                Debug.Log($"[WeaponSlotUI] Xoá weaponSlots[{i}] vì trùng GUID");
             }
         }
 
+        // ❗ 3. Nếu đang có vũ khí khác trong slot → trả lại về kho
         var current = inv.weaponSlots[arrayIndex];
         if (current != null && current.runtimeId != runtime.runtimeId)
         {
             inv.ReturnItemToInventory(current);
         }
 
+        // ❗ 4. Gán vào slot đúng
         inv.AssignWeaponToSlot(runtime, arrayIndex);
         UpdateSlot();
+
+        // ✅ Debug inventory sau cùng
+        inv.PrintInventoryDebug("SAU DROP");
 
         base.OnDrop(eventData);
     }
