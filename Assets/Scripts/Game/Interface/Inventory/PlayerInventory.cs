@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Unity.VisualScripting;
 
 public class PlayerInventory : MonoBehaviour
 {
@@ -129,7 +130,7 @@ public class PlayerInventory : MonoBehaviour
             if (items[i] == null || items[i].itemData == null)
             {
                 int toCreate = Mathf.Min(data.maxStack, remaining);
-                var newItem = InventoryItemFactory.Create(data, toCreate, log: true); 
+                var newItem = InventoryItemFactory.Create(data, toCreate, log: true);
                 items[i] = newItem;
                 remaining -= toCreate;
             }
@@ -162,17 +163,52 @@ public class PlayerInventory : MonoBehaviour
     public bool ReturnItemToInventory(InventoryItemRuntime item)
     {
         EnsureSlotCount();
+
         for (int i = 0; i < maxSlotDisplay; i++)
         {
             if (items[i] == null)
             {
-                items[i] = item; 
+                items[i] = item;
                 Debug.Log($"[ReturnItemToInventory] Gán lại bản gốc: {item.runtimeId}");
                 InventoryChanged?.Invoke();
-                return true;
+                break;
             }
         }
-        return false;
+
+        if (item is WeaponRuntimeItem wpn)
+        {
+            // Check trong weaponSlots
+            for (int i = 0; i < weaponSlots.Length; i++)
+            {
+                var slot = weaponSlots[i];
+                if (slot != null && slot.runtimeId == wpn.runtimeId)
+                {
+                    Debug.Log($"[ReturnItemToInventory] Weapon trong slot {i} bị trùng runtimeId. Xoá.");
+                    weaponSlots[i] = null;
+                }
+            }
+
+            // Check equippedWeapon riêng
+            if (equippedWeapon != null && equippedWeapon.runtimeId == wpn.runtimeId)
+            {
+                Debug.Log($"[ReturnItemToInventory] Weapon đang cầm bị kéo về kho. Gỡ trang bị.");
+                equippedWeapon = null;
+                currentWeaponIndex = -1;
+                PlayerWeaponCtrl.Instance?.ammoUI?.Refresh();
+                modelViewer?.UpdateSprite(null);
+
+                if (PlayerWeaponCtrl.Instance != null)
+                {
+                    PlayerWeaponCtrl.Instance.ClearWeapon();
+                }
+                else
+                {
+                    Debug.LogError("[PlayerInventory] PlayerWeaponCtrl.Instance == null → KHÔNG GỌI ĐƯỢC");
+                }
+            }
+        }
+
+        return true;
     }
 
     public void RemoveExactItem(InventoryItemRuntime target)
@@ -215,6 +251,7 @@ public class PlayerInventory : MonoBehaviour
     public void EquipWeapon(WeaponRuntimeItem runtimeWeapon)
     {
         equippedWeapon = runtimeWeapon;
+        PlayerWeaponCtrl.Instance?.ammoUI?.Refresh();
         modelViewer.UpdateSprite(runtimeWeapon);
         InventoryChanged?.Invoke();
     }
@@ -226,67 +263,148 @@ public class PlayerInventory : MonoBehaviour
         modelViewer.UpdateSprite(null);
     }
 
-    public void AddAmmo(AmmoData incomingAmmo, int amount)
-    {
-        var matchedAmmo = knownAmmoTypes.FirstOrDefault(a => a.ammoName == incomingAmmo.ammoName);
-        if (matchedAmmo == null)
-        {
-            Debug.LogWarning($"[AddAmmo] Không tìm thấy ammoName: {incomingAmmo.ammoName}");
-            return;
-        }
-
-        if (!ammoCounts.ContainsKey(matchedAmmo)) ammoCounts[matchedAmmo] = 0;
-        ammoCounts[matchedAmmo] += amount;
-    }
-
     public void AssignWeaponToSlot(WeaponRuntimeItem weapon, int slotIndex)
     {
         if (slotIndex < 0 || slotIndex >= weaponSlots.Length) return;
 
         weaponSlots[slotIndex] = weapon;
+        PlayerWeaponCtrl.Instance?.ammoUI?.Refresh();
         InventoryChanged?.Invoke();
     }
 
     public void EquipWeaponSlot(int index)
     {
-        if (index < 0 || index >= weaponSlots.Length) return;
+        if (index < 0 || index >= weaponSlots.Length)
+        {
+            Debug.LogWarning("[EquipWeaponSlot] Index không hợp lệ");
+            return;
+        }
 
         var weapon = weaponSlots[index];
-        if (weapon == null || weapon.baseData == null) return;
+
+        if (weapon == null || weapon.baseData == null)
+        {
+            equippedWeapon = null;
+            currentWeaponIndex = -1;
+
+            if (PlayerWeaponCtrl.Instance != null)
+            {
+                PlayerWeaponCtrl.Instance.ClearWeapon();
+            }
+            else
+            {
+                Debug.LogError("[PlayerInventory] PlayerWeaponCtrl.Instance == null → KHÔNG GỌI ĐƯỢC");
+            }
+            modelViewer?.UpdateSprite(null);
+            return;
+        }
+
 
         equippedWeapon = weapon;
         currentWeaponIndex = index;
-        modelViewer.UpdateSprite(equippedWeapon);
+        modelViewer?.UpdateSprite(equippedWeapon);
 
+        PlayerWeaponCtrl.Instance?.ammoUI?.Refresh();
         Debug.Log($"[Inventory] Trang bị vũ khí {equippedWeapon.baseData.itemName} từ slot {index}.");
     }
+
 
     public void UnequipWeaponSlot(int index)
     {
         if (index < 0 || index >= weaponSlots.Length) return;
 
-        var unequippedItem = weaponSlots[index];
-        if (unequippedItem != null)
-        {
-            // Nếu đang cầm vũ khí này thì chuyển về tay không
-            if (equippedWeapon == unequippedItem)
-            {
-                equippedWeapon = null;
-                modelViewer.UpdateSprite(null);
-                currentWeaponIndex = -1;
-                Debug.Log($"[UnequipWeaponSlot] Đã gỡ vũ khí đang trang bị từ slot {index}, chuyển về tay không.");
-            }
+        var slotWeapon = weaponSlots[index];
+        string slotGuid = slotWeapon?.guid;
 
-            InventoryChanged?.Invoke();
+        Debug.Log($"[DEBUG] UnequipWeaponSlot({index}) được gọi - slot GUID: {slotGuid}, equipped GUID: {equippedWeapon?.guid}");
+
+        if (equippedWeapon != null && slotGuid != null && equippedWeapon.guid == slotGuid)
+        {
+            Debug.Log($"[UnequipWeaponSlot] Gỡ vũ khí đang trang bị từ slot {index} (GUID: {slotGuid})");
+
+            equippedWeapon = null;
+            currentWeaponIndex = -1;
+            PlayerWeaponCtrl.Instance?.ammoUI?.Refresh();
+            modelViewer?.UpdateSprite(null);
+
+            if (PlayerWeaponCtrl.Instance != null)
+            {
+                PlayerWeaponCtrl.Instance.ClearWeapon();
+            }
+            else
+            {
+                Debug.LogError("[WeaponSlotUI] PlayerWeaponCtrl.Instance == null → KHÔNG GỌI ĐƯỢC");
+            }
         }
+        else
+        {
+            Debug.Log("[UnequipWeaponSlot] Không khớp GUID hoặc weapon null -> không huỷ trang bị");
+        }
+
+        weaponSlots[index] = null;
+        InventoryChanged?.Invoke();
     }
 
+    public void AddAmmo(AmmoData incomingAmmo, int amount)
+    {
+        var matched = knownAmmoTypes.FirstOrDefault(a => a.ammoName == incomingAmmo.ammoName);
+        if (matched == null)
+        {
+            Debug.LogWarning($"[AddAmmo] Không tìm thấy ammoName: {incomingAmmo.ammoName}");
+            return;
+        }
 
+        if (!ammoCounts.ContainsKey(matched))
+            ammoCounts[matched] = 0;
+
+        ammoCounts[matched] += amount;
+
+        Debug.Log($"[AddAmmo] Thêm {amount} viên → {matched.ammoName} | Tổng: {ammoCounts[matched]}");
+
+        // Nếu vũ khí đang cầm sử dụng đúng loại ammo này, ép đồng bộ lại luôn
+        var weapon = equippedWeapon;
+        if (weapon != null && weapon.currentAmmoType != null &&
+            weapon.currentAmmoType.ammoName == matched.ammoName &&
+            weapon.currentAmmoType != matched)
+        {
+            Debug.Log($"[AddAmmo] Đồng bộ lại ammo instance trên weapon đang cầm: {matched.ammoName}");
+            weapon.currentAmmoType = matched;
+        }
+
+        PlayerWeaponCtrl.Instance?.ammoUI?.Refresh();
+    }
 
     public bool RemoveAmmo(AmmoData ammo, int amount)
     {
-        if (!ammoCounts.ContainsKey(ammo) || ammoCounts[ammo] < amount) return false;
-        ammoCounts[ammo] -= amount;
+        var matched = knownAmmoTypes.FirstOrDefault(a => a.ammoName == ammo.ammoName);
+        if (matched == null || !ammoCounts.ContainsKey(matched) || ammoCounts[matched] < amount)
+        {
+            Debug.LogWarning($"[RemoveAmmo] Không thể trừ {amount} viên {ammo.ammoName} (matched = {matched?.ammoName ?? "null"})");
+            return false;
+        }
+
+        ammoCounts[matched] -= amount;
+        Debug.Log($"[RemoveAmmo] Trừ {amount} viên {matched.ammoName} | Còn lại: {ammoCounts[matched]}");
+
+        int remainingToRemove = amount;
+
+        foreach (var item in items)
+        {
+            if (item is InventoryItemRuntime ammoItem &&
+                ammoItem.itemData is AmmoItemData ammoItemData &&
+                ammoItemData.linkedAmmoData.ammoName == matched.ammoName)
+            {
+                int removeFromThis = Mathf.Min(ammoItem.quantity, remainingToRemove);
+                ammoItem.quantity -= removeFromThis;
+                remainingToRemove -= removeFromThis;
+
+                if (remainingToRemove <= 0)
+                    break;
+            }
+        }
+
+        PlayerWeaponCtrl.Instance?.ammoUI?.Refresh();
+        InventoryChanged?.Invoke();
         return true;
     }
 
@@ -296,8 +414,41 @@ public class PlayerInventory : MonoBehaviour
     {
         var matched = knownAmmoTypes.FirstOrDefault(a => a.ammoName == ammo.ammoName);
         return matched != null && ammoCounts.TryGetValue(matched, out int count) ? count : 0;
-
     }
+
+    public void RemoveByGUID(string guid)
+    {
+        for (int i = 0; i < items.Count; i++)
+        {
+            if (items[i] != null && items[i].runtimeId == guid)
+            {
+                Debug.Log($"[RemoveByGUID] Xoá item {guid} tại slot {i}");
+                items[i] = null;
+                RaiseInventoryChanged("RemoveByGUID");
+                return;
+            }
+        }
+
+        Debug.LogWarning($"[RemoveByGUID] Không tìm thấy item với GUID: {guid}");
+    }
+
+    public void DestroyByGUID(string guid)
+    {
+        for (int i = 0; i < items.Count; i++)
+        {
+            if (items[i] != null && items[i].runtimeId == guid)
+            {
+                Debug.Log($"[DestroyByGUID] Item {guid} bị huỷ tại slot {i}");
+                items[i] = null;
+                RaiseInventoryChanged("DestroyByGUID");
+                return;
+            }
+        }
+
+        Debug.LogWarning($"[DestroyByGUID] Không tìm thấy item để huỷ với GUID: {guid}");
+    }
+
+
 
     public void PrintInventoryDebug(string prefix = "")
     {

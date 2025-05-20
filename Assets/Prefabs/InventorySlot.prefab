@@ -60,6 +60,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   iconHolderPrefab: {fileID: 5495582846361220196, guid: 247465ae76f981d4fa212eb67681b9b2, type: 3}
+  popupPrefab: {fileID: 3981477821694254198, guid: 7d642d8362603f5499874b0dcc22a6a9, type: 3}
+  canvasTransform: {fileID: 0}
+  slotIndex: 0
 --- !u!114 &6152795492039055
 MonoBehaviour:
   m_ObjectHideFlags: 0

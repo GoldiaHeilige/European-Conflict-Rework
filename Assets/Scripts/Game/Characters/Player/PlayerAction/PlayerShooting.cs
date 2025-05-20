@@ -52,5 +52,6 @@ public class PlayerShooting : WpnShootingBase
         }
 
         weaponRuntime.ConsumeBullet();
+        PlayerWeaponCtrl.Instance?.ammoUI?.Refresh();
     }
 }

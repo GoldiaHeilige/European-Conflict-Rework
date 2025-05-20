@@ -28,11 +28,12 @@ public class ArmorDebugDisplay : MonoBehaviour
 
         if (body != null)
         {
-            bodyText.text = $"Body\nAR: {body.GetProtection()}\nHP: {body.durability}/{helmet.armorData.maxDurability}";
+            bodyText.text = $"Body\nAR: {body.GetProtection()}\nHP: {body.durability}/{body.armorData.maxDurability}";
         }
         else
         {
             bodyText.text = "Body: NONE";
         }
+
     }
 }

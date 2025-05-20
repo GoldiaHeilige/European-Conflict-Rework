@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8319303115218049292}
   - component: {fileID: 4615681644311303838}
   - component: {fileID: 8538883071477060620}
+  - component: {fileID: -7035055914445627698}
   m_Layer: 6
   m_Name: Helmet_Light
   m_TagString: Untagged
@@ -147,3 +148,16 @@ MonoBehaviour:
   amount: 1
   isHovered: 0
   glowColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+--- !u!114 &-7035055914445627698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5440555313955536109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdc619dc1fb72ec4996aa5470c4b20cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemGUID: 

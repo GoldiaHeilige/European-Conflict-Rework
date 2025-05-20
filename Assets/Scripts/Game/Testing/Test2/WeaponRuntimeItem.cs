@@ -12,22 +12,20 @@ public class WeaponRuntimeItem : InventoryItemRuntime
 
     public event Action OnAmmoChanged;
 
-    public WeaponRuntimeItem(WeaponData baseData, AmmoData startingAmmo)
-        : base(baseData, 1, null, Guid.NewGuid().ToString()) // ✅ tạo 1 GUID duy nhất
+    public WeaponRuntimeItem(WeaponData baseData, AmmoData startingAmmo, string forcedId = null)
+        : base(baseData, 1, null, forcedId) // truyền GUID từ prefab nếu có
     {
         this.baseData = baseData;
-        this.guid = runtimeId; // đồng bộ với cha
+        this.guid = runtimeId; // đồng bộ lại (vì runtimeId nằm ở class cha)
         this.currentAmmoType = startingAmmo;
         this.ammoInClip = 0;
-
-        Debug.LogWarning($"🧨 WeaponRuntimeItem CREATED — ID: {runtimeId} | Data: {baseData.itemID}");
     }
 
 
     public bool CanFire() => ammoInClip > 0;
     public bool CanReload(PlayerInventory inventory)
     {
-        // ⛔ Không cho phép reload nếu bản vũ khí đã bị rút khỏi kho hoặc slot
+        // Không cho phép reload nếu bản vũ khí đã bị rút khỏi kho hoặc slot
         bool stillInInventory = inventory.weaponSlots.Any(w => w == this) ||
                                 inventory.GetItems().Any(i => i == this);
 
@@ -85,12 +83,13 @@ public class WeaponRuntimeItem : InventoryItemRuntime
 
         int reloadAmount = Mathf.Min(needed, available);
 
+        Debug.Log($"[Reload] Needed: {needed}, Available: {available}, ToLoad: {reloadAmount}, AmmoInClip: {ammoInClip}");
+
         ammoInClip += reloadAmount;
         inventory.RemoveAmmo(currentAmmoType, reloadAmount);
 
         OnAmmoChanged?.Invoke();
     }
-
 
     public void ConsumeBullet()
     {

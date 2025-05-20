@@ -60,10 +60,29 @@ public class WeaponSlotUI : InventorySlot
 
         // ❗ 3. Nếu đang có vũ khí khác trong slot → trả lại về kho
         var current = inv.weaponSlots[arrayIndex];
-        if (current != null && current.runtimeId != runtime.runtimeId)
+/*        Debug.Log($"[DEBUG] So sánh: equipped {inv.equippedWeapon?.runtimeId} vs runtime {runtime.runtimeId}");*/
+
+        if (inv.equippedWeapon != null && inv.equippedWeapon.runtimeId == runtime.runtimeId)
         {
             inv.ReturnItemToInventory(current);
         }
+
+        if (inv.equippedWeapon != null && inv.equippedWeapon.guid == runtime.guid)
+        {
+            inv.equippedWeapon = null;
+            inv.currentWeaponIndex = -1;
+            inv.modelViewer?.UpdateSprite(null);
+
+            if (PlayerWeaponCtrl.Instance != null)
+            {
+                PlayerWeaponCtrl.Instance.ClearWeapon();
+            }
+            else
+            {
+                Debug.LogError("[PlayerInventory] PlayerWeaponCtrl.Instance == null → KHÔNG GỌI ĐƯỢC");
+            }
+        }
+
 
         // ❗ 4. Gán vào slot đúng
         inv.AssignWeaponToSlot(runtime, arrayIndex);
@@ -74,6 +93,7 @@ public class WeaponSlotUI : InventorySlot
 
         base.OnDrop(eventData);
     }
+
 
     public override InventoryItemRuntime GetItem()
     {
@@ -94,4 +114,15 @@ public class WeaponSlotUI : InventorySlot
             Clear();
         }
     }
+
+    private void OnEnable()
+    {
+        PlayerInventory.InventoryChanged += UpdateSlot;
+    }
+
+    private void OnDisable()
+    {
+        PlayerInventory.InventoryChanged -= UpdateSlot;
+    }
+
 }

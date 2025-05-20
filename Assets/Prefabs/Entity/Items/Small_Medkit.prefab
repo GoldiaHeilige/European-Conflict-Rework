@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5765447814379327014}
   - component: {fileID: 452802077347948079}
   - component: {fileID: -2197999056007658026}
+  - component: {fileID: 2292245164705621359}
   m_Layer: 6
   m_Name: Small_Medkit
   m_TagString: Untagged
@@ -147,3 +148,16 @@ MonoBehaviour:
   amount: 1
   isHovered: 0
   glowColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+--- !u!114 &2292245164705621359
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4056907214347485379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdc619dc1fb72ec4996aa5470c4b20cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemGUID: 

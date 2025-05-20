@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
 using System;
 
 public class PlayerWeaponSwitcher : MonoBehaviour
@@ -18,17 +19,28 @@ public class PlayerWeaponSwitcher : MonoBehaviour
     {
         if (index < 0 || index >= inventory.weaponSlots.Length) return;
 
-        var weapon = inventory.weaponSlots[index];
-        if (weapon == null || weapon.baseData == null)
+        inventory.EquipWeaponSlot(index);
+
+        var updatedWeapon = inventory.weaponSlots[index];
+        if (updatedWeapon == null || updatedWeapon.baseData == null)
         {
-            Debug.LogWarning($"[WeaponSwitcher] Equip slot {index} bị null hoặc thiếu baseData");
+            weaponController.ClearWeapon();
+            if (PlayerWeaponCtrl.Instance != null)
+            {
+                Debug.LogWarning($"[PlayerWeaponSwitcher] GỌI ClearWeapon() → Ctrl ID từ Equip = {PlayerWeaponCtrl.Instance.GetInstanceID()}");
+                PlayerWeaponCtrl.Instance.ClearWeapon();
+            }
+            else
+            {
+                Debug.LogError("[PlayerWeaponSwitcher] PlayerWeaponCtrl.Instance == null → KHÔNG GỌI ĐƯỢC");
+            }
+
             return;
         }
 
-        inventory.EquipWeaponSlot(index);
-        weaponController.EquipWeapon(weapon);
+        PlayerWeaponCtrl.Instance?.ammoUI?.Refresh();
+        weaponController.EquipWeapon(updatedWeapon);
     }
-
 
     private void ToggleWeapon()
     {

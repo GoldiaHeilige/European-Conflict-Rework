@@ -13,6 +13,7 @@ public class InventoryUI : MonoBehaviour
     public Transform slotParent;
     public InventorySlot[] slots;
 
+
     private void Awake()
     {
         Debug.Log("InventoryUI Awake");
@@ -54,7 +55,7 @@ public class InventoryUI : MonoBehaviour
     private void RefreshUI()
     {
         var items = PlayerInventory.Instance.GetItems();
-        Debug.Log($"[RefreshUI] gọi lại – Slot 0: {items[0]?.itemData?.itemID ?? "null"} | ID: {items[0]?.runtimeId ?? "null"}");
+/*        Debug.Log($"[RefreshUI] gọi lại – Slot 0: {items[0]?.itemData?.itemID ?? "null"} | ID: {items[0]?.runtimeId ?? "null"}");*/
         /*        Debug.Log($"[UpdateInventory] Gọi lại – Count: {items?.Count}");*/
         UpdateInventory(items);
     }

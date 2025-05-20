@@ -1,8 +1,11 @@
-﻿using UnityEngine;
+
+using UnityEngine;
 using System.Collections;
 
 public class PlayerReload : WpnReloadBase
 {
+    private bool lastCanReload = true;
+
     private void Awake()
     {
         if (PlayerInventory.Instance != null)
@@ -16,13 +19,13 @@ public class PlayerReload : WpnReloadBase
         }
     }
 
-
     public bool IsReloading => isReloading;
 
     public override void SetWeapon(WeaponRuntimeItem runtime)
     {
         weaponRuntime = runtime;
         Debug.Log($"[PlayerReload] weaponRuntime set = {(runtime == null ? "null" : runtime.baseData?.itemName)} | Ammo: {runtime?.currentAmmoType?.ammoName ?? "null"}");
+/*        Debug.Log($"[SetWeapon] PlayerReload ID: {GetInstanceID()} | gán = {runtime?.runtimeId}");*/
     }
 
     protected override bool ShouldReload()
@@ -41,10 +44,10 @@ public class PlayerReload : WpnReloadBase
             return;
         }
 
+        PlayerWeaponCtrl.Instance?.ammoUI?.Refresh();
         weaponRuntime?.Reload(playerInventory);
         Debug.Log($"{gameObject.name} đã thay đạn xong.");
     }
-
 
 /*    protected override void Update()
     {
@@ -55,34 +58,22 @@ public class PlayerReload : WpnReloadBase
             {
                 FinishReload();
             }
+            return;
         }
 
-        // ❗ THÊM KIỂM TRA AN TOÀN TRƯỚC KHI RELOAD
-        if (!isReloading)
+        if (weaponRuntime == null)
         {
-            if (weaponRuntime == null)
-            {
-                Debug.LogWarning("[Update] weaponRuntime null");
-                return;
-            }
-
-            if (weaponRuntime.baseData == null)
-            {
-                Debug.LogWarning("[Update] weaponRuntime.baseData null");
-                return;
-            }
-
-            if (weaponRuntime.currentAmmoType == null)
-            {
-                Debug.LogWarning("[Update] weaponRuntime.currentAmmoType null");
-                return;
-            }
-
-            if (ShouldReload())
-            {
-                StartReload();
-            }
+            return;
         }
+
+        bool canReload = weaponRuntime.CanReload(playerInventory);
+
+        if (!canReload && lastCanReload)
+        {
+            Debug.Log("[Update] Không thể reload theo CanReload()");
+        }
+
+        lastCanReload = canReload;
     }*/
 
     private IEnumerator WaitForInventory()

@@ -78,17 +78,38 @@ public class ArmorSlotUI : InventorySlot
     {
         var player = GameObject.FindWithTag("Player");
         var armorManager = player?.GetComponent<EquippedArmorManager>();
-        if (armorManager == null) return;
+        if (armorManager == null)
+        {
+            Debug.LogError("[ArmorSlotUI] Không tìm thấy EquippedArmorManager");
+            return;
+        }
 
         var armor = armorManager.GetArmor(armorSlotType);
 
+/*        Debug.Log($"[UpdateSlot] Slot {armorSlotType} đang {(armor != null ? "CÓ" : "KHÔNG")} giáp");*/
+
         if (armor != null)
         {
-            SetItem(armor.sourceItem); // icon từ item đã mặc
+            SetItem(armor.sourceItem);
         }
         else
         {
-            Clear(); // xoá icon nếu không có gì
+            Clear();
         }
     }
+
+
+    private void OnEnable()
+    {
+        Debug.Log("[ArmorSlotUI] Đăng ký InventoryChanged");
+        PlayerInventory.InventoryChanged -= UpdateSlot; // tránh double
+        PlayerInventory.InventoryChanged += UpdateSlot;
+    }
+
+
+    private void OnDisable()
+    {
+        PlayerInventory.InventoryChanged -= UpdateSlot;
+    }
+
 }

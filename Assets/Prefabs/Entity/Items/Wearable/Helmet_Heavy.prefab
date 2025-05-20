@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2128296246921491389}
   - component: {fileID: 2407026328276020049}
   - component: {fileID: 1867736787831357613}
+  - component: {fileID: 2462987119867760054}
   m_Layer: 6
   m_Name: Helmet_Heavy
   m_TagString: Untagged
@@ -147,3 +148,16 @@ MonoBehaviour:
   amount: 1
   isHovered: 0
   glowColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+--- !u!114 &2462987119867760054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2429007836311494008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdc619dc1fb72ec4996aa5470c4b20cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemGUID: 

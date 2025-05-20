@@ -3,10 +3,12 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InventorySlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointerExitHandler
+public class InventorySlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     [SerializeField] protected GameObject iconHolderPrefab;
     protected GameObject currentIconObj;
+    public GameObject popupPrefab;
+    public Transform canvasTransform;
 
     protected InventoryItemRuntime currentItem;
     public int slotIndex;
@@ -74,13 +76,13 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, 
         var sourceSlot = InventorySlotDragHandler.currentDraggingSlot;
         if (sourceSlot == null || sourceSlot == this) return;
 
-        // ❌ Không xử lý nếu đang thả vào ArmorSlot hoặc WeaponSlot
+        // Không xử lý nếu đang thả vào ArmorSlot hoặc WeaponSlot
         if (this is ArmorSlotUI || this is WeaponSlotUI) return;
 
         var targetIndex = this.slotIndex;
         var inventory = PlayerInventory.Instance.items;
 
-        // ✅ Nếu kéo từ WeaponSlotUI về kho
+        // Kéo từ WeaponSlot về kho
         if (sourceSlot is WeaponSlotUI weaponSlot)
         {
             int sourceWeaponIndex = weaponSlot.slotType == WeaponSlotType.Primary ? 0 : 1;
@@ -88,20 +90,57 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, 
 
             if (weapon != null)
             {
-                // Xoá khỏi weaponSlots
+                if (PlayerInventory.Instance.equippedWeapon != null &&
+                    PlayerInventory.Instance.equippedWeapon.runtimeId == weapon.runtimeId)
+                {
+/*                    Debug.Log("[InventorySlot] Vũ khí đang được trang bị → huỷ trang bị");*/
+                    PlayerInventory.Instance.equippedWeapon = null;
+                    PlayerInventory.Instance.currentWeaponIndex = -1;
+
+                    PlayerWeaponCtrl.Instance?.ammoUI?.Refresh();
+                    PlayerInventory.Instance.modelViewer?.UpdateSprite(null);
+
+                    if (PlayerWeaponCtrl.Instance != null)
+                        PlayerWeaponCtrl.Instance.ClearWeapon();
+                }
+
                 PlayerInventory.Instance.weaponSlots[sourceWeaponIndex] = null;
-
-                // Gán bản gốc vào inventory
                 inventory[targetIndex] = weapon;
-                Debug.Log($"[OnDrop] Đưa vũ khí từ weapon slot {sourceWeaponIndex} về inventory slot {targetIndex}");
 
+/*                Debug.Log($"[OnDrop] Đưa vũ khí từ weapon slot {sourceWeaponIndex} về inventory slot {targetIndex}");*/
                 PlayerInventory.Instance.RaiseInventoryChanged("Kéo vũ khí từ weapon slot về kho");
             }
 
-            return; // ❗ Ngăn xử lý tiếp
+            return;
         }
 
-        // ✳️ Nếu không phải từ WeaponSlot → xử lý mặc định
+        // Kéo từ ArmorSlot về kho
+        if (sourceSlot is ArmorSlotUI armorSlot)
+        {
+            var player = GameObject.FindWithTag("Player");
+            var armorManager = player?.GetComponent<EquippedArmorManager>();
+
+            // Lấy item trước khi gỡ
+            var armorItem = sourceSlot.GetItem();
+
+            if (armorManager != null)
+            {
+                Debug.Log($"[InventorySlot] Gỡ giáp khỏi slot {armorSlot.armorSlotType}");
+                armorManager.RemoveArmor(armorSlot.armorSlotType);
+            }
+
+            if (armorItem != null)
+            {
+                inventory[targetIndex] = armorItem; // Đưa vào kho
+                Debug.Log($"[OnDrop] Đưa giáp về inventory slot {targetIndex}");
+
+                PlayerInventory.Instance.RaiseInventoryChanged("Kéo giáp từ ArmorSlot về kho");
+            }
+
+            return;
+        }
+
+        // ✳️ Nếu không phải từ slot đặc biệt → xử lý mặc định
         var sourceItem = sourceSlot.GetItem();
         var targetItem = this.GetItem();
 
@@ -119,6 +158,36 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, 
         PlayerInventory.InventoryChanged?.Invoke();
     }
 
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button != PointerEventData.InputButton.Right)
+            return;
+
+        if (currentItem == null)
+            return; // Không có item thì bỏ qua
+
+        if (popupPrefab == null || canvasTransform == null)
+        {
+            Debug.LogError($"[InventorySlot] popupPrefab hoặc canvasTransform chưa được gán tại slot {slotIndex}");
+            return;
+        }
+
+        GameObject popupGO = Instantiate(popupPrefab, canvasTransform);
+        var popup = popupGO.GetComponent<ItemContextMenu>();
+        if (popup == null)
+        {
+            Debug.LogError("[InventorySlot] Không tìm thấy ItemContextMenu trên popupPrefab");
+            return;
+        }
+
+        RectTransform slotRect = GetComponent<RectTransform>();
+        Vector3[] corners = new Vector3[4];
+        slotRect.GetWorldCorners(corners);
+        Vector3 worldPos = corners[2];
+        Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, worldPos);
+
+        popup.Setup(currentItem, screenPos, canvasTransform.GetComponent<Canvas>());
+    }
 
 
     public void OnPointerEnter(PointerEventData eventData)

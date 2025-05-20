@@ -34,6 +34,7 @@ public class EquippedArmorManager : MonoBehaviour
     public void RemoveArmor(ArmorSlot slot)
     {
         equipped[(int)slot] = null;
+        PlayerInventory.Instance?.RaiseInventoryChanged("Gỡ giáp");
     }
 
     public int GetTotalArmor()

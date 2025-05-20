@@ -1,10 +1,9 @@
-﻿using TMPro;
+using TMPro;
 using UnityEngine;
 
 public class AmmoTextUI : MonoBehaviour
 {
     [SerializeField] public TextMeshProUGUI clipText;
-    [SerializeField] private PlayerWeaponCtrl weaponCtrl;
     [SerializeField] private PlayerInventory inventory;
 
     private WeaponRuntimeItem runtime;
@@ -12,9 +11,18 @@ public class AmmoTextUI : MonoBehaviour
     public void Bind(WeaponRuntimeItem runtimeData)
     {
         runtime = runtimeData;
+
+        if (runtime == null || runtime.currentAmmoType == null)
+        {
+            clipText.text = "-- / --";
+        }
+        else
+        {
+            Refresh();
+        }
     }
 
-    private void Update()
+    public void Refresh()
     {
         if (runtime == null || runtime.currentAmmoType == null)
         {
@@ -23,6 +31,6 @@ public class AmmoTextUI : MonoBehaviour
         }
 
         int reserve = inventory.GetAmmoCount(runtime.currentAmmoType);
-        clipText.text = $"{runtime.ammoInClip} / {reserve}";
+        clipText.text = $"{runtime.ammoInClip:00} / {reserve}";
     }
 }

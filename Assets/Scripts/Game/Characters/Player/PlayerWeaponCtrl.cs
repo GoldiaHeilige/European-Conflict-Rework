@@ -1,4 +1,5 @@
-﻿using System.Linq;
+
+using System.Linq;
 using UnityEngine;
 
 public class PlayerWeaponCtrl : MonoBehaviour
@@ -10,38 +11,60 @@ public class PlayerWeaponCtrl : MonoBehaviour
     public PlayerReload playerReload;
     public AmmoTextUI ammoUI;
     public PlayerModelViewer modelViewer;
+    public static PlayerWeaponCtrl Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+    }
+
 
     public void EquipWeapon(WeaponRuntimeItem newItem)
     {
         if (newItem == null || newItem.baseData == null)
         {
-            Debug.LogError("WeaponRuntimeItem null hoặc thiếu baseData");
-            playerReload?.SetWeapon(null); // reset
+            ClearWeapon();
             return;
         }
 
-        // ✅ Kiểm tra newItem có còn nằm trong inventory không
+/*        Debug.Log($"[EquipWeapon] Thử gán: {newItem.runtimeId} | baseData: {newItem.baseData.itemName}");*/
+
         bool stillInInventory = PlayerInventory.Instance.weaponSlots.Any(w => w == newItem) ||
                                 PlayerInventory.Instance.GetItems().Any(i => i == newItem);
 
         if (!stillInInventory)
         {
-            Debug.LogWarning($"[EquipWeapon] Từ chối trang bị weapon {newItem.baseData.itemID} vì không còn nằm trong inventory hoặc weaponSlots.");
-            playerReload?.SetWeapon(null);
+/*            Debug.LogWarning($"[EquipWeapon] Weapon {newItem.baseData.itemID} không còn trong inventory.");*/
             return;
         }
 
-        // ✅ Hủy reload cũ nếu đang reload vũ khí cũ
         playerReload?.CancelReload();
 
         runtimeItem = newItem;
 
-        // ✅ Gán lại các thành phần
         playerShooting?.SetWeapon(runtimeItem);
         playerReload?.SetWeapon(runtimeItem);
         ammoUI?.Bind(runtimeItem);
         modelViewer?.UpdateSprite(runtimeItem);
 
-        Debug.Log($"[WEAPON EQUIP] Gán weapon: {newItem.baseData.itemName} | GUID: {newItem.guid} | Ammo: {newItem.currentAmmoType?.ammoName ?? "null"}");
+        Debug.Log($"[WEAPON EQUIP] Gán weapon: {newItem.baseData.itemName} | GUID: {newItem.guid}");
+        Debug.Log($"[EquipWeapon] WeaponCtrl ID: {GetInstanceID()} | gán = {newItem?.runtimeId ?? "null"}");
+    }
+
+    public void ClearWeapon()
+    {
+/*        Debug.LogWarning($"[ClearWeapon] GỌI! Trên PlayerWeaponCtrl ID = {GetInstanceID()}");*/
+
+        runtimeItem = null;
+        playerShooting?.SetWeapon(null);
+        playerReload?.SetWeapon(null);
+        ammoUI?.Bind(null);
+        modelViewer?.UpdateSprite(null);
     }
 }

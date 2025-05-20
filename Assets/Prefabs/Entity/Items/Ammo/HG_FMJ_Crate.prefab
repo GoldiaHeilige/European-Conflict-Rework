@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 452802077347948079}
   - component: {fileID: 6394368525482291834}
   - component: {fileID: -2810311215653238224}
+  - component: {fileID: -3188619124962376344}
   m_Layer: 6
   m_Name: HG_FMJ_Crate
   m_TagString: Untagged
@@ -160,3 +161,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 201aa9fb20a03e64ab0f40d927fbb910, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-3188619124962376344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4056907214347485379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdc619dc1fb72ec4996aa5470c4b20cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemGUID: 
