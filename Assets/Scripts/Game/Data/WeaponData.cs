@@ -8,7 +8,6 @@ public class WeaponData : InventoryItemData
 
     [Header("Stats")]
     public float fireRate;
-    public float bulletSpeed;
     public int ammoPerShot;
     public float reloadTime;
 

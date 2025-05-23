@@ -26,7 +26,7 @@ public class DropSpawner : MonoBehaviour
         }
     }
 
-    public void Spawn(InventoryItemRuntime itemRuntime)
+    public void Spawn(InventoryItemRuntime itemRuntime, bool isRuntimeSource = false)
     {
         if (dropOrigin == null)
         {
@@ -37,25 +37,51 @@ public class DropSpawner : MonoBehaviour
         GameObject prefab = GetPrefabForItem(itemRuntime.itemData);
         if (prefab == null)
         {
-            Debug.LogWarning("[DropSpawner] Không tìm thấy prefab phù hợp cho item: " + itemRuntime.itemData.itemID);
+            Debug.LogWarning("[DropSpawner] Không tìm thấy prefab phù hợp");
             return;
         }
 
-        // Vị trí spawn gần player
         Vector3 spawnPos = dropOrigin.position + Vector3.right * Random.Range(-0.3f, 0.3f) + Vector3.up * 0.1f;
 
         GameObject go = Instantiate(prefab, spawnPos, Quaternion.identity);
+
+        if (isRuntimeSource)
+        {
+            var initializer = go.GetComponent<UniqueItemInitializer>();
+            if (initializer != null)
+            {
+                initializer.itemGUID = itemRuntime.runtimeId;
+
+                // 💥 Force gọi lại Awake logic nếu cần (hoặc đảm bảo itemGUID không bị override)
+            }
+        }
 
         // Gán dữ liệu vào prefab mới
         var pickup = go.GetComponent<PickupItem>();
         if (pickup != null)
         {
+            pickup.runtimeItem = itemRuntime; // ✅ PHẢI có dòng này
             pickup.itemData = itemRuntime.itemData;
             pickup.amount = itemRuntime.quantity;
+
+            Debug.Log($"[DropSpawner] GÁN runtimeItem: {itemRuntime.runtimeId}, type = {itemRuntime.GetType().Name}, data = {itemRuntime.itemData?.itemID}");
         }
 
-        Debug.Log($"[DropSpawner] Đã spawn {itemRuntime.quantity}x {itemRuntime.itemData.itemID} tại {spawnPos}");
+
+        // 🔥 Gán đúng sprite cho SpriteRenderer từ data
+        var sr = go.GetComponent<SpriteRenderer>();
+        if (sr != null && itemRuntime.itemData != null)
+        {
+            sr.sprite = itemRuntime.itemData.worldSprite;
+        }
+
+        if (itemRuntime is WeaponRuntimeItem weapon)
+        {
+            Debug.Log($"[DROP] Weapon drop → Clip: {weapon.ammoInClip}, Ammo: {weapon.currentAmmoType?.ammoName ?? "null"}");
+        }
+
     }
+
 
     private GameObject GetPrefabForItem(InventoryItemData itemData)
     {

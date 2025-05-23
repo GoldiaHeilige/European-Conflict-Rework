@@ -81,8 +81,6 @@ public class InventoryUI : MonoBehaviour
 
             slots[i].slotIndex = i;
 
-            slots[i].slotIndex = i;
-
             var item = (i < items.Count) ? items[i] : null;
             string itemID = item?.itemData?.itemID ?? "null";
             string runtimeID = item?.runtimeId ?? "null";
@@ -92,11 +90,14 @@ public class InventoryUI : MonoBehaviour
             if (item != null && item.itemData != null)
             {
                 slots[i].SetItem(items[i]);
+                Debug.Log($"[InventoryUI] Slot {i} set xong: ID: {item?.runtimeId} | dura: {item?.durability}");
+
             }
             else
             {
                 slots[i].Clear();
             }
+
 
         }
     }

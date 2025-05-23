@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Medium Plate Carrier
   icon: {fileID: 927413228, guid: 3fe03739948c22a459aa3bb82489feaa, type: 3}
+  worldSprite: {fileID: 927413228, guid: 3fe03739948c22a459aa3bb82489feaa, type: 3}
   description: test
   itemID: Armor_Medium
   category: 3

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 public class ArmorHandler : MonoBehaviour
 {
@@ -13,32 +13,20 @@ public class ArmorHandler : MonoBehaviour
         }
     }
 
-    public int CalculateTotalArmorRating()
+    // ✅ Lấy giáp ở một slot cụ thể
+    public ArmorRuntime GetArmor(ArmorSlot slot)
     {
-        ArmorRuntime helmet = armorManager?.GetArmor(ArmorSlot.Head);
-        ArmorRuntime body = armorManager?.GetArmor(ArmorSlot.Body);
-
-        int helmetAR = helmet?.GetProtection() ?? 0;
-        int bodyAR = body?.GetProtection() ?? 0;
-
-        return Mathf.RoundToInt(helmetAR * 0.3f + bodyAR * 0.7f);
+        return armorManager?.GetArmor(slot);
     }
 
-    public void ApplyDurability(bool penetrated)
+    // ✅ Gọi đúng logic ReduceDurability trong ArmorRuntime
+    public void ReduceDurability(ArmorSlot slot, int amount)
     {
-        ArmorRuntime helmet = armorManager?.GetArmor(ArmorSlot.Head);
-        ArmorRuntime body = armorManager?.GetArmor(ArmorSlot.Body);
-
-        if (helmet != null)
+        var armor = armorManager?.GetArmor(slot);
+        if (armor != null)
         {
-            int damage = penetrated ? 5 : 1;
-            helmet.durability = Mathf.Max(helmet.durability - damage, 0);
-        }
-
-        if (body != null)
-        {
-            int damage = penetrated ? 10 : 2;
-            body.durability = Mathf.Max(body.durability - damage, 0);
+            armor.ReduceDurability(amount); // ⬅ Gọi hàm đầy đủ thay vì trừ tay
+            Debug.Log($"[ArmorHandler] Gọi giảm độ bền {slot}: -{amount} → còn lại: {armor.durability}");
         }
     }
 }

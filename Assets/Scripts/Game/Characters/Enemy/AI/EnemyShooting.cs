@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class EnemyShooting : MonoBehaviour
 {
@@ -15,7 +15,10 @@ public class EnemyShooting : MonoBehaviour
     {
         if (runtime == null || !runtime.CanFire()) return;
 
-        AmmoData ammo = runtime.currentAmmoType;
+        var aiWpn = runtime as AIWeaponRuntimeItem;
+        if (aiWpn == null) return;
+
+        AmmoData ammo = aiWpn.currentAmmoType;
         if (ammo == null || ammo.bulletPrefab == null) return;
 
         GameObject bulletObj = Instantiate(ammo.bulletPrefab, firePoint.position, Quaternion.identity);
@@ -29,9 +32,10 @@ public class EnemyShooting : MonoBehaviour
             bullet.SetAmmoInfo(gameObject, ammo);
             bullet.SetBulletTag("EnemyBullet");
             bullet.SetLayer(LayerMask.NameToLayer("EnemyBullet"));
-            bullet.Initialize(dir, ammo.baseDamage, 2f);
+            bullet.Initialize(dir, ammo.bulletSpeed, 2f);
         }
 
-        runtime.ConsumeBullet();
+        aiWpn.ConsumeBullet(); // ✅ Giảm đúng clipAmmo
     }
+
 }

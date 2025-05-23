@@ -106,42 +106,43 @@ public class PlayerInventory : MonoBehaviour
     }
 
 
-    public bool AddStackableItem(InventoryItemData data, int quantity)
+    public bool AddStackableItem(InventoryItemRuntime item)
     {
         EnsureSlotCount();
-
-        int remaining = quantity;
+        int remaining = item.quantity;
 
         // Ưu tiên cộng vào các stack đã có
         for (int i = 0; i < maxSlotDisplay && remaining > 0; i++)
         {
-            var item = items[i];
-            if (item != null && item.itemData == data && item.quantity < data.maxStack)
+            var slotItem = items[i];
+            if (slotItem != null &&
+                slotItem.itemData == item.itemData &&
+                slotItem.quantity < item.itemData.maxStack)
             {
-                int canAdd = Mathf.Min(data.maxStack - item.quantity, remaining);
-                item.quantity += canAdd;
+                int canAdd = Mathf.Min(item.itemData.maxStack - slotItem.quantity, remaining);
+                slotItem.quantity += canAdd;
                 remaining -= canAdd;
             }
         }
 
-        // Tạo stack mới nếu còn dư
-        for (int i = 0; i < maxSlotDisplay && remaining > 0; i++)
+        // Nếu còn dư → giữ lại GUID gốc và thêm vào slot trống
+        if (remaining > 0)
         {
-            if (items[i] == null || items[i].itemData == null)
+            for (int i = 0; i < maxSlotDisplay; i++)
             {
-                int toCreate = Mathf.Min(data.maxStack, remaining);
-                var newItem = InventoryItemFactory.Create(data, toCreate, log: true);
-                items[i] = newItem;
-                remaining -= toCreate;
+                if (items[i] == null)
+                {
+                    var clone = new InventoryItemRuntime(item.itemData, remaining, null, item.runtimeId);
+                    items[i] = clone;
+                    remaining = 0;
+                    break;
+                }
             }
         }
 
-        InventoryChanged?.Invoke();
-
+        RaiseInventoryChanged("AddStackableItem(runtime)");
         return remaining == 0;
     }
-
-
 
     public bool AddUniqueItem(InventoryItemRuntime newItem)
     {
@@ -259,9 +260,28 @@ public class PlayerInventory : MonoBehaviour
 
     public void UnequipWeapon()
     {
+        if (equippedWeapon != null)
+        {
+            string targetGuid = equippedWeapon.guid;
+
+            for (int i = 0; i < weaponSlots.Length; i++)
+            {
+                if (weaponSlots[i] != null && weaponSlots[i].guid == targetGuid)
+                {
+                    Debug.Log($"[UnequipWeapon] Gỡ khỏi weaponSlots[{i}] do match GUID");
+                    weaponSlots[i] = null;
+                    break;
+                }
+            }
+        }
+
         equippedWeapon = null;
+        currentWeaponIndex = -1;
         modelViewer.UpdateSprite(null);
+        PlayerWeaponCtrl.Instance?.ClearWeapon();
+        RaiseInventoryChanged("UnequipWeapon");
     }
+
 
     public void AssignWeaponToSlot(WeaponRuntimeItem weapon, int slotIndex)
     {
@@ -347,6 +367,12 @@ public class PlayerInventory : MonoBehaviour
 
     public void AddAmmo(AmmoData incomingAmmo, int amount)
     {
+        if (incomingAmmo == null)
+        {
+            Debug.LogWarning("[AddAmmo] incomingAmmo null → bỏ qua");
+            return;
+        }
+
         var matched = knownAmmoTypes.FirstOrDefault(a => a.ammoName == incomingAmmo.ammoName);
         if (matched == null)
         {
@@ -361,18 +387,23 @@ public class PlayerInventory : MonoBehaviour
 
         Debug.Log($"[AddAmmo] Thêm {amount} viên → {matched.ammoName} | Tổng: {ammoCounts[matched]}");
 
-        // Nếu vũ khí đang cầm sử dụng đúng loại ammo này, ép đồng bộ lại luôn
         var weapon = equippedWeapon;
-        if (weapon != null && weapon.currentAmmoType != null &&
-            weapon.currentAmmoType.ammoName == matched.ammoName &&
-            weapon.currentAmmoType != matched)
+        if (weapon != null)
         {
-            Debug.Log($"[AddAmmo] Đồng bộ lại ammo instance trên weapon đang cầm: {matched.ammoName}");
-            weapon.currentAmmoType = matched;
+            if (weapon.currentAmmoType != null &&
+                weapon.currentAmmoType.ammoName == matched.ammoName &&
+                weapon.currentAmmoType != matched)
+            {
+                Debug.Log($"[AddAmmo] Đồng bộ lại ammo instance trên weapon đang cầm: {matched.ammoName}");
+                weapon.currentAmmoType = matched;
+            }
+
+            weapon.CheckAmmoValid();
         }
 
         PlayerWeaponCtrl.Instance?.ammoUI?.Refresh();
     }
+
 
     public bool RemoveAmmo(AmmoData ammo, int amount)
     {
@@ -388,9 +419,9 @@ public class PlayerInventory : MonoBehaviour
 
         int remainingToRemove = amount;
 
-        foreach (var item in items)
+        for (int i = 0; i < items.Count; i++)
         {
-            if (item is InventoryItemRuntime ammoItem &&
+            if (items[i] is InventoryItemRuntime ammoItem &&
                 ammoItem.itemData is AmmoItemData ammoItemData &&
                 ammoItemData.linkedAmmoData.ammoName == matched.ammoName)
             {
@@ -398,17 +429,48 @@ public class PlayerInventory : MonoBehaviour
                 ammoItem.quantity -= removeFromThis;
                 remainingToRemove -= removeFromThis;
 
+                // 🧨 Nếu về 0 → xoá hẳn khỏi slot
+                if (ammoItem.quantity <= 0)
+                {
+                    Debug.Log($"[RemoveAmmo] Slot {i} rỗng sau khi trừ → xoá");
+                    items[i] = null;
+                }
+
                 if (remainingToRemove <= 0)
                     break;
             }
         }
 
+        // ✅ Sửa lại bằng so sánh GetInstanceID()
+        if (equippedWeapon != null &&
+            equippedWeapon.currentAmmoType != null &&
+            equippedWeapon.currentAmmoType.ammoName == matched.ammoName &&
+            equippedWeapon.currentAmmoType.GetInstanceID() != matched.GetInstanceID())
+        {
+            Debug.LogWarning($"[RemoveAmmo] AmmoData mismatch → cập nhật lại ammoType trên weapon!");
+            Debug.Log($"[Ammo DEBUG] Weapon đang dùng instanceID: {equippedWeapon.currentAmmoType.GetInstanceID()}");
+            Debug.Log($"[Ammo DEBUG] matched instanceID: {matched.GetInstanceID()}");
+
+            equippedWeapon.currentAmmoType = matched;
+        }
+
+        equippedWeapon?.CheckAmmoValid();
+        RaiseInventoryChanged("RemoveAmmo");
         PlayerWeaponCtrl.Instance?.ammoUI?.Refresh();
-        InventoryChanged?.Invoke();
         return true;
     }
 
-    /*    public int GetAmmoCount(AmmoData ammo) => ammoCounts.TryGetValue(ammo, out var count) ? count : 0;*/
+
+    public void ForceSetAmmoCount(AmmoData ammo, int count)
+    {
+        var matched = knownAmmoTypes.FirstOrDefault(a => a.ammoName == ammo.ammoName);
+        if (matched == null) return;
+
+        ammoCounts[matched] = Mathf.Max(0, count);
+        Debug.Log($"[ForceSetAmmoCount] {ammo.ammoName} → {count}");
+    }
+
+
 
     public int GetAmmoCount(AmmoData ammo)
     {
@@ -436,16 +498,60 @@ public class PlayerInventory : MonoBehaviour
     {
         for (int i = 0; i < items.Count; i++)
         {
-            if (items[i] != null && items[i].runtimeId == guid)
+            var item = items[i];
+            if (item != null && item.runtimeId == guid)
             {
                 Debug.Log($"[DestroyByGUID] Item {guid} bị huỷ tại slot {i}");
-                items[i] = null;
-                RaiseInventoryChanged("DestroyByGUID");
+
+                RemoveFromSpecificStack(item, item.quantity); // ✅ trừ đúng stack và ammoCounts
                 return;
             }
         }
 
         Debug.LogWarning($"[DestroyByGUID] Không tìm thấy item để huỷ với GUID: {guid}");
+    }
+
+
+    public bool RemoveFromSpecificStack(InventoryItemRuntime targetStack, int amount)
+    {
+        if (targetStack == null || amount <= 0) return false;
+
+        for (int i = 0; i < items.Count; i++)
+        {
+            var item = items[i];
+            if (item != null && item.runtimeId == targetStack.runtimeId)
+            {
+                int toRemove = Mathf.Min(item.quantity, amount);
+                item.quantity -= toRemove;
+
+                Debug.Log($"[RemoveFromSpecificStack] Trừ {toRemove} từ stack {item.runtimeId} tại slot {i}");
+
+                // ✅ Trừ ammoCounts nếu là AmmoItemData
+                if (item.itemData is AmmoItemData ammoItem)
+                {
+                    var matched = knownAmmoTypes.FirstOrDefault(a => a.ammoName == ammoItem.linkedAmmoData.ammoName);
+                    if (matched != null)
+                    {
+                        if (!ammoCounts.ContainsKey(matched)) ammoCounts[matched] = 0;
+                        ammoCounts[matched] = Mathf.Max(0, ammoCounts[matched] - toRemove);
+                        Debug.Log($"[RemoveFromSpecificStack] ammoCounts[{matched.ammoName}] còn lại: {ammoCounts[matched]}");
+                    }
+                }
+
+                if (item.quantity <= 0)
+                {
+                    Debug.Log($"[RemoveFromSpecificStack] Stack {item.runtimeId} về 0 → xoá slot");
+                    items[i] = null;
+                }
+
+                RaiseInventoryChanged("RemoveFromSpecificStack");
+                PlayerWeaponCtrl.Instance?.ammoUI?.Refresh();
+                return true;
+            }
+        }
+
+        Debug.LogWarning("[RemoveFromSpecificStack] Không tìm thấy stack cần trừ");
+        return false;
     }
 
 

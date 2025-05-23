@@ -1,3 +1,4 @@
+﻿
 using UnityEngine;
 
 public class EnemyAI_SimpleShooter : EnemyAI_Base
@@ -9,6 +10,9 @@ public class EnemyAI_SimpleShooter : EnemyAI_Base
     protected override void Update()
     {
         if (controller?.weaponCtrl?.runtimeData == null) return;
+
+        // ❌ Ngăn bắn khi đang reload
+        if (controller.weaponCtrl.reload != null && controller.weaponCtrl.reload.IsReloading) return;
 
         timer += Time.deltaTime;
 

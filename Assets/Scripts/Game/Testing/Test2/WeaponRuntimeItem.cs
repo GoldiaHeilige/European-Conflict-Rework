@@ -10,7 +10,7 @@ public class WeaponRuntimeItem : InventoryItemRuntime
     public AmmoData currentAmmoType;
     public int ammoInClip;
 
-    public event Action OnAmmoChanged;
+    public Action OnAmmoChanged;
 
     public WeaponRuntimeItem(WeaponData baseData, AmmoData startingAmmo, string forcedId = null)
         : base(baseData, 1, null, forcedId) // truyền GUID từ prefab nếu có
@@ -20,12 +20,25 @@ public class WeaponRuntimeItem : InventoryItemRuntime
         this.currentAmmoType = startingAmmo;
         this.ammoInClip = 0;
     }
+    public void CheckAmmoValid()
+    {
+        if (currentAmmoType == null || PlayerInventory.Instance == null)
+            return;
+
+        int count = PlayerInventory.Instance.GetAmmoCount(currentAmmoType);
+/*        Debug.Log($"[CheckAmmoValid] Ammo = {currentAmmoType.ammoName}, InstanceID = {currentAmmoType.GetInstanceID()}, Count = {count}");*/
+
+        if (count <= 0)
+        {
+/*            Debug.Log($"[WeaponRuntime] Ammo {currentAmmoType.ammoName} đã hết trong kho → ammo = 0 (không reset type)");*/
+            OnAmmoChanged?.Invoke(); // chỉ cập nhật lại HUD, KHÔNG reset type
+        }
+    }
 
 
-    public bool CanFire() => ammoInClip > 0;
+    public virtual bool CanFire() => ammoInClip > 0;
     public bool CanReload(PlayerInventory inventory)
     {
-        // Không cho phép reload nếu bản vũ khí đã bị rút khỏi kho hoặc slot
         bool stillInInventory = inventory.weaponSlots.Any(w => w == this) ||
                                 inventory.GetItems().Any(i => i == this);
 
@@ -51,7 +64,16 @@ public class WeaponRuntimeItem : InventoryItemRuntime
         currentAmmoType = matched;
 
         int totalAmmo = inventory.GetAmmoCount(currentAmmoType);
-        return ammoInClip < baseData.clipSize && totalAmmo > 0;
+
+        // 🧨 Nếu không còn trong kho → clear luôn reference
+        if (totalAmmo <= 0)
+        {
+            Debug.Log($"[CanReload] Không còn ammo {currentAmmoType.ammoName} trong kho");
+            OnAmmoChanged?.Invoke(); // HUD cập nhật lại
+            return false;
+        }
+
+        return ammoInClip < baseData.clipSize;
     }
 
     public void Reload(PlayerInventory inventory)
@@ -91,7 +113,7 @@ public class WeaponRuntimeItem : InventoryItemRuntime
         OnAmmoChanged?.Invoke();
     }
 
-    public void ConsumeBullet()
+    public virtual void ConsumeBullet()
     {
         ammoInClip = Mathf.Max(ammoInClip - 1, 0);
         OnAmmoChanged?.Invoke();

@@ -17,8 +17,14 @@ public class ArmorRuntime
         armorData = data;
         sourceItem = source;
         ownerManager = manager;
-        durability = source.durability > 0 ? source.durability : data.maxDurability;
+
+        // ✅ Ưu tiên đọc runtimeDurability nếu có
+        if (source is ArmorRuntimeItem runtime)
+            durability = runtime.runtimeDurability;
+        else
+            durability = source?.durability > 0 ? source.durability : data.maxDurability;
     }
+
 
 
     public int GetProtection()
@@ -31,9 +37,11 @@ public class ArmorRuntime
     {
         durability = Mathf.Max(0, durability - amount);
         sourceItem.durability = durability;
-        if (durability <= 0)
-        {
-            ownerManager.RemoveArmor(Slot);
-        }
+
+        Debug.Log($"[ReduceDurability] sau khi giảm: {durability} | item.dura = {sourceItem?.durability}");
+
+        if (sourceItem is ArmorRuntimeItem runtime)
+            runtime.runtimeDurability = durability;
+
     }
 }

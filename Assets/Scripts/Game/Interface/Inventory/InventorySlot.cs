@@ -17,6 +17,9 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, 
     {
         Clear(); // remove old UI
 
+        Debug.Log($"[SetItem] Slot {slotIndex} ← ID: {item?.runtimeId} | dura: {item?.durability}");
+
+
         currentItem = item; // chỉ gán reference
 
         if (item == null || item.itemData == null)
@@ -120,25 +123,27 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, 
             var player = GameObject.FindWithTag("Player");
             var armorManager = player?.GetComponent<EquippedArmorManager>();
 
-            // Lấy item trước khi gỡ
-            var armorItem = sourceSlot.GetItem();
+            if (armorManager == null) return;
 
-            if (armorManager != null)
+            Debug.Log($"[InventorySlot] Gỡ giáp khỏi slot {armorSlot.armorSlotType}");
+
+            // ✅ Lấy chính xác bản đang mặc trước khi Remove
+            var runtime = armorManager.GetArmor(armorSlot.armorSlotType);
+            var item = runtime?.sourceItem;
+
+            armorManager.RemoveArmor(armorSlot.armorSlotType); // gỡ giáp ra
+
+            if (item != null)
             {
-                Debug.Log($"[InventorySlot] Gỡ giáp khỏi slot {armorSlot.armorSlotType}");
-                armorManager.RemoveArmor(armorSlot.armorSlotType);
-            }
-
-            if (armorItem != null)
-            {
-                inventory[targetIndex] = armorItem; // Đưa vào kho
-                Debug.Log($"[OnDrop] Đưa giáp về inventory slot {targetIndex}");
-
+                PlayerInventory.Instance.items[targetIndex] = item;
+                Debug.Log($"[OnDrop] Đưa giáp về inventory slot {targetIndex} | ID: {item.runtimeId} | dura: {item.durability}");
                 PlayerInventory.Instance.RaiseInventoryChanged("Kéo giáp từ ArmorSlot về kho");
             }
 
             return;
         }
+
+
 
         // ✳️ Nếu không phải từ slot đặc biệt → xử lý mặc định
         var sourceItem = sourceSlot.GetItem();
@@ -186,7 +191,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, 
         Vector3 worldPos = corners[2];
         Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, worldPos);
 
-        popup.Setup(currentItem, screenPos, canvasTransform.GetComponent<Canvas>());
+        popup.Setup(currentItem, slotIndex, screenPos, canvasTransform.GetComponent<Canvas>());
     }
 
 

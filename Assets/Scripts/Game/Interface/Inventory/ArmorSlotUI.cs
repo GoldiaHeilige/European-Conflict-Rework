@@ -11,7 +11,7 @@ public class ArmorSlotUI : InventorySlot
         if (dragSource == null || dragSource == this)
             return;
 
-        var draggedItem = dragSource.GetItem(); // bản trong inventory
+        var draggedItem = dragSource.GetItem();
         if (draggedItem == null || draggedItem.itemData == null)
             return;
 
@@ -34,32 +34,31 @@ public class ArmorSlotUI : InventorySlot
 
         var inv = PlayerInventory.Instance;
 
-        // Xoá đúng bản gốc khỏi inventory
-        for (int i = 0; i < inv.items.Count; i++)
+        // 🔁 Nếu chưa phải ArmorRuntimeItem → tạo mới bản runtime
+        ArmorRuntimeItem armorItem = draggedItem as ArmorRuntimeItem;
+        if (armorItem == null)
         {
-            if (inv.items[i] != null && inv.items[i].runtimeId == draggedItem.runtimeId)
-            {
-                inv.items[i] = null;
-                PlayerInventory.Instance.RaiseInventoryChanged("");
-                break;
-            }
+            armorItem = new ArmorRuntimeItem(
+                armorData,
+                durability: draggedItem.durability,
+                forcedId: draggedItem.runtimeId
+            );
         }
 
-        var currentEquipped = armorManager.GetArmor(armorSlotType);
+        inv.RemoveExactItem(draggedItem); // xóa bản cũ
 
-        if (currentEquipped != null && currentEquipped.sourceItem.runtimeId != draggedItem.runtimeId)
+        // 🧼 Nếu đang mặc giáp khác → trả về kho
+        var currentEquipped = armorManager.GetArmor(armorSlotType);
+        if (currentEquipped != null && currentEquipped.sourceItem.runtimeId != armorItem.runtimeId)
         {
             inv.ReturnItemToInventory(currentEquipped.sourceItem);
         }
 
-        // Trang bị bản gốc
-        var armorRuntime = new ArmorRuntime(armorData, armorManager, draggedItem);
-/*        Debug.Log($"[DROP] dùng lại bản gốc: {draggedItem.runtimeId}");
-        Debug.Log($"[DEBUG] ArmorRuntime tạo xong: {armorRuntime.sourceItem.runtimeId}");*/
+        // ✅ Gán bản runtime cho hệ thống mặc
+        var armorRuntime = new ArmorRuntime(armorData, armorManager, armorItem);
         armorManager.EquipArmor(armorRuntime, this);
 
-        UpdateSlot(); // Cập nhật icon sau khi mặc
-
+        UpdateSlot();
         base.OnDrop(eventData);
     }
 
@@ -73,7 +72,6 @@ public class ArmorSlotUI : InventorySlot
         return armor?.sourceItem;
     }
 
-
     public void UpdateSlot()
     {
         var player = GameObject.FindWithTag("Player");
@@ -86,8 +84,6 @@ public class ArmorSlotUI : InventorySlot
 
         var armor = armorManager.GetArmor(armorSlotType);
 
-/*        Debug.Log($"[UpdateSlot] Slot {armorSlotType} đang {(armor != null ? "CÓ" : "KHÔNG")} giáp");*/
-
         if (armor != null)
         {
             SetItem(armor.sourceItem);
@@ -98,18 +94,14 @@ public class ArmorSlotUI : InventorySlot
         }
     }
 
-
     private void OnEnable()
     {
-        Debug.Log("[ArmorSlotUI] Đăng ký InventoryChanged");
-        PlayerInventory.InventoryChanged -= UpdateSlot; // tránh double
+        PlayerInventory.InventoryChanged -= UpdateSlot;
         PlayerInventory.InventoryChanged += UpdateSlot;
     }
-
 
     private void OnDisable()
     {
         PlayerInventory.InventoryChanged -= UpdateSlot;
     }
-
 }

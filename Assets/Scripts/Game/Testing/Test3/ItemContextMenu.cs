@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System.Linq;
 
 public class ItemContextMenu : MonoBehaviour
 {
@@ -10,6 +12,7 @@ public class ItemContextMenu : MonoBehaviour
 
     private InventoryItemRuntime currentItem;
     private RectTransform rectTransform;
+    private int currentSlotIndex = -1;
 
     public static ItemContextMenu currentOpenMenu;
 
@@ -18,39 +21,92 @@ public class ItemContextMenu : MonoBehaviour
         rectTransform = GetComponent<RectTransform>();
     }
 
-    public void Setup(InventoryItemRuntime item, Vector2 screenPosition, Canvas canvas)
+    public void Setup(InventoryItemRuntime item, int slotIndex, Vector2 screenPosition, Canvas canvas)
     {
         currentItem = item;
+        currentSlotIndex = slotIndex;
 
-        // Clear menu trước đó
         if (currentOpenMenu != null && currentOpenMenu != this)
             Destroy(currentOpenMenu.gameObject);
         currentOpenMenu = this;
 
-        // Bắt đầu ẩn toàn bộ button
         dropButton.interactable = false;
         dropAmountButton.interactable = false;
         destroyButton.interactable = false;
 
-        // Gán visibility trước (để layout chạy đúng)
         bool isAmmo = item.itemData is AmmoItemData;
         dropButton.gameObject.SetActive(true);
         dropAmountButton.gameObject.SetActive(isAmmo);
         destroyButton.gameObject.SetActive(true);
 
-        // Gán sự kiện
         dropButton.onClick.AddListener(() => {
             Debug.Log("[DROP] Drop toàn bộ");
 
-            DropSpawner.Instance.Spawn(currentItem);
-            PlayerInventory.Instance.RemoveByGUID(currentItem.runtimeId);
+            // ✅ Kiểm tra nếu đang trang bị vũ khí hoặc giáp
+            if (currentItem is WeaponRuntimeItem wpn)
+            {
+                // Nếu đang cầm (equippedWeapon) → gỡ vũ khí đang cầm
+                if (PlayerInventory.Instance.equippedWeapon != null &&
+                    PlayerInventory.Instance.equippedWeapon.runtimeId == currentItem.runtimeId)
+                {
+                    Debug.Log("[ItemContextMenu] Gỡ súng đang cầm");
+                    PlayerInventory.Instance.UnequipWeapon();
+                }
+
+                // Nếu nằm trong weaponSlots[] → gỡ slot phù hợp
+                for (int i = 0; i < PlayerInventory.Instance.weaponSlots.Length; i++)
+                {
+                    var slotWpn = PlayerInventory.Instance.weaponSlots[i];
+                    if (slotWpn != null && slotWpn.runtimeId == currentItem.runtimeId)
+                    {
+                        Debug.Log($"[ItemContextMenu] Gỡ súng khỏi weaponSlots[{i}]");
+                        PlayerInventory.Instance.UnequipWeaponSlot(i); // ← gọi đúng logic
+                    }
+                }
+            }
+
+            if (currentItem.itemData is ArmorData armorData)
+            {
+                var eq = FindObjectOfType<EquippedArmorManager>();
+                var equipped = eq?.GetArmor(armorData.armorSlot);
+
+                if (equipped != null && equipped.sourceItem.runtimeId == currentItem.runtimeId)
+                {
+                    Debug.Log("[ItemContextMenu] Drop giáp đang mặc → gỡ trang bị");
+                    eq.RemoveArmor(armorData.armorSlot);
+                }
+            }
+
+            DropSpawner.Instance.Spawn(currentItem, true);
+            PlayerInventory.Instance.items[currentSlotIndex] = null;
+            PlayerInventory.Instance.RaiseInventoryChanged("Drop item từ đúng slot");
+
+            if (currentItem.itemData is AmmoItemData ammoItem)
+            {
+                var matched = PlayerInventory.Instance.knownAmmoTypes
+                    .FirstOrDefault(a => a.ammoName == ammoItem.linkedAmmoData.ammoName);
+
+                if (matched != null)
+                {
+                    var equipped = PlayerWeaponCtrl.Instance?.runtimeItem;
+                    if (equipped != null && equipped.currentAmmoType == ammoItem.linkedAmmoData)
+                    {
+                        equipped.CheckAmmoValid();
+
+                        if (equipped.currentAmmoType.GetInstanceID() != matched.GetInstanceID())
+                        {
+                            Debug.LogWarning("[Drop] currentAmmoType đang giữ bản lệch → cập nhật lại");
+                            equipped.currentAmmoType = matched;
+                        }
+                    }
+                }
+            }
+
             Close();
         });
 
-
-
         dropAmountButton.onClick.AddListener(() => {
-            DropAmountPopup found = FindObjectOfType<DropAmountPopup>(true); // true = tìm cả inactive
+            DropAmountPopup found = FindObjectOfType<DropAmountPopup>(true);
             if (found != null)
             {
                 found.gameObject.SetActive(true);
@@ -61,19 +117,40 @@ public class ItemContextMenu : MonoBehaviour
                 Debug.LogError("[DropPopup] Không tìm thấy DropAmountPopup bằng FindObjectOfType");
             }
 
-
-            Close(); // đóng popup context
+            Close();
         });
-
 
         destroyButton.onClick.RemoveAllListeners();
         destroyButton.onClick.AddListener(() => {
             Debug.Log("[DESTROY] Xoá item");
-            PlayerInventory.Instance.DestroyByGUID(item.runtimeId);
+
+            if (currentItem is WeaponRuntimeItem wpn &&
+                PlayerInventory.Instance.equippedWeapon != null &&
+                PlayerInventory.Instance.equippedWeapon.runtimeId == currentItem.runtimeId)
+            {
+                Debug.Log("[ItemContextMenu] Destroy vũ khí đang cầm → gỡ trang bị");
+                PlayerInventory.Instance.UnequipWeapon();
+                PlayerWeaponCtrl.Instance?.ClearWeapon();
+            }
+
+            if (currentItem.itemData is ArmorData armorData)
+            {
+                var eq = FindObjectOfType<EquippedArmorManager>();
+                var equipped = eq?.GetArmor(armorData.armorSlot);
+
+                if (equipped != null && equipped.sourceItem.runtimeId == currentItem.runtimeId)
+                {
+                    Debug.Log("[ItemContextMenu] Destroy giáp đang mặc → gỡ trang bị");
+                    eq.RemoveArmor(armorData.armorSlot);
+                }
+            }
+
+            PlayerInventory.Instance.items[currentSlotIndex] = null;
+            PlayerInventory.Instance.RaiseInventoryChanged("Destroy item từ đúng slot");
+
             Close();
         });
 
-        // Set vị trí popup
         if (canvas.renderMode == RenderMode.ScreenSpaceCamera && canvas.worldCamera != null)
         {
             RectTransformUtility.ScreenPointToLocalPointInRectangle(
@@ -91,15 +168,9 @@ public class ItemContextMenu : MonoBehaviour
 
         ClampToCanvas(canvas);
         LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
-
-        // Force clear selection
         EventSystem.current.SetSelectedGameObject(null);
-
-        // Delay bật tương tác sang frame sau
         StartCoroutine(EnableInteractionNextFrame());
     }
-
-
 
     private void ClampToCanvas(Canvas canvas)
     {
@@ -126,10 +197,8 @@ public class ItemContextMenu : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            // Check nếu chuột nằm ngoài toàn bộ popup
             if (!RectTransformUtility.RectangleContainsScreenPoint(rectTransform, Input.mousePosition, Camera.main))
             {
-                // Đồng thời không hover vào bất kỳ Button nào
                 PointerEventData pointerData = new PointerEventData(EventSystem.current)
                 {
                     position = Input.mousePosition
@@ -141,7 +210,7 @@ public class ItemContextMenu : MonoBehaviour
                 bool clickedInsideButton = false;
                 foreach (var r in results)
                 {
-                    if (r.gameObject.transform.IsChildOf(transform)) // nếu thuộc popup
+                    if (r.gameObject.transform.IsChildOf(transform))
                     {
                         clickedInsideButton = true;
                         break;
@@ -156,7 +225,6 @@ public class ItemContextMenu : MonoBehaviour
         }
     }
 
-
     public void Close()
     {
         if (currentOpenMenu == this)
@@ -165,37 +233,12 @@ public class ItemContextMenu : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private System.Collections.IEnumerator ForceRefreshInput()
-    {
-        // Đợi 1 frame để UI kịp instantiate xong
-        yield return null;
-
-        // Fake 1 sự kiện pointer để hệ thống UI reset
-        PointerEventData pointer = new PointerEventData(EventSystem.current)
-        {
-            position = Input.mousePosition
-        };
-
-        var results = new System.Collections.Generic.List<RaycastResult>();
-        EventSystem.current.RaycastAll(pointer, results);
-
-        // Nếu cần: log xem có button nào dưới chuột
-        foreach (var r in results)
-        {
-            Debug.Log($"[ForceRefreshInput] UI hit: {r.gameObject.name}");
-        }
-    }
-
     private System.Collections.IEnumerator EnableInteractionNextFrame()
     {
-        yield return null; // đợi 1 frame
-
+        yield return null;
         dropButton.interactable = true;
         dropAmountButton.interactable = true;
         destroyButton.interactable = true;
-
         Debug.Log("[Popup] Buttons đã được bật tương tác.");
     }
-
-
 }

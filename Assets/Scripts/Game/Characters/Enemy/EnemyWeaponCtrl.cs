@@ -1,3 +1,4 @@
+
 using UnityEngine;
 
 public class EnemyWeaponCtrl : MonoBehaviour
@@ -7,7 +8,7 @@ public class EnemyWeaponCtrl : MonoBehaviour
     public AmmoData defaultAmmo;
 
     [Header("Runtime")]
-    public WeaponRuntimeItem runtimeData;
+    public AIWeaponRuntimeItem runtimeData;
 
     [Header("References")]
     public EnemyShooting shooting;
@@ -21,9 +22,21 @@ public class EnemyWeaponCtrl : MonoBehaviour
             return;
         }
 
-        runtimeData = new WeaponRuntimeItem(defaultWeapon, defaultAmmo);
+        runtimeData = new AIWeaponRuntimeItem(defaultWeapon, defaultAmmo);
+
+        // ✅ Gán ammo chính xác từ defaultAmmo (không lấy từ weapon)
+        runtimeData.currentAmmoType = defaultAmmo;
+
+        // ✅ Cấp vô hạn đạn cho AI
+        runtimeData.ammoCounts.Clear();
+        runtimeData.ammoCounts[defaultAmmo] = 9999;
+
+        // ✅ Đổ đầy đạn vào băng
+        runtimeData.clipAmmo = defaultWeapon.clipSize;
 
         shooting?.SetWeapon(runtimeData);
         reload?.SetWeapon(runtimeData);
+
+        Debug.Log($"[EnemyWeaponCtrl] Gán súng {defaultWeapon.itemName} với đạn {defaultAmmo.ammoName} cho enemy");
     }
 }

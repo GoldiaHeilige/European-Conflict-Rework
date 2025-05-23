@@ -6,6 +6,7 @@ public class InventoryItemData : ScriptableObject
     [Header("Basic Info")]
     public string itemName;
     public Sprite icon;
+    public Sprite worldSprite;
 
     [TextArea]
     public string description;

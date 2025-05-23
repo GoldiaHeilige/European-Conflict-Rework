@@ -19,7 +19,14 @@ public class AmmoPickup : MonoBehaviour
         }
 
         int amount = itemPickup?.amount ?? 1;
+        if (PlayerInventory.Instance == null)
+        {
+            Debug.LogWarning("[AmmoPickup] PlayerInventory.Instance == null → bỏ qua");
+            return;
+        }
+
         PlayerInventory.Instance.AddAmmo(itemData.linkedAmmoData, amount);
         Debug.Log($"[AmmoPickup] Nhặt {amount} viên {itemData.linkedAmmoData.ammoName}");
     }
+
 }

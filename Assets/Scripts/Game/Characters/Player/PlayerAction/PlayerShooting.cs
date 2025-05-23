@@ -42,7 +42,7 @@ public class PlayerShooting : WpnShootingBase
             bullet.SetAmmoInfo(this.gameObject, ammo);
             bullet.SetBulletTag("PlayerBullet");
             bullet.SetLayer(LayerMask.NameToLayer("PlayerBullet"));
-            bullet.Initialize(fireDir, ammo.baseDamage, 2f);
+            bullet.Initialize(fireDir, ammo.bulletSpeed, 2f);
         }
 
         AutoReturnToPool auto = bulletObj.GetComponent<AutoReturnToPool>();

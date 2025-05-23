@@ -33,14 +33,14 @@ public class PlayerWeaponCtrl : MonoBehaviour
             return;
         }
 
-/*        Debug.Log($"[EquipWeapon] Thử gán: {newItem.runtimeId} | baseData: {newItem.baseData.itemName}");*/
+        /*        Debug.Log($"[EquipWeapon] Thử gán: {newItem.runtimeId} | baseData: {newItem.baseData.itemName}");*/
 
         bool stillInInventory = PlayerInventory.Instance.weaponSlots.Any(w => w == newItem) ||
                                 PlayerInventory.Instance.GetItems().Any(i => i == newItem);
 
         if (!stillInInventory)
         {
-/*            Debug.LogWarning($"[EquipWeapon] Weapon {newItem.baseData.itemID} không còn trong inventory.");*/
+            /*            Debug.LogWarning($"[EquipWeapon] Weapon {newItem.baseData.itemID} không còn trong inventory.");*/
             return;
         }
 
@@ -59,7 +59,7 @@ public class PlayerWeaponCtrl : MonoBehaviour
 
     public void ClearWeapon()
     {
-/*        Debug.LogWarning($"[ClearWeapon] GỌI! Trên PlayerWeaponCtrl ID = {GetInstanceID()}");*/
+        /*        Debug.LogWarning($"[ClearWeapon] GỌI! Trên PlayerWeaponCtrl ID = {GetInstanceID()}");*/
 
         runtimeItem = null;
         playerShooting?.SetWeapon(null);
@@ -67,4 +67,13 @@ public class PlayerWeaponCtrl : MonoBehaviour
         ammoUI?.Bind(null);
         modelViewer?.UpdateSprite(null);
     }
+
+    private void Update()
+    {
+        if (runtimeItem != null)
+        {
+            runtimeItem.CheckAmmoValid();
+        }
+    }
+
 }

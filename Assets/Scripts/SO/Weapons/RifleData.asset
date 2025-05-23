@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Assault Rifle
   icon: {fileID: 21300000, guid: 6ed7106ace501be4fa849a45a5d8ca85, type: 3}
+  worldSprite: {fileID: 21300000, guid: 3394c7117d7c3a740add627b3322bf95, type: 3}
   description: Test
   itemID: AR_1
   category: 2
@@ -23,7 +24,7 @@ MonoBehaviour:
   equippable: 1
   weaponClass: 1
   fireRate: 5
-  bulletSpeed: 10
+  bulletSpeed: 0.1
   ammoPerShot: 1
   reloadTime: 5
   clipSize: 30

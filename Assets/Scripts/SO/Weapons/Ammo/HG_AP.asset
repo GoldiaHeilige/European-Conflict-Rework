@@ -17,3 +17,4 @@ MonoBehaviour:
   penetrationPower: 20
   baseDamage: 25
   bulletPrefab: {fileID: 4160214242677169439, guid: ae9e54124ca27f74aa8c970707bb6704, type: 3}
+  bulletSpeed: 15

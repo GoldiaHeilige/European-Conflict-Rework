@@ -31,11 +31,19 @@ public class EquippedArmorManager : MonoBehaviour
         return equipped.Where(a => a != null);
     }
 
-    public void RemoveArmor(ArmorSlot slot)
+    public ArmorRuntimeItem RemoveArmor(ArmorSlot slot)
     {
+        var runtime = equipped[(int)slot];
         equipped[(int)slot] = null;
         PlayerInventory.Instance?.RaiseInventoryChanged("Gỡ giáp");
+
+        Debug.Log($"[RemoveArmor] returning: {runtime?.sourceItem?.runtimeId} | dura: {runtime?.sourceItem?.durability}");
+
+
+        // ✅ Trả về đúng object đang mặc
+        return runtime?.sourceItem as ArmorRuntimeItem;
     }
+
 
     public int GetTotalArmor()
     {

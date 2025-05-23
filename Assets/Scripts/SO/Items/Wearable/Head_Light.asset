@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Light Ballistic Helmet
   icon: {fileID: -570935940, guid: 3fe03739948c22a459aa3bb82489feaa, type: 3}
+  worldSprite: {fileID: -570935940, guid: 3fe03739948c22a459aa3bb82489feaa, type: 3}
   description: A standard military issued helmet.
   itemID: Helmet_Light
   category: 3

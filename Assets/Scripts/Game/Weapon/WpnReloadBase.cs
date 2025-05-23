@@ -8,6 +8,8 @@ public abstract class WpnReloadBase : MonoBehaviour
 
     protected bool isReloading = false;
     protected float reloadTimer = 0f;
+    public bool IsReloading => isReloading;
+
 
     protected virtual void Update()
     {

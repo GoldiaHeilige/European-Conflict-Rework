@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Handgun
   icon: {fileID: 21300000, guid: 7ae0cb4e0be13fa40989b6ea6e129ffc, type: 3}
+  worldSprite: {fileID: 21300000, guid: 3394c7117d7c3a740add627b3322bf95, type: 3}
   description: Test
   itemID: HG_1
   category: 2
@@ -22,9 +23,8 @@ MonoBehaviour:
   maxStack: 1
   equippable: 1
   weaponClass: 0
-  fireRate: 2
-  bulletSpeed: 10
+  fireRate: 3
   ammoPerShot: 1
-  reloadTime: 3
+  reloadTime: 10
   clipSize: 12
   defaultAmmoType: {fileID: 11400000, guid: 07594dac85f7a594db8e3007e61e4b08, type: 2}

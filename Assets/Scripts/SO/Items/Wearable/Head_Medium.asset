@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Medium Ballistic Helmet
   icon: {fileID: -1064224218, guid: 3fe03739948c22a459aa3bb82489feaa, type: 3}
+  worldSprite: {fileID: -1064224218, guid: 3fe03739948c22a459aa3bb82489feaa, type: 3}
   description: Test
   itemID: Helmet_Medium
   category: 3

@@ -19,8 +19,6 @@ public class PlayerReload : WpnReloadBase
         }
     }
 
-    public bool IsReloading => isReloading;
-
     public override void SetWeapon(WeaponRuntimeItem runtime)
     {
         weaponRuntime = runtime;

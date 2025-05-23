@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
 using System;
 
 public class EntityStats : MonoBehaviour, IDamageable
@@ -21,22 +22,22 @@ public class EntityStats : MonoBehaviour, IDamageable
         armorManager = GetComponent<EquippedArmorManager>();
     }
 
-    public void ApplyDamage(float amount)
+    public void TakeDame(DameMessage message)
     {
-        health -= Mathf.RoundToInt(amount);
-        OnHealthChanged?.Invoke(health);
+        ApplyDamageInternal(message.Damage);
+    }
 
-        Debug.Log($"{gameObject.name} mất {amount} máu (còn lại: {health})");
+    private void ApplyDamageInternal(float amount)
+    {
+        currentHP -= Mathf.RoundToInt(amount);
+        OnHealthChanged?.Invoke(currentHP);
 
-        if (health <= 0)
+        Debug.Log($"{gameObject.name} mất {amount} máu (còn lại: {currentHP})");
+
+        if (currentHP <= 0)
         {
             Die();
         }
-    }
-
-    public void TakeDame(DameMessage message)
-    {
-        ApplyDamage(message.Damage);
     }
 
     private void Die()
