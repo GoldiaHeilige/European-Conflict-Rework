@@ -25,7 +25,6 @@ public class DropSpawner : MonoBehaviour
                 dropOrigin = player.transform;
         }
     }
-
     public void Spawn(InventoryItemRuntime itemRuntime, bool isRuntimeSource = false)
     {
         if (dropOrigin == null)
@@ -34,6 +33,12 @@ public class DropSpawner : MonoBehaviour
             return;
         }
 
+        Vector3 position = dropOrigin.position;
+        Spawn(itemRuntime, position, isRuntimeSource); 
+    }
+
+    public void Spawn(InventoryItemRuntime itemRuntime, Vector3 position, bool isRuntimeSource = false)
+    {
         GameObject prefab = GetPrefabForItem(itemRuntime.itemData);
         if (prefab == null)
         {
@@ -41,45 +46,61 @@ public class DropSpawner : MonoBehaviour
             return;
         }
 
-        Vector3 spawnPos = dropOrigin.position + Vector3.right * Random.Range(-0.3f, 0.3f) + Vector3.up * 0.1f;
+        // Xác định vị trí và xoay ngẫu nhiên 1 chút
+        Vector3 spawnPos = position + Vector3.right * Random.Range(-0.3f, 0.3f) + Vector3.up * 0.1f;
+        float randomRotationZ = Random.Range(-25f, 25f);
+        GameObject go = Instantiate(prefab, spawnPos, Quaternion.Euler(0f, 0f, randomRotationZ));
 
-        GameObject go = Instantiate(prefab, spawnPos, Quaternion.identity);
-
+        // Gán GUID nếu là item runtime từ inventory
         if (isRuntimeSource)
         {
             var initializer = go.GetComponent<UniqueItemInitializer>();
             if (initializer != null)
             {
                 initializer.itemGUID = itemRuntime.runtimeId;
-
-                // 💥 Force gọi lại Awake logic nếu cần (hoặc đảm bảo itemGUID không bị override)
             }
         }
 
-        // Gán dữ liệu vào prefab mới
+        // Gán thông tin item vào PickupItem
         var pickup = go.GetComponent<PickupItem>();
         if (pickup != null)
         {
-            pickup.runtimeItem = itemRuntime; // ✅ PHẢI có dòng này
+            pickup.runtimeItem = itemRuntime;
             pickup.itemData = itemRuntime.itemData;
             pickup.amount = itemRuntime.quantity;
 
             Debug.Log($"[DropSpawner] GÁN runtimeItem: {itemRuntime.runtimeId}, type = {itemRuntime.GetType().Name}, data = {itemRuntime.itemData?.itemID}");
         }
 
-
-        // 🔥 Gán đúng sprite cho SpriteRenderer từ data
+        // Gán sprite nếu có
         var sr = go.GetComponent<SpriteRenderer>();
         if (sr != null && itemRuntime.itemData != null)
         {
             sr.sprite = itemRuntime.itemData.worldSprite;
         }
 
+        // Hiệu ứng đạn súng
         if (itemRuntime is WeaponRuntimeItem weapon)
         {
             Debug.Log($"[DROP] Weapon drop → Clip: {weapon.ammoInClip}, Ammo: {weapon.currentAmmoType?.ammoName ?? "null"}");
         }
 
+        // AddForce nhẹ văng ra ngoài
+        Rigidbody2D rb = go.GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            Vector2 randomDir = Random.insideUnitCircle.normalized * Random.Range(1.5f, 3.5f);
+            rb.AddForce(randomDir, ForceMode2D.Impulse);
+        }
+
+        // Tự hủy sau X giây nếu không nhặt
+         float lifetime = 360f; // có thể tùy chỉnh theo config sau này
+        AutoDestroy auto = go.GetComponent<AutoDestroy>();
+        if (auto == null)
+        {
+            auto = go.AddComponent<AutoDestroy>();
+            auto.lifetime = lifetime;
+        }
     }
 
 

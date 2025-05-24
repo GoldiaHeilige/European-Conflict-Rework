@@ -202,7 +202,7 @@ public class ItemContextMenu : MonoBehaviour
             }
         }
 
-        DropSpawner.Instance.Spawn(currentItem, true);
+        DropSpawner.Instance.Spawn(currentItem, isRuntimeSource: true);
         PlayerInventory.Instance.RemoveExactItem(currentItem);
         PlayerInventory.Instance.RaiseInventoryChanged("Drop item từ đúng slot");
 

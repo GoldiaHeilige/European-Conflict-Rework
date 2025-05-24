@@ -25,7 +25,8 @@ public class LootDropper : MonoBehaviour
                     System.Guid.NewGuid().ToString()
                 );
 
-                DropSpawner.Instance.Spawn(runtime, true);
+                DropSpawner.Instance.Spawn(runtime, transform.position, true);
+
                 Debug.Log($"[LootDrop] Rơi {entry.itemData.name} | amount = {amount} | roll = {roll:F2} <= {randomChance:F2}");
             }
             else

@@ -71,7 +71,7 @@ public class DropAmountPopup : MonoBehaviour
                 );
             }
 
-            DropSpawner.Instance.Spawn(toDrop, true);
+            DropSpawner.Instance.Spawn(toDrop, isRuntimeSource: true);
             PlayerInventory.Instance.RemoveExactItem(sourceItem);
         }
 
@@ -84,7 +84,7 @@ public class DropAmountPopup : MonoBehaviour
                 null,
                 System.Guid.NewGuid().ToString()
             );
-            DropSpawner.Instance.Spawn(dropped, false);
+            DropSpawner.Instance.Spawn(dropped, isRuntimeSource: false);
 
             // ✅ Trừ trong kho
             sourceItem.quantity -= amount;
