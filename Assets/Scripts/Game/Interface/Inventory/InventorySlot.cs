@@ -17,7 +17,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, 
     {
         Clear(); // remove old UI
 
-        Debug.Log($"[SetItem] Slot {slotIndex} ← ID: {item?.runtimeId} | dura: {item?.durability}");
+/*        Debug.Log($"[SetItem] Slot {slotIndex} ← ID: {item?.runtimeId} | dura: {item?.durability}");*/
 
 
         currentItem = item; // chỉ gán reference
@@ -100,7 +100,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, 
                     PlayerInventory.Instance.equippedWeapon = null;
                     PlayerInventory.Instance.currentWeaponIndex = -1;
 
-                    PlayerWeaponCtrl.Instance?.ammoUI?.Refresh();
+            PlayerWeaponCtrl.Instance?.runtimeItem?.OnAmmoChanged?.Invoke();
                     PlayerInventory.Instance.modelViewer?.UpdateSprite(null);
 
                     if (PlayerWeaponCtrl.Instance != null)

@@ -12,7 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66898d38df8914846b531d0f666b23df, type: 3}
   m_Name: Civil_Police
   m_EditorClassIdentifier: 
-  validBulletTypes: 01000000
-  maxHp: 50
+  validAmmoTypes:
+  - {fileID: 11400000, guid: 89de805ebd8d7ed4682fa939e20bb569, type: 2}
+  - {fileID: 11400000, guid: c996aa20b3f0ff145913f6c999238066, type: 2}
+  - {fileID: 11400000, guid: 5cac415000e65114790d5be4df962bba, type: 2}
+  - {fileID: 11400000, guid: d6c5238f8cd500c4a8928dfe9b9f5919, type: 2}
+  - {fileID: 11400000, guid: 2b39974cb0d374e46abe9cf3c0b791b2, type: 2}
+  maxHp: 100
   destroyedPrefab: {fileID: 8795006691475038695, guid: 8b62e5ec6f0a55942a899e7a425bee93, type: 3}
   destroyEffect: {fileID: 7960838208625907382, guid: 5e47c1b6d3df9544db7495eb962c643a, type: 3}

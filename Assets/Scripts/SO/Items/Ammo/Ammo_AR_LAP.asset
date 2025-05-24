@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 856368aec082bd54b8ceae12d1ed291b, type: 3}
+  m_Name: Ammo_AR_LAP
+  m_EditorClassIdentifier: 
+  itemName: Rifle LAP Ammo Crate
+  icon: {fileID: -705356289, guid: 467847c8b7e604a46b0ffe335e455bfc, type: 3}
+  worldSprite: {fileID: 21300000, guid: d18f33d9458d8174d89c0ecde45eca9c, type: 3}
+  description: A small crate of Low Armor Piercing rounds for assault rifle.
+  itemID: Ammo_AR_LAP
+  category: 1
+  worldPrefab: {fileID: 4056907214347485379, guid: ea7e73299be2f264fb1c51ed72ebe949, type: 3}
+  stackable: 1
+  maxStack: 128
+  equippable: 0
+  linkedAmmoData: {fileID: 11400000, guid: 59a030b50475f51479cde6841e43906d, type: 2}

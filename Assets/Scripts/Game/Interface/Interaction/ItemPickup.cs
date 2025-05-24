@@ -6,7 +6,7 @@ public class PickupItem : MonoBehaviour
     public int amount = 1;
     [HideInInspector] public bool isHovered = false;
 
-    [System.NonSerialized]  public InventoryItemRuntime runtimeItem;
+    [System.NonSerialized] public InventoryItemRuntime runtimeItem;
 
     private SpriteRenderer sr;
     private Color normalColor;
@@ -28,7 +28,6 @@ public class PickupItem : MonoBehaviour
     {
         Debug.Log($"[DEBUG] Pickup() bắt đầu — runtimeItem: {(runtimeItem != null ? "OK" : "NULL")} | itemData: {itemData?.itemID ?? "null"}");
 
-
         bool success = false;
 
         var initializer = GetComponent<UniqueItemInitializer>();
@@ -41,13 +40,13 @@ public class PickupItem : MonoBehaviour
             item = runtimeItem;
             Debug.Log($"[PICKUP] Nhặt lại item runtime: {item.runtimeId}");
             Debug.Log($"[DEBUG] Nhặt đúng runtimeItem: {runtimeItem.runtimeId} | Clip: {(runtimeItem is WeaponRuntimeItem w ? w.ammoInClip.ToString() : "NA")}");
+
         }
         else
         {
             item = InventoryItemFactory.Create(itemData, amount, log: false, forcedId: guid);
             Debug.LogWarning("[PICKUP] runtimeItem null hoặc thiếu itemData → tạo lại từ itemData");
         }
-
 
         if (item == null || item.itemData == null)
         {
@@ -65,8 +64,6 @@ public class PickupItem : MonoBehaviour
             Debug.Log($"[PICKUP] Weapon pickup → Clip: {weapon.ammoInClip}, Ammo: {weapon.currentAmmoType?.ammoName ?? "null"}");
         }
 
-
-
         GetComponent<AmmoPickup>()?.OnPickedUp();
 
         if (success)
@@ -79,6 +76,6 @@ public class PickupItem : MonoBehaviour
             Debug.Log($"[PICKUP] Kho đầy hoặc không thể nhặt item: {item.itemData.itemID}");
         }
 
-        Debug.Log("[PICKUP] Đã xử lý Pickup()");
+/*        Debug.Log("[PICKUP] Đã xử lý Pickup()");*/
     }
 }

@@ -15,7 +15,8 @@ MonoBehaviour:
   itemName: Heavy Combat Helmet
   icon: {fileID: 1458790767, guid: 3fe03739948c22a459aa3bb82489feaa, type: 3}
   worldSprite: {fileID: 1458790767, guid: 3fe03739948c22a459aa3bb82489feaa, type: 3}
-  description: Test
+  description: A heavy blast helmet, wearing this may block out the sun but it will
+    block out the damage as well.
   itemID: Helmet_Heavy
   category: 3
   worldPrefab: {fileID: 2429007836311494008, guid: 601dd776f038a324db5d8bc027165717, type: 3}
@@ -23,6 +24,6 @@ MonoBehaviour:
   maxStack: 1
   equippable: 1
   armorSlot: 0
-  armorRating: 26
-  maxDurability: 150
-  weakAgainstAP: 1
+  armorRating: 55
+  maxDurability: 250
+  tier: 3

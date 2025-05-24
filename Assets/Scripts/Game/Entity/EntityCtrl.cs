@@ -17,15 +17,20 @@ public class EntityCtrl : MonoBehaviour
         }
     }
 
-/*    public virtual void TakeDamage(int amount, GameObject source = null)
-    {
-        stats?.TakeDamage(amount, source);
-    }*/
+    /*    public virtual void TakeDamage(int amount, GameObject source = null)
+        {
+            stats?.TakeDamage(amount, source);
+        }*/
 
     public virtual void Die()
     {
-        /*Debug.Log($"{gameObject.name} đã chết (base Die)");*/
+        var dropper = GetComponent<LootDropper>();
+        if (dropper != null)
+        {
+            dropper.DropLoot();
+        }
     }
+
 
     public float MoveSpeed => stats?.MoveSpeed ?? 0f;
 }

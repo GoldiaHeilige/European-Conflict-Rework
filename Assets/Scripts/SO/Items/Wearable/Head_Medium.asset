@@ -15,7 +15,7 @@ MonoBehaviour:
   itemName: Medium Ballistic Helmet
   icon: {fileID: -1064224218, guid: 3fe03739948c22a459aa3bb82489feaa, type: 3}
   worldSprite: {fileID: -1064224218, guid: 3fe03739948c22a459aa3bb82489feaa, type: 3}
-  description: Test
+  description: A standard military issued helmet.
   itemID: Helmet_Medium
   category: 3
   worldPrefab: {fileID: 1155295433677647104, guid: 716480b99827ddc4586ce6375a649c4c, type: 3}
@@ -23,6 +23,6 @@ MonoBehaviour:
   maxStack: 1
   equippable: 1
   armorSlot: 0
-  armorRating: 16
+  armorRating: 25
   maxDurability: 100
-  weakAgainstAP: 1
+  tier: 2

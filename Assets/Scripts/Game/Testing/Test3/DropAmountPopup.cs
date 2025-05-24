@@ -85,7 +85,18 @@ public class DropAmountPopup : MonoBehaviour
                 System.Guid.NewGuid().ToString()
             );
             DropSpawner.Instance.Spawn(dropped, false);
+
+            // ✅ Trừ trong kho
+            sourceItem.quantity -= amount;
+
+            if (sourceItem.quantity <= 0)
+            {
+                PlayerInventory.Instance.RemoveExactItem(sourceItem);
+            }
+
+            PlayerInventory.Instance.RaiseInventoryChanged("Drop một phần item stackable");
         }
+
 
         if (sourceItem.itemData is AmmoItemData ammoItem)
         {

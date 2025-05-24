@@ -13,20 +13,19 @@ public class ArmorHandler : MonoBehaviour
         }
     }
 
-    // ✅ Lấy giáp ở một slot cụ thể
+    // Lấy giáp ở một slot cụ thể
     public ArmorRuntime GetArmor(ArmorSlot slot)
     {
         return armorManager?.GetArmor(slot);
     }
 
-    // ✅ Gọi đúng logic ReduceDurability trong ArmorRuntime
     public void ReduceDurability(ArmorSlot slot, int amount)
     {
         var armor = armorManager?.GetArmor(slot);
         if (armor != null)
         {
-            armor.ReduceDurability(amount); // ⬅ Gọi hàm đầy đủ thay vì trừ tay
-            Debug.Log($"[ArmorHandler] Gọi giảm độ bền {slot}: -{amount} → còn lại: {armor.durability}");
+            armor.ReduceDurability(amount);
+            Debug.Log($"[ArmorHandler] [{slot}] yêu cầu giảm độ bền -{amount} → còn lại: {armor.currentDurability}/{armor.armorData.maxDurability} (Tỉ lệ: {armor.DurabilityRatio:P0})");
         }
     }
 }

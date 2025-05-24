@@ -13,6 +13,8 @@ public class PlayerWeaponCtrl : MonoBehaviour
     public PlayerModelViewer modelViewer;
     public static PlayerWeaponCtrl Instance { get; private set; }
 
+    [HideInInspector] public AmmoData pendingAmmoChange = null;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -74,6 +76,62 @@ public class PlayerWeaponCtrl : MonoBehaviour
         {
             runtimeItem.CheckAmmoValid();
         }
+    }
+
+    public void ApplyPendingAmmoChange()
+    {
+        if (runtimeItem == null || pendingAmmoChange == null) return;
+
+        if (pendingAmmoChange == runtimeItem.currentAmmoType)
+        {
+            Debug.Log("[ChangeAmmo] Loại đạn giống hiện tại → bỏ qua");
+            pendingAmmoChange = null;
+            return;
+        }
+
+        Debug.Log($"[ChangeAmmo] Đổi loại đạn: {runtimeItem.currentAmmoType?.ammoName} → {pendingAmmoChange.ammoName}");
+
+        // ✅ Trả lại đạn trong băng về kho
+        if (runtimeItem.ammoInClip > 0 && runtimeItem.currentAmmoType != null)
+        {
+            // Tìm AmmoItemData phù hợp để trả về kho
+            AmmoItemData matchingAmmoItem = PlayerInventory.Instance.GetAllAmmoItems()
+                .FirstOrDefault(a => a.linkedAmmoData == runtimeItem.currentAmmoType);
+
+            if (matchingAmmoItem != null)
+            {
+                var returnedAmmo = new InventoryItemRuntime(
+                    matchingAmmoItem,
+                    runtimeItem.ammoInClip,
+                    null,
+                    System.Guid.NewGuid().ToString()
+                );
+
+                PlayerInventory.Instance.AddItem(returnedAmmo);
+
+                var ui = FindObjectOfType<InventoryUI>();
+                if (ui != null)
+                {
+/*                    Debug.Log("[Force UI Refresh] Sau khi AddItem → InventoryUI.RefreshUI()");*/
+                    ui.RefreshUI();
+                }
+
+                Debug.Log($"[ChangeAmmo] Trả về kho: +{runtimeItem.ammoInClip} viên {matchingAmmoItem.itemName}");
+            }
+            else
+            {
+                Debug.LogWarning("[ChangeAmmo] Không tìm thấy AmmoItemData để trả đạn");
+            }
+        }
+
+        // ✅ Đổi loại đạn và reset băng
+        runtimeItem.currentAmmoType = pendingAmmoChange;
+        runtimeItem.ammoInClip = 0;
+
+        pendingAmmoChange = null;
+        runtimeItem.OnAmmoChanged?.Invoke();
+
+        ammoUI?.Bind(runtimeItem); // ✅ HUD cập nhật đúng ammo mới
     }
 
 }

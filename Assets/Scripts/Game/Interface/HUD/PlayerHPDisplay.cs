@@ -11,6 +11,7 @@ public class PlayerHPDisplay : MonoBehaviour
     {
         if (playerStats != null)
             playerStats.OnHealthChanged += UpdateHPText;
+        UpdateHPText(playerStats.CurrentHP);
     }
 
     void UpdateHPText(int currentHP)

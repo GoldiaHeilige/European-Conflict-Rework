@@ -16,6 +16,7 @@ public class InventoryItemData : ScriptableObject
     [Header("Category")]
     public ItemCategory category;
     public GameObject worldPrefab;
+
     public bool stackable = true;
     public int maxStack = 99;
 

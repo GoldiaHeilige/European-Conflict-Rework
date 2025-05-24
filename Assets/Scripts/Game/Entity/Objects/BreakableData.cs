@@ -3,7 +3,7 @@
 [CreateAssetMenu(menuName = "EC/Breakable Data")]
 public class BreakableData : ScriptableObject
 {
-    [Tooltip("Object Settings")]
+    [Tooltip("Can get destroyed by ->")]
     public AmmoData[] validAmmoTypes;
 
     public int maxHp = 50;

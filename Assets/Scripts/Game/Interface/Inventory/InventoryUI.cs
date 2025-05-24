@@ -38,10 +38,9 @@ public class InventoryUI : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerInventory.InventoryChanged -= RefreshUI; // tránh double
+        PlayerInventory.InventoryChanged -= RefreshUI;
         PlayerInventory.InventoryChanged += RefreshUI;
 
-        // Gọi lại luôn nếu Instance đã có
         if (PlayerInventory.Instance != null)
             RefreshUI();
     }
@@ -52,19 +51,21 @@ public class InventoryUI : MonoBehaviour
         PlayerInventory.InventoryChanged -= RefreshUI;
     }
 
-    private void RefreshUI()
+    public void RefreshUI()
     {
         var items = PlayerInventory.Instance.GetItems();
-/*        Debug.Log($"[RefreshUI] gọi lại – Slot 0: {items[0]?.itemData?.itemID ?? "null"} | ID: {items[0]?.runtimeId ?? "null"}");*/
-        /*        Debug.Log($"[UpdateInventory] Gọi lại – Count: {items?.Count}");*/
         UpdateInventory(items);
     }
 
 
     public void UpdateStats(float hp)
     {
-        hpText.text = $"{hp}";
+        if (hpText != null)
+            hpText.text = $"{hp}";
+        else
+            Debug.LogWarning("hpText is null in InventoryUI");
     }
+
 
     public void UpdateInventory(List<InventoryItemRuntime> items)
     {
@@ -90,7 +91,6 @@ public class InventoryUI : MonoBehaviour
             if (item != null && item.itemData != null)
             {
                 slots[i].SetItem(items[i]);
-                Debug.Log($"[InventoryUI] Slot {i} set xong: ID: {item?.runtimeId} | dura: {item?.durability}");
 
             }
             else

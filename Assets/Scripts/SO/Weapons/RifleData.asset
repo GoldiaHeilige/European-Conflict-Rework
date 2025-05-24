@@ -15,7 +15,7 @@ MonoBehaviour:
   itemName: Assault Rifle
   icon: {fileID: 21300000, guid: 6ed7106ace501be4fa849a45a5d8ca85, type: 3}
   worldSprite: {fileID: 21300000, guid: 3394c7117d7c3a740add627b3322bf95, type: 3}
-  description: Test
+  description: A standard issued military Assault Rifle.
   itemID: AR_1
   category: 2
   worldPrefab: {fileID: 4056907214347485379, guid: 60b64371e5ee73842ba51fd5152db89a, type: 3}
@@ -24,7 +24,6 @@ MonoBehaviour:
   equippable: 1
   weaponClass: 1
   fireRate: 5
-  bulletSpeed: 0.1
   ammoPerShot: 1
   reloadTime: 5
   clipSize: 30

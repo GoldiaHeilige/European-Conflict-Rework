@@ -195,7 +195,7 @@ public class PlayerInventory : MonoBehaviour
                 Debug.Log($"[ReturnItemToInventory] Weapon đang cầm bị kéo về kho. Gỡ trang bị.");
                 equippedWeapon = null;
                 currentWeaponIndex = -1;
-                PlayerWeaponCtrl.Instance?.ammoUI?.Refresh();
+        PlayerWeaponCtrl.Instance?.runtimeItem?.OnAmmoChanged?.Invoke();
                 modelViewer?.UpdateSprite(null);
 
                 if (PlayerWeaponCtrl.Instance != null)
@@ -252,7 +252,7 @@ public class PlayerInventory : MonoBehaviour
     public void EquipWeapon(WeaponRuntimeItem runtimeWeapon)
     {
         equippedWeapon = runtimeWeapon;
-        PlayerWeaponCtrl.Instance?.ammoUI?.Refresh();
+PlayerWeaponCtrl.Instance?.runtimeItem?.OnAmmoChanged?.Invoke();
         modelViewer.UpdateSprite(runtimeWeapon);
         InventoryChanged?.Invoke();
     }
@@ -288,7 +288,7 @@ public class PlayerInventory : MonoBehaviour
         if (slotIndex < 0 || slotIndex >= weaponSlots.Length) return;
 
         weaponSlots[slotIndex] = weapon;
-        PlayerWeaponCtrl.Instance?.ammoUI?.Refresh();
+PlayerWeaponCtrl.Instance?.runtimeItem?.OnAmmoChanged?.Invoke();
         InventoryChanged?.Invoke();
     }
 
@@ -324,7 +324,7 @@ public class PlayerInventory : MonoBehaviour
         currentWeaponIndex = index;
         modelViewer?.UpdateSprite(equippedWeapon);
 
-        PlayerWeaponCtrl.Instance?.ammoUI?.Refresh();
+PlayerWeaponCtrl.Instance?.runtimeItem?.OnAmmoChanged?.Invoke();
         Debug.Log($"[Inventory] Trang bị vũ khí {equippedWeapon.baseData.itemName} từ slot {index}.");
     }
 
@@ -344,7 +344,7 @@ public class PlayerInventory : MonoBehaviour
 
             equippedWeapon = null;
             currentWeaponIndex = -1;
-            PlayerWeaponCtrl.Instance?.ammoUI?.Refresh();
+    PlayerWeaponCtrl.Instance?.runtimeItem?.OnAmmoChanged?.Invoke();
             modelViewer?.UpdateSprite(null);
 
             if (PlayerWeaponCtrl.Instance != null)
@@ -401,7 +401,7 @@ public class PlayerInventory : MonoBehaviour
             weapon.CheckAmmoValid();
         }
 
-        PlayerWeaponCtrl.Instance?.ammoUI?.Refresh();
+    PlayerWeaponCtrl.Instance?.runtimeItem?.OnAmmoChanged?.Invoke();
     }
 
 
@@ -456,7 +456,7 @@ public class PlayerInventory : MonoBehaviour
 
         equippedWeapon?.CheckAmmoValid();
         RaiseInventoryChanged("RemoveAmmo");
-        PlayerWeaponCtrl.Instance?.ammoUI?.Refresh();
+        PlayerWeaponCtrl.Instance?.runtimeItem?.OnAmmoChanged?.Invoke();
         return true;
     }
 
@@ -545,7 +545,7 @@ public class PlayerInventory : MonoBehaviour
                 }
 
                 RaiseInventoryChanged("RemoveFromSpecificStack");
-                PlayerWeaponCtrl.Instance?.ammoUI?.Refresh();
+        PlayerWeaponCtrl.Instance?.runtimeItem?.OnAmmoChanged?.Invoke();
                 return true;
             }
         }
@@ -582,6 +582,34 @@ public class PlayerInventory : MonoBehaviour
         {
             Debug.Log($"[EQUIPPED] {equippedWeapon.runtimeId} | {equippedWeapon.baseData?.itemID}");
         }
+    }
+
+    public void AddItem(InventoryItemRuntime item)
+    {
+        if (item == null || item.itemData == null)
+        {
+            Debug.LogWarning("[AddItem] Item null hoặc không có itemData");
+            return;
+        }
+
+        if (item.itemData.stackable)
+        {
+            PlayerWeaponCtrl.Instance?.runtimeItem?.OnAmmoChanged?.Invoke();
+            AddStackableItem(item);
+        }
+        else
+        {
+            AddUniqueItem(item);
+        }
+    }
+
+    public List<AmmoItemData> GetAllAmmoItems()
+    {
+        return items
+            .Where(i => i != null && i.itemData is AmmoItemData)
+            .Select(i => i.itemData as AmmoItemData)
+            .Distinct()
+            .ToList();
     }
 
 }

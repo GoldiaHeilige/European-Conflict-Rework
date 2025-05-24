@@ -49,6 +49,13 @@ public class Breakable : MonoBehaviour, IDamageable
             obj.transform.localScale = transform.localScale;
         }
 
+        var dropper = GetComponent<LootDropper>();
+        if (dropper != null)
+        {
+            dropper.DropLoot();
+        }
+
+
         Destroy(gameObject);
     }
 }

@@ -1,4 +1,4 @@
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 
 public class AmmoTextUI : MonoBehaviour
@@ -10,16 +10,28 @@ public class AmmoTextUI : MonoBehaviour
 
     public void Bind(WeaponRuntimeItem runtimeData)
     {
+        Debug.Log($"[AmmoTextUI] Bind được gọi → {runtimeData?.baseData?.itemID ?? "null"}");
+
+        // Hủy đăng ký vũ khí cũ nếu có
+        if (runtime != null)
+            runtime.OnAmmoChanged -= Refresh;
+
         runtime = runtimeData;
 
         if (runtime == null || runtime.currentAmmoType == null)
         {
             clipText.text = "-- / --";
+            return;
         }
-        else
-        {
-            Refresh();
-        }
+
+        runtime.OnAmmoChanged += Refresh;
+        Refresh();
+    }
+
+    private void OnDisable()
+    {
+        if (runtime != null)
+            runtime.OnAmmoChanged -= Refresh;
     }
 
     public void Refresh()
@@ -31,6 +43,6 @@ public class AmmoTextUI : MonoBehaviour
         }
 
         int reserve = inventory.GetAmmoCount(runtime.currentAmmoType);
-        clipText.text = $"{runtime.ammoInClip:00} / {reserve}";
+        clipText.text = $"{runtime.ammoInClip:00} / {reserve:00}";
     }
 }

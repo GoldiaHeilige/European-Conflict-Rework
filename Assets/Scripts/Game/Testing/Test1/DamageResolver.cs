@@ -1,4 +1,3 @@
-
 using UnityEngine;
 
 public static class DamageResolver
@@ -36,22 +35,13 @@ public static class DamageResolver
 
             if (hitArmor != null)
             {
-                int armorRating = hitArmor.armorData.armorRating;
+                var result = PenetrationResolver.Resolve(ammo, hitArmor);
 
-                if (ammo.penetrationPower >= armorRating)
-                {
-                    penetrated = true;
-                    finalDamage = ammo.baseDamage;
-                    armorHandler.ReduceDurability(hitSlot, 5);
-                }
-                else
-                {
-                    penetrated = false;
-                    finalDamage = ammo.baseDamage * 0.2f;
-                    armorHandler.ReduceDurability(hitSlot, 1);
-                }
+                penetrated = result.isPenetrated;
+                finalDamage = result.finalDamage;
+                armorHandler.ReduceDurability(hitSlot, Mathf.CeilToInt(result.durabilityLoss));
 
-                Debug.Log($"[DamageResolver] Bắn trúng {hitSlot} | Giáp = {armorRating} | PenPower = {ammo.penetrationPower} | Penetrated: {penetrated}");
+                Debug.Log($"[DamageResolver] Bắn trúng {hitSlot} | Giáp = {hitArmor.armorData.armorRating} | PenPower = {ammo.penetrationPower} | Penetrated: {penetrated}");
             }
             else
             {

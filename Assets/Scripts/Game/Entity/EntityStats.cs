@@ -1,5 +1,4 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
 using System;
 
 public class EntityStats : MonoBehaviour, IDamageable
@@ -11,7 +10,11 @@ public class EntityStats : MonoBehaviour, IDamageable
     private EquippedArmorManager armorManager;
 
     public int CurrentHP => currentHP;
+    public int MaxHP => health;
     public float MoveSpeed => moveSpeed;
+
+    public bool IsFullHealth => currentHP >= health;
+    public bool IsAlive => currentHP > 0;
 
     public event Action OnDie;
     public event Action<int> OnHealthChanged;
@@ -20,6 +23,7 @@ public class EntityStats : MonoBehaviour, IDamageable
     {
         currentHP = health;
         armorManager = GetComponent<EquippedArmorManager>();
+        OnHealthChanged?.Invoke(currentHP);
     }
 
     public void TakeDame(DameMessage message)
@@ -40,10 +44,18 @@ public class EntityStats : MonoBehaviour, IDamageable
         }
     }
 
+    public void Heal(int amount)
+    {
+        int before = currentHP;
+        currentHP = Mathf.Min(currentHP + amount, health);
+        OnHealthChanged?.Invoke(currentHP);
+
+        Debug.Log($"{gameObject.name} được hồi {amount} máu → {before} → {currentHP}");
+    }
+
     private void Die()
     {
         Debug.Log($"{gameObject.name} đã chết.");
-        OnDie?.Invoke(); // gọi sự kiện
-        Destroy(gameObject);
+        OnDie?.Invoke();
     }
 }

@@ -38,10 +38,23 @@ public class ArmorRuntime
         durability = Mathf.Max(0, durability - amount);
         sourceItem.durability = durability;
 
-        Debug.Log($"[ReduceDurability] sau khi giảm: {durability} | item.dura = {sourceItem?.durability}");
+        Debug.Log($"[ArmorRuntime] [{Slot}] giảm độ bền: -{amount} | Còn lại: {durability}/{armorData.maxDurability} (Tỉ lệ: {DurabilityRatio:P0})");
 
         if (sourceItem is ArmorRuntimeItem runtime)
             runtime.runtimeDurability = durability;
-
     }
+
+    public float DurabilityRatio => (float)durability / armorData.maxDurability;
+
+    public int GetEffectiveRating()
+    {
+        return Mathf.RoundToInt(armorData.armorRating * DurabilityRatio);
+    }
+
+    public void ReduceDurability(float amount)
+    {
+        int amountInt = Mathf.CeilToInt(amount);
+        ReduceDurability(amountInt);
+    }
+
 }

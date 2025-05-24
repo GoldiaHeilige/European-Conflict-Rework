@@ -15,7 +15,7 @@ MonoBehaviour:
   itemName: Heavy Plate Carrier
   icon: {fileID: -1607532418, guid: 3fe03739948c22a459aa3bb82489feaa, type: 3}
   worldSprite: {fileID: -1607532418, guid: 3fe03739948c22a459aa3bb82489feaa, type: 3}
-  description: Test
+  description: A speical body armour, mostly used by Advanced Troops or Special Ops.
   itemID: Armor_Heavy
   category: 3
   worldPrefab: {fileID: 43732752975138493, guid: 11d8e0f6f2a937e4a84651350be09580, type: 3}
@@ -23,6 +23,6 @@ MonoBehaviour:
   maxStack: 1
   equippable: 1
   armorSlot: 1
-  armorRating: 46
+  armorRating: 55
   maxDurability: 300
-  weakAgainstAP: 1
+  tier: 3

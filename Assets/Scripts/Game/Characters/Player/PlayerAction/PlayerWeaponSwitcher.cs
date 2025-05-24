@@ -38,8 +38,7 @@ public class PlayerWeaponSwitcher : MonoBehaviour
             return;
         }
 
-        PlayerWeaponCtrl.Instance?.ammoUI?.Refresh();
-        weaponController.EquipWeapon(updatedWeapon);
+PlayerWeaponCtrl.Instance?.runtimeItem?.OnAmmoChanged?.Invoke();        weaponController.EquipWeapon(updatedWeapon);
     }
 
     private void ToggleWeapon()

@@ -42,7 +42,7 @@ public class PlayerReload : WpnReloadBase
             return;
         }
 
-        PlayerWeaponCtrl.Instance?.ammoUI?.Refresh();
+PlayerWeaponCtrl.Instance?.runtimeItem?.OnAmmoChanged?.Invoke();
         weaponRuntime?.Reload(playerInventory);
         Debug.Log($"{gameObject.name} đã thay đạn xong.");
     }
