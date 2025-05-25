@@ -7,6 +7,7 @@ public class InventoryItemData : ScriptableObject
     public string itemName;
     public Sprite icon;
     public Sprite worldSprite;
+    public float weightPerUnit;
 
     [TextArea]
     public string description;

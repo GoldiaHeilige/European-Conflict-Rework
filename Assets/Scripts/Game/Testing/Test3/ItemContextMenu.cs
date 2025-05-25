@@ -57,7 +57,7 @@ public class ItemContextMenu : MonoBehaviour
         );
 
         destroyButton.gameObject.SetActive(true);
-        changeAmmoButton.gameObject.SetActive(false); // Tạm ẩn, chỉ hiện nếu là súng đang cầm
+        changeAmmoButton.gameObject.SetActive(false); 
 
         dropButton.onClick.RemoveAllListeners();
         dropButton.onClick.AddListener(() => {
@@ -223,6 +223,9 @@ public class ItemContextMenu : MonoBehaviour
             }
         }
 
+        var hud = FindObjectOfType<WeightDisplayHUD>(true);
+        if (hud != null) hud.ForceUpdate();
+
     }
 
     private void DestroyItem()
@@ -247,6 +250,9 @@ public class ItemContextMenu : MonoBehaviour
 
         PlayerInventory.Instance.items[currentSlotIndex] = null;
         PlayerInventory.Instance.RaiseInventoryChanged("Destroy item từ đúng slot");
+
+        var hud = FindObjectOfType<WeightDisplayHUD>(true);
+        if (hud != null) hud.ForceUpdate();
     }
 
     private void ClampToCanvas(Canvas canvas)

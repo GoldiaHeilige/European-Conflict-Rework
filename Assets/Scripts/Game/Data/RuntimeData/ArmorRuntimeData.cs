@@ -12,6 +12,8 @@ public class ArmorRuntime
     public ArmorSlot Slot => armorData.armorSlot;
     public int currentDurability => durability;
 
+    public static event System.Action OnAnyDurabilityChanged;
+
     public ArmorRuntime(ArmorData data, EquippedArmorManager manager, InventoryItemRuntime source)
     {
         armorData = data;
@@ -42,6 +44,8 @@ public class ArmorRuntime
 
         if (sourceItem is ArmorRuntimeItem runtime)
             runtime.runtimeDurability = durability;
+
+        OnAnyDurabilityChanged?.Invoke();
     }
 
     public float DurabilityRatio => (float)durability / armorData.maxDurability;

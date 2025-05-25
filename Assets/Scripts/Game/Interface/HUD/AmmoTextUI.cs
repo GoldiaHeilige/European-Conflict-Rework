@@ -28,11 +28,24 @@ public class AmmoTextUI : MonoBehaviour
         Refresh();
     }
 
+    private void OnEnable()
+    {
+        PlayerInventory.InventoryChanged += OnInventoryChanged;
+    }
+
     private void OnDisable()
     {
+        PlayerInventory.InventoryChanged -= OnInventoryChanged;
         if (runtime != null)
             runtime.OnAmmoChanged -= Refresh;
     }
+
+
+    private void OnInventoryChanged()
+    {
+        Refresh();
+    }
+
 
     public void Refresh()
     {

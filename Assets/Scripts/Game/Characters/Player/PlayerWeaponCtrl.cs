@@ -50,6 +50,13 @@ public class PlayerWeaponCtrl : MonoBehaviour
 
         runtimeItem = newItem;
 
+        // Cập nhật camera zoom bonus
+        var camCtrl = FindObjectOfType<CameraController>();
+        if (camCtrl != null)
+        {
+            camCtrl.weaponZoomBonus = newItem.baseData is WeaponData weaponData ? weaponData.zoomBonus : 0f;
+        }
+
         playerShooting?.SetWeapon(runtimeItem);
         playerReload?.SetWeapon(runtimeItem);
         ammoUI?.Bind(runtimeItem);
@@ -64,6 +71,13 @@ public class PlayerWeaponCtrl : MonoBehaviour
         /*        Debug.LogWarning($"[ClearWeapon] GỌI! Trên PlayerWeaponCtrl ID = {GetInstanceID()}");*/
 
         runtimeItem = null;
+
+        var camCtrl = FindObjectOfType<CameraController>();
+        if (camCtrl != null)
+        {
+            camCtrl.weaponZoomBonus = 0f;
+        }
+
         playerShooting?.SetWeapon(null);
         playerReload?.SetWeapon(null);
         ammoUI?.Bind(null);

@@ -44,6 +44,19 @@ public class InterfaceManager : MonoBehaviour
         PlayerRotation.allowMouseLook = false;
 
         if (inventoryUI != null) inventoryUI.SetActive(true);
+
+        WeightDisplayHUD hud = inventoryUI.GetComponentInChildren<WeightDisplayHUD>(true);
+        if (hud != null)
+        {
+            hud.ForceUpdate(); 
+        }
+
+        foreach (var armorSlot in FindObjectsOfType<ArmorSlotUI>(true))
+        {
+            armorSlot.UpdateSlot();
+        }
+
+
         if (overlayUI != null) overlayUI.SetActive(true);
         if (hudUI != null) hudUI.SetActive(false);
 

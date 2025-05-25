@@ -44,8 +44,6 @@ public class DropAmountPopup : MonoBehaviour
         if (sourceItem == null) return;
 
         int amount = int.Parse(quantityInput.text);
-
-        // ✅ Cho phép nhập 0 → không làm gì cả
         if (amount <= 0)
         {
             Debug.LogWarning("[DropAmountPopup] Nhập số lượng <= 0 → Bỏ qua");
@@ -61,7 +59,7 @@ public class DropAmountPopup : MonoBehaviour
         {
             InventoryItemRuntime toDrop = sourceItem;
 
-            // ✅ Nếu là giáp nhưng chưa phải ArmorRuntimeItem → tạo đúng bản runtime
+            // Nếu là giáp nhưng chưa phải ArmorRuntimeItem → tạo đúng runtime
             if (sourceItem.itemData is ArmorData armorData && sourceItem is not ArmorRuntimeItem)
             {
                 toDrop = new ArmorRuntimeItem(
@@ -74,30 +72,22 @@ public class DropAmountPopup : MonoBehaviour
             DropSpawner.Instance.Spawn(toDrop, isRuntimeSource: true);
             PlayerInventory.Instance.RemoveExactItem(sourceItem);
         }
-
         else
         {
-            // ✅ Drop 1 phần → clone mới
-            InventoryItemRuntime dropped = new InventoryItemRuntime(
+            // ✅ Tạo bản clone độc lập để drop
+            InventoryItemRuntime droppedClone = new InventoryItemRuntime(
                 sourceItem.itemData,
                 amount,
                 null,
                 System.Guid.NewGuid().ToString()
             );
-            DropSpawner.Instance.Spawn(dropped, isRuntimeSource: false);
+            DropSpawner.Instance.Spawn(droppedClone, isRuntimeSource: false);
 
-            // ✅ Trừ trong kho
-            sourceItem.quantity -= amount;
-
-            if (sourceItem.quantity <= 0)
-            {
-                PlayerInventory.Instance.RemoveExactItem(sourceItem);
-            }
-
-            PlayerInventory.Instance.RaiseInventoryChanged("Drop một phần item stackable");
+            // ✅ Trừ trong kho đúng cách
+            PlayerInventory.Instance.RemoveFromSpecificStack(sourceItem, amount);
         }
 
-
+        // ✅ Cập nhật ammo UI nếu là đạn
         if (sourceItem.itemData is AmmoItemData ammoItem)
         {
             var matched = PlayerInventory.Instance.knownAmmoTypes
@@ -105,33 +95,26 @@ public class DropAmountPopup : MonoBehaviour
 
             if (matched != null)
             {
-                // ✅ Chỉ trừ stack nếu chưa bị xóa
-                if (!droppedFull)
+                var equipped = PlayerWeaponCtrl.Instance?.runtimeItem;
+                if (equipped != null && equipped.currentAmmoType == ammoItem.linkedAmmoData)
                 {
-                    PlayerInventory.Instance.RemoveFromSpecificStack(sourceItem, amount);
-                }
-                else
-                {
-                    // Nếu vừa drop full và đã xóa khỏi inventory → trừ ammoCounts thủ công
-                    Debug.Log($"[DropAmount-Full] Trừ {amount} khỏi ammoCounts (stack đã bị xóa)");
-                    PlayerInventory.Instance.ForceSetAmmoCount(matched, PlayerInventory.Instance.GetAmmoCount(matched) - amount);
-                    PlayerWeaponCtrl.Instance?.ammoUI?.Refresh();
-                }
-            }
+                    equipped.CheckAmmoValid();
 
-            var equipped = PlayerWeaponCtrl.Instance?.runtimeItem;
-            if (equipped != null && equipped.currentAmmoType == ammoItem.linkedAmmoData)
-            {
-                equipped.CheckAmmoValid();
-
-                if (equipped.currentAmmoType.GetInstanceID() != matched.GetInstanceID())
-                {
-                    Debug.LogWarning("[DropAmount] currentAmmoType đang giữ bản lệch → cập nhật lại");
-                    equipped.currentAmmoType = matched;
+                    if (equipped.currentAmmoType.GetInstanceID() != matched.GetInstanceID())
+                    {
+                        Debug.LogWarning("[DropAmount] currentAmmoType đang giữ bản lệch → cập nhật lại");
+                        equipped.currentAmmoType = matched;
+                    }
                 }
+
+                PlayerWeaponCtrl.Instance?.ammoUI?.Refresh();
             }
         }
 
+        var hud = FindObjectOfType<WeightDisplayHUD>(true);
+        if (hud != null) hud.ForceUpdate();
+
         Hide();
     }
+
 }

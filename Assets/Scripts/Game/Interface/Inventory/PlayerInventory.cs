@@ -14,6 +14,48 @@ public class PlayerInventory : MonoBehaviour
     public PlayerModelViewer modelViewer;
     public static System.Action InventoryChanged;
 
+    public float SoftLimit = 35f;
+    public float MaxWeight = 50f;
+
+    public float equippedWeightReductionFactor = 0.5f; // 50% nếu mặc
+    public float wieldedWeaponWeightFactor = 0.75f;     // 75% nếu đang cầm
+
+    public float TotalWeight
+    {
+        get
+        {
+            float total = 0f;
+
+            // Kho đồ thường
+            total += items.Where(i => i != null).Sum(i => i.TotalWeight);
+
+            // Vũ khí trang bị
+            for (int i = 0; i < weaponSlots.Length; i++)
+            {
+                var wpn = weaponSlots[i];
+                if (wpn == null) continue;
+
+                float factor = (wpn == equippedWeapon) ? wieldedWeaponWeightFactor : 1f;
+                total += wpn.TotalWeight * factor;
+            }
+
+            // Giáp đang mặc
+            var armorMgr = GetComponent<EquippedArmorManager>();
+            if (armorMgr != null)
+            {
+                foreach (var armor in armorMgr.GetAllEquippedArmors())
+                {
+                    if (armor?.sourceItem != null)
+                    {
+                        total += armor.sourceItem.TotalWeight * equippedWeightReductionFactor;
+                    }
+                }
+            }
+
+            return total;
+        }
+    }
+
     [HideInInspector]
     public List<InventoryItemRuntime> items = new();
 
@@ -252,8 +294,9 @@ public class PlayerInventory : MonoBehaviour
     public void EquipWeapon(WeaponRuntimeItem runtimeWeapon)
     {
         equippedWeapon = runtimeWeapon;
-PlayerWeaponCtrl.Instance?.runtimeItem?.OnAmmoChanged?.Invoke();
+        PlayerWeaponCtrl.Instance?.runtimeItem?.OnAmmoChanged?.Invoke();
         modelViewer.UpdateSprite(runtimeWeapon);
+        RaiseInventoryChanged("EquipWeapon weight update");
         InventoryChanged?.Invoke();
     }
 
@@ -288,7 +331,7 @@ PlayerWeaponCtrl.Instance?.runtimeItem?.OnAmmoChanged?.Invoke();
         if (slotIndex < 0 || slotIndex >= weaponSlots.Length) return;
 
         weaponSlots[slotIndex] = weapon;
-PlayerWeaponCtrl.Instance?.runtimeItem?.OnAmmoChanged?.Invoke();
+        PlayerWeaponCtrl.Instance?.runtimeItem?.OnAmmoChanged?.Invoke();
         InventoryChanged?.Invoke();
     }
 

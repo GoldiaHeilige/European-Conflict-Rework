@@ -27,7 +27,7 @@ public class PlayerWeaponSwitcher : MonoBehaviour
             weaponController.ClearWeapon();
             if (PlayerWeaponCtrl.Instance != null)
             {
-                Debug.LogWarning($"[PlayerWeaponSwitcher] GỌI ClearWeapon() → Ctrl ID từ Equip = {PlayerWeaponCtrl.Instance.GetInstanceID()}");
+/*                Debug.LogWarning($"[PlayerWeaponSwitcher] GỌI ClearWeapon() → Ctrl ID từ Equip = {PlayerWeaponCtrl.Instance.GetInstanceID()}");*/
                 PlayerWeaponCtrl.Instance.ClearWeapon();
             }
             else
@@ -38,7 +38,8 @@ public class PlayerWeaponSwitcher : MonoBehaviour
             return;
         }
 
-PlayerWeaponCtrl.Instance?.runtimeItem?.OnAmmoChanged?.Invoke();        weaponController.EquipWeapon(updatedWeapon);
+        PlayerWeaponCtrl.Instance?.runtimeItem?.OnAmmoChanged?.Invoke();      
+        weaponController.EquipWeapon(updatedWeapon);
     }
 
     private void ToggleWeapon()

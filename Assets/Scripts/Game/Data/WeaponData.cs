@@ -14,4 +14,7 @@ public class WeaponData : InventoryItemData
     [Header("Ammo")]
     public int clipSize;
     public AmmoData defaultAmmoType;
+
+    [Header("Camera")]
+    public float zoomBonus = 0f;
 }

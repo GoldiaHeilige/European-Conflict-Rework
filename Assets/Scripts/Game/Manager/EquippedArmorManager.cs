@@ -19,6 +19,7 @@ public class EquippedArmorManager : MonoBehaviour
     {
         equipped[(int)runtime.Slot] = runtime;
         Debug.Log($"[EQUIP] Đã gán vào slot {runtime.Slot} → runtimeId: {runtime.sourceItem.runtimeId}");
+        PlayerInventory.Instance?.RaiseInventoryChanged("EquipArmor weight update");
     }
 
     public ArmorRuntime GetArmor(ArmorSlot slot)

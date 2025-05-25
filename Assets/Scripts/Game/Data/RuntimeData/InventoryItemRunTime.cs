@@ -9,6 +9,7 @@ public class InventoryItemRuntime
     public int quantity;
     public int durability;
 
+    public float TotalWeight => itemData != null ? itemData.weightPerUnit * quantity : 0f;
 
     public InventoryItemRuntime(InventoryItemData data, int qty, int? durabilityOverride = null, string forcedId = null)
     {

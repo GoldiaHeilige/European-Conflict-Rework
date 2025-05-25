@@ -1,9 +1,11 @@
 ﻿using UnityEngine.EventSystems;
 using UnityEngine;
+using TMPro;
 
 public class ArmorSlotUI : InventorySlot
 {
     public ArmorSlot armorSlotType;
+    [SerializeField] private TextMeshProUGUI durabilityText;
 
     public override void OnDrop(PointerEventData eventData)
     {
@@ -57,6 +59,7 @@ public class ArmorSlotUI : InventorySlot
         // ✅ Gán bản runtime cho hệ thống mặc
         var armorRuntime = new ArmorRuntime(armorData, armorManager, armorItem);
         armorManager.EquipArmor(armorRuntime, this);
+        FindObjectOfType<WeightDisplayHUD>(true)?.ForceUpdate();
 
         UpdateSlot();
         base.OnDrop(eventData);
@@ -87,21 +90,46 @@ public class ArmorSlotUI : InventorySlot
         if (armor != null)
         {
             SetItem(armor.sourceItem);
+
+            var armorData = armor.armorData;
+            int current = armor.currentDurability;
+            int max = armorData.maxDurability;
+
+            durabilityText.text = $"{current} / {max}";
+
+            float percent = max > 0 ? current / (float)max : 0f;
+
+            if (percent == 0f)
+                durabilityText.color = Color.red;
+            else if (percent <= 0.25f)
+                durabilityText.color = new Color(1f, 0.5f, 0f); // cam
+            else if (percent <= 0.5f)
+                durabilityText.color = Color.yellow;
+            else
+                durabilityText.color = Color.white;
         }
         else
         {
+            durabilityText.text = "--- / ---";
             Clear();
         }
     }
+
 
     private void OnEnable()
     {
         PlayerInventory.InventoryChanged -= UpdateSlot;
         PlayerInventory.InventoryChanged += UpdateSlot;
+
+        ArmorRuntime.OnAnyDurabilityChanged -= UpdateSlot;
+        ArmorRuntime.OnAnyDurabilityChanged += UpdateSlot;
+
     }
 
     private void OnDisable()
     {
         PlayerInventory.InventoryChanged -= UpdateSlot;
+        ArmorRuntime.OnAnyDurabilityChanged -= UpdateSlot;
+
     }
 }

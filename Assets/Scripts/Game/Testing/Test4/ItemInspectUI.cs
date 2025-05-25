@@ -14,6 +14,7 @@ public class ItemInspectUI : MonoBehaviour
     public TextMeshProUGUI nameText;
     public TextMeshProUGUI descriptionText;
     public TextMeshProUGUI categoryTierText;
+    public TextMeshProUGUI weightText;
     public TextMeshProUGUI line1Text;
     public TextMeshProUGUI line2Text;
     public TextMeshProUGUI line3Text;
@@ -32,6 +33,7 @@ public class ItemInspectUI : MonoBehaviour
 
         nameText.text = $"Name: {data.itemName}";
         descriptionText.text = $"Description: {data.description}";
+        weightText.text += $"\n<color=grey><i>Weight:</i> {data.weightPerUnit} kg</color>";
 
         // ✳ Mặc định ẩn các dòng
         categoryTierText.gameObject.SetActive(false);
@@ -76,6 +78,31 @@ public class ItemInspectUI : MonoBehaviour
             line2Text.gameObject.SetActive(true);
             line2Text.text = $"Base Damage: {ammo.baseDamage}";
         }
+
+        else if (data is HealingItemData health)
+        {
+            categoryTierText.gameObject.SetActive(true);
+            categoryTierText.text = "Health Item";
+
+            line1Text.gameObject.SetActive(true);
+            line1Text.text = $"Restore: +{health.healAmount} HP";
+        }
+
+        else if (data is WeaponData weapon)
+        {
+            categoryTierText.gameObject.SetActive(true);
+            categoryTierText.text = "Weapon";
+
+            line1Text.gameObject.SetActive(true);
+            line1Text.text = $"Class: {weapon.weaponClass}";
+
+            line2Text.gameObject.SetActive(true);
+            line2Text.text = $"Fire Rate: {weapon.fireRate}/s";
+
+            line3Text.gameObject.SetActive(true);
+            line3Text.text = $"Reload: {weapon.reloadTime}s | Clip: {weapon.clipSize}";
+        }
+
         // ✳ Nếu có thêm loại item khác thì thêm else if ở đây
 
         if (data.stackable && item.quantity > 1)
@@ -98,8 +125,6 @@ public class ItemInspectUI : MonoBehaviour
             }
         }
     }
-
-
 
     public void Hide()
     {

@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 public class WeaponSlotUI : InventorySlot
 {
     public WeaponSlotType slotType;
+    [SerializeField] private AmmoTypeTextUI_Slot ammoTypeTextUI;
 
     public new int slotIndex => slotType == WeaponSlotType.Primary ? 14 : 15;
 
@@ -60,7 +61,7 @@ public class WeaponSlotUI : InventorySlot
 
         // ❗ 3. Nếu đang có vũ khí khác trong slot → trả lại về kho
         var current = inv.weaponSlots[arrayIndex];
-/*        Debug.Log($"[DEBUG] So sánh: equipped {inv.equippedWeapon?.runtimeId} vs runtime {runtime.runtimeId}");*/
+        /*        Debug.Log($"[DEBUG] So sánh: equipped {inv.equippedWeapon?.runtimeId} vs runtime {runtime.runtimeId}");*/
 
         if (inv.equippedWeapon != null && inv.equippedWeapon.runtimeId == runtime.runtimeId)
         {
@@ -105,24 +106,33 @@ public class WeaponSlotUI : InventorySlot
     {
         int index = GetWeaponArrayIndex();
         var weapon = PlayerInventory.Instance.weaponSlots[index];
+
         if (weapon != null)
         {
             SetItem(weapon);
+            ammoTypeTextUI?.Bind(weapon);
         }
         else
         {
             Clear();
+            ammoTypeTextUI?.Bind(null);
+
         }
     }
 
     private void OnEnable()
     {
-        PlayerInventory.InventoryChanged += UpdateSlot;
+        PlayerInventory.InventoryChanged += OnInventoryUpdate;
     }
 
     private void OnDisable()
     {
-        PlayerInventory.InventoryChanged -= UpdateSlot;
+        PlayerInventory.InventoryChanged -= OnInventoryUpdate;
+    }
+
+    private void OnInventoryUpdate()
+    {
+        UpdateSlot(); // gọi lại slot để bind lại runtime hiện tại
     }
 
 }

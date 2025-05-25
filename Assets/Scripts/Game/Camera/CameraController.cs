@@ -6,6 +6,8 @@ public class CameraController : MonoBehaviour
     public Transform target; 
     public CinemachineVirtualCamera virtualCam;
 
+    public float weaponZoomBonus = 0f;
+
     public float minZoom = 4f;
     public float maxZoom = 8f;
     public float zoomSpeed = 10f;
@@ -46,7 +48,9 @@ public class CameraController : MonoBehaviour
         framingTransposer.m_TrackedObjectOffset = new Vector3(currentOffset.x, currentOffset.y, 0);
 
         // Zooming logic
-        float targetZoom = Mathf.Clamp(minZoom + distance / 4f, minZoom, maxZoom);
+        float adjustedMaxZoom = maxZoom + weaponZoomBonus;
+        float targetZoom = Mathf.Clamp(minZoom + distance / 4f, minZoom, adjustedMaxZoom);
+
         float currentZoom = virtualCam.m_Lens.OrthographicSize;
         float newZoom = Mathf.Lerp(currentZoom, targetZoom, Time.deltaTime * zoomSpeed);
         virtualCam.m_Lens.OrthographicSize = newZoom;

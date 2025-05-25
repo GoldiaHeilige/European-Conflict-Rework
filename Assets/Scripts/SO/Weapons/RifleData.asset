@@ -15,6 +15,7 @@ MonoBehaviour:
   itemName: Assault Rifle
   icon: {fileID: 21300000, guid: 6ed7106ace501be4fa849a45a5d8ca85, type: 3}
   worldSprite: {fileID: 21300000, guid: 3394c7117d7c3a740add627b3322bf95, type: 3}
+  weightPerUnit: 8
   description: A standard issued military Assault Rifle.
   itemID: AR_1
   category: 2
@@ -28,3 +29,4 @@ MonoBehaviour:
   reloadTime: 5
   clipSize: 30
   defaultAmmoType: {fileID: 11400000, guid: 55db89c5d4ca3834e9fd47c1709a5b48, type: 2}
+  zoomBonus: 0.4
