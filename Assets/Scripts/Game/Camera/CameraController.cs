@@ -7,6 +7,7 @@ public class CameraController : MonoBehaviour
     public CinemachineVirtualCamera virtualCam;
 
     public float weaponZoomBonus = 0f;
+    float helmetZoomPenalty = 0f;
 
     public float minZoom = 4f;
     public float maxZoom = 8f;
@@ -48,7 +49,22 @@ public class CameraController : MonoBehaviour
         framingTransposer.m_TrackedObjectOffset = new Vector3(currentOffset.x, currentOffset.y, 0);
 
         // Zooming logic
-        float adjustedMaxZoom = maxZoom + weaponZoomBonus;
+
+        var armorMgr = PlayerInventory.Instance?.GetComponent<EquippedArmorManager>();
+
+        if (armorMgr != null)
+        {
+            foreach (var armor in armorMgr.GetAllEquippedArmors())
+            {
+                if (armor?.armorData != null && armor.armorData.armorSlot == ArmorSlot.Head)
+                {
+                    helmetZoomPenalty += armor.armorData.zoomPenalty;
+                }
+            }
+        }
+
+        float adjustedMaxZoom = maxZoom + weaponZoomBonus - helmetZoomPenalty;
+        adjustedMaxZoom = Mathf.Max(minZoom, adjustedMaxZoom); // không để thấp hơn min
         float targetZoom = Mathf.Clamp(minZoom + distance / 4f, minZoom, adjustedMaxZoom);
 
         float currentZoom = virtualCam.m_Lens.OrthographicSize;

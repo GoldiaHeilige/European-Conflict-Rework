@@ -57,16 +57,6 @@ public class InventoryUI : MonoBehaviour
         UpdateInventory(items);
     }
 
-
-    public void UpdateStats(float hp)
-    {
-        if (hpText != null)
-            hpText.text = $"{hp}";
-        else
-            Debug.LogWarning("hpText is null in InventoryUI");
-    }
-
-
     public void UpdateInventory(List<InventoryItemRuntime> items)
     {
         for (int i = 0; i < slots.Length; i++)

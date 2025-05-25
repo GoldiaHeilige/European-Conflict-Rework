@@ -30,12 +30,15 @@ public class WeightDisplayHUD : MonoBehaviour
 
         float weight = playerInventory.TotalWeight;
         float soft = playerInventory.SoftLimit;
+        float hard = playerInventory.HardLimit;
         float max = playerInventory.MaxWeight;
 
         weightText.text = $"{weight:0.0} kg";
 
         if (weight > max)
             weightText.color = Color.red;
+        else if (weight > hard)
+            weightText.color = new Color(1f, 0.5f, 0f); 
         else if (weight > soft)
             weightText.color = Color.yellow;
         else

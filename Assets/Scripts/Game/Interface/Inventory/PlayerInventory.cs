@@ -15,6 +15,7 @@ public class PlayerInventory : MonoBehaviour
     public static System.Action InventoryChanged;
 
     public float SoftLimit = 35f;
+    public float HardLimit = 42f;
     public float MaxWeight = 50f;
 
     public float equippedWeightReductionFactor = 0.5f; // 50% nếu mặc
@@ -367,7 +368,7 @@ public class PlayerInventory : MonoBehaviour
         currentWeaponIndex = index;
         modelViewer?.UpdateSprite(equippedWeapon);
 
-PlayerWeaponCtrl.Instance?.runtimeItem?.OnAmmoChanged?.Invoke();
+        PlayerWeaponCtrl.Instance?.runtimeItem?.OnAmmoChanged?.Invoke();
         Debug.Log($"[Inventory] Trang bị vũ khí {equippedWeapon.baseData.itemName} từ slot {index}.");
     }
 

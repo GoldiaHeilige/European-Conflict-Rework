@@ -15,7 +15,7 @@ MonoBehaviour:
   itemName: Launcher Explosive Ammo Crate
   icon: {fileID: 464023628, guid: 467847c8b7e604a46b0ffe335e455bfc, type: 3}
   worldSprite: {fileID: 21300000, guid: d18f33d9458d8174d89c0ecde45eca9c, type: 3}
-  weightPerUnit: 2
+  weightPerUnit: 1
   description: A small crate of High Explosive Warheads for Grenade Launcher.
   itemID: Ammo_GL_HE
   category: 1

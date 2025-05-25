@@ -60,7 +60,6 @@ public class InterfaceManager : MonoBehaviour
         if (overlayUI != null) overlayUI.SetActive(true);
         if (hudUI != null) hudUI.SetActive(false);
 
-        inventoryUIHandler.UpdateStats(000);
         inventoryUIHandler.UpdateInventory(PlayerInventory.Instance.GetItems());
 
         Time.timeScale = 0f;
@@ -78,7 +77,6 @@ public class InterfaceManager : MonoBehaviour
         if (inventoryUIHandler != null)
         {
             var stats = FindObjectOfType<EntityStats>();
-            inventoryUIHandler.UpdateStats(stats != null ? stats.CurrentHP : 0);
             inventoryUIHandler.UpdateInventory(PlayerInventory.Instance.GetItems());
         }
 
@@ -98,7 +96,7 @@ public class InterfaceManager : MonoBehaviour
             FindObjectOfType<AmmoTextUI>()?.Bind(PlayerWeaponCtrl.Instance.runtimeItem); 
         }
 
-        // 🔒 Tắt toàn bộ popup UI nếu đang bật
+        // Tắt toàn bộ popup UI nếu đang bật
         if (ItemContextMenu.currentOpenMenu != null)
             ItemContextMenu.currentOpenMenu.Close();
 
@@ -109,7 +107,6 @@ public class InterfaceManager : MonoBehaviour
             ItemInspectUI.Instance.Hide();
 
         // Có thể thêm các popup khác sau này
-
 
         Time.timeScale = 1f;
 

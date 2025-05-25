@@ -7,6 +7,12 @@ public class ArmorData : InventoryItemData
 
     [Header("Armor Stats")]
     public int armorRating = 30;
+    public int maxDurability = 100;
+    public int tier = 1;
+
+    [Header("Penalties")]
+    public float moveSpeedPenalty = 0f; // Áp dụng cho cả mũ và giáp
+    public float zoomPenalty = 0f; // Chỉ dùng cho mũ (Helmet)
 
     // Every 15 rating is a tier
 
@@ -16,9 +22,4 @@ public class ArmorData : InventoryItemData
     // 36 -> 45 = Tier 4
     // 46 -> 55 = Tier 5
     // 56 -> 75 = Tier 6
-
-    public int maxDurability = 100;
-
-    [Tooltip("Tier Display")]
-    public int tier;
 }

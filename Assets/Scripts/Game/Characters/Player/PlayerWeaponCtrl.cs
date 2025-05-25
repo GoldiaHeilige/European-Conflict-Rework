@@ -62,8 +62,8 @@ public class PlayerWeaponCtrl : MonoBehaviour
         ammoUI?.Bind(runtimeItem);
         modelViewer?.UpdateSprite(runtimeItem);
 
-        Debug.Log($"[WEAPON EQUIP] Gán weapon: {newItem.baseData.itemName} | GUID: {newItem.guid}");
-        Debug.Log($"[EquipWeapon] WeaponCtrl ID: {GetInstanceID()} | gán = {newItem?.runtimeId ?? "null"}");
+/*        Debug.Log($"[WEAPON EQUIP] Gán weapon: {newItem.baseData.itemName} | GUID: {newItem.guid}");
+        Debug.Log($"[EquipWeapon] WeaponCtrl ID: {GetInstanceID()} | gán = {newItem?.runtimeId ?? "null"}");*/
     }
 
     public void ClearWeapon()

@@ -45,6 +45,6 @@ public class AmmoTypeTextUI : MonoBehaviour
         }
 
         var ammo = runtime.currentAmmoType;
-        ammoTypeText.text = $"{ammo.shortName}  (T {ammo.tier})";
+        ammoTypeText.text = $"{ammo.shortName}  ({ammo.tier})";
     }
 }

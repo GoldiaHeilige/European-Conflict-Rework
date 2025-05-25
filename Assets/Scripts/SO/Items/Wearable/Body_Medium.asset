@@ -27,3 +27,5 @@ MonoBehaviour:
   armorRating: 25
   maxDurability: 200
   tier: 2
+  moveSpeedPenalty: 0.2
+  zoomPenalty: 0
