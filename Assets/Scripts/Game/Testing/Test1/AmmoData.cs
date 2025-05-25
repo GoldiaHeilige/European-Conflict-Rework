@@ -11,6 +11,7 @@ public class AmmoData : ScriptableObject
     [Header("Thuộc tính sát thương")]
     public int penetrationPower;           // Penetration Rating
     public int baseDamage;
+    public bool isExplosive = false;
 
     [Tooltip("Sát thương blunt khi không xuyên (tính theo % damage gốc)")]
     [Range(0f, 1f)] public float bluntDamageMultiplier = 0.2f;

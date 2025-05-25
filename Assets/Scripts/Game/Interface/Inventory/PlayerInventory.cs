@@ -271,20 +271,32 @@ public class PlayerInventory : MonoBehaviour
 
     public AmmoData GetDefaultAmmoFor(WeaponClass weaponClass)
     {
-        foreach (var ammo in knownAmmoTypes)
+        // Nếu là súng nổ → ưu tiên HE
+        if (weaponClass == WeaponClass.Grenade_Launcher)
         {
-            if (ammo.compatibleWeapon == weaponClass)
-            {
-                // Ưu tiên FMJ nếu có
-                if (ammo.ammoName.ToLower().Contains("fmj"))
-                    return ammo;
-            }
+            var heAmmo = knownAmmoTypes.FirstOrDefault(a =>
+                a.compatibleWeapon == weaponClass &&
+                a.ammoName.ToLower().Contains("he"));
+
+            if (heAmmo != null)
+                return heAmmo;
+        }
+        else
+        {
+            // Các loại súng khác → ưu tiên FMJ
+            var fmjAmmo = knownAmmoTypes.FirstOrDefault(a =>
+                a.compatibleWeapon == weaponClass &&
+                a.ammoName.ToLower().Contains("fmj"));
+
+            if (fmjAmmo != null)
+                return fmjAmmo;
         }
 
-        // Không có FMJ → trả ammo bất kỳ phù hợp weaponClass
-        Debug.LogWarning($"Không tìm thấy FMJ cho {weaponClass}, dùng bất kỳ đạn nào khớp weaponClass");
+        // Nếu không có FMJ hoặc HE → trả cái đầu tiên hợp class
+        Debug.LogWarning($"Không tìm thấy FMJ/HE cho {weaponClass}, dùng bất kỳ ammo nào khớp weaponClass");
         return knownAmmoTypes.FirstOrDefault(a => a.compatibleWeapon == weaponClass);
     }
+
 
 
     public List<InventoryItemRuntime> GetItems()

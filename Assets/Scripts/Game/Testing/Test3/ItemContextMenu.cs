@@ -170,6 +170,8 @@ public class ItemContextMenu : MonoBehaviour
         LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
         EventSystem.current.SetSelectedGameObject(null);
         StartCoroutine(EnableInteractionNextFrame());
+
+        UIStackClose.Push(this.gameObject);
     }
 
     private void DropItem()
@@ -278,6 +280,8 @@ public class ItemContextMenu : MonoBehaviour
 
     public void Close()
     {
+        UIStackClose.Remove(this.gameObject);
+
         if (currentOpenMenu == this)
             currentOpenMenu = null;
 

@@ -23,7 +23,6 @@ public class ItemInspectUI : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        Debug.Log("✅ ItemInspectUI Awake called, Instance set");
         closeButton.onClick.AddListener(Hide);
     }
 
@@ -35,7 +34,7 @@ public class ItemInspectUI : MonoBehaviour
         descriptionText.text = $"Description: {data.description}";
         weightText.text += $"\n<color=grey><i>Weight:</i> {data.weightPerUnit} kg</color>";
 
-        // ✳ Mặc định ẩn các dòng
+        // Mặc định ẩn các dòng
         categoryTierText.gameObject.SetActive(false);
         line1Text.gameObject.SetActive(false);
         line2Text.gameObject.SetActive(false);
@@ -43,7 +42,7 @@ public class ItemInspectUI : MonoBehaviour
 
         iconImage.sprite = data.icon;
 
-        // 👉 Tùy loại item mà hiện chi tiết phù hợp
+        // Tùy loại item mà hiện chi tiết phù hợp
         if (data is ArmorData armor)
         {
             categoryTierText.gameObject.SetActive(true);
@@ -52,7 +51,7 @@ public class ItemInspectUI : MonoBehaviour
             line1Text.gameObject.SetActive(true);
             line1Text.text = $"Armor Rating: {armor.armorRating}";
 
-            // 🟡 Tìm runtime item để lấy current durability
+            // Tìm runtime item để lấy current durability
             if (item is ArmorRuntimeItem armorRuntime)
             {
                 line2Text.gameObject.SetActive(true);
@@ -103,7 +102,7 @@ public class ItemInspectUI : MonoBehaviour
             line3Text.text = $"Reload: {weapon.reloadTime}s | Clip: {weapon.clipSize}";
         }
 
-        // ✳ Nếu có thêm loại item khác thì thêm else if ở đây
+        // Nếu có thêm loại item khác thì thêm else if ở đây
 
         if (data.stackable && item.quantity > 1)
         {
@@ -112,6 +111,7 @@ public class ItemInspectUI : MonoBehaviour
         }
 
         panel.SetActive(true);
+        UIStackClose.Push(this.gameObject);
     }
 
     public static void InitIfNeeded()
@@ -121,13 +121,14 @@ public class ItemInspectUI : MonoBehaviour
             Instance = FindObjectOfType<ItemInspectUI>(true);
             if (Instance == null)
             {
-                Debug.LogError("❌ Không tìm thấy ItemInspectUI trong scene!");
+                Debug.LogError("Không tìm thấy ItemInspectUI trong scene!");
             }
         }
     }
 
     public void Hide()
     {
+        UIStackClose.Remove(this.gameObject);
         panel.SetActive(false);
     }
 }

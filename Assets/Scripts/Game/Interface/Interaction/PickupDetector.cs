@@ -17,9 +17,11 @@ public class PickupDetector : MonoBehaviour
 
     private void Update()
     {
+        if (InterfaceManager.IsInventoryOpen) return;
         DetectItemUnderMouse();
         HandlePickupInput();
     }
+
 
     void DetectItemUnderMouse()
     {

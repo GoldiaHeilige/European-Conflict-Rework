@@ -13,6 +13,8 @@ public class InterfaceManager : MonoBehaviour
 
     private bool inventoryOpen = false;
 
+    public static bool IsInventoryOpen { get; private set; } = false;
+
     private void Start()
     {
         CloseInventory();
@@ -24,6 +26,19 @@ public class InterfaceManager : MonoBehaviour
         {
             ToggleInventoryUI();
         }
+
+        if (Keyboard.current.escapeKey.wasPressedThisFrame)
+        {
+            if (UIStackClose.HasPopup)
+            {
+                UIStackClose.PopTop();
+            }
+            else if (inventoryOpen)
+            {
+                CloseInventory();
+            }
+        }
+
     }
 
     public void ToggleInventoryUI()
@@ -40,6 +55,7 @@ public class InterfaceManager : MonoBehaviour
 
     private void OpenInventory()
     {
+        IsInventoryOpen = true;
         inventoryOpen = true;
         PlayerRotation.allowMouseLook = false;
 
@@ -67,8 +83,11 @@ public class InterfaceManager : MonoBehaviour
 
     private void CloseInventory()
     {
+        IsInventoryOpen = false;
         inventoryOpen = false;
         PlayerRotation.allowMouseLook = true;
+
+        UIStackClose.Clear();
 
         if (inventoryUI != null) inventoryUI.SetActive(false);
         if (overlayUI != null) overlayUI.SetActive(false);
