@@ -36,15 +36,14 @@ public class DragPreviewSystem : MonoBehaviour
     public void MoveTo(Vector2 position)
     {
         int offsetY = 0;
-        Vector2 localPoint;
+        RectTransform canvasRect = previewObject.GetComponentInParent<Canvas>().GetComponent<RectTransform>();
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            previewObject.transform.parent as RectTransform,
+            canvasRect,
             position,
-            Camera.main,
-            out localPoint
+            null, // null nếu Canvas là Screen Space Overlay
+            out var localPoint
         );
         previewObject.GetComponent<RectTransform>().anchoredPosition = localPoint + new Vector2(0, offsetY);
-
     }
 
     public void Hide()

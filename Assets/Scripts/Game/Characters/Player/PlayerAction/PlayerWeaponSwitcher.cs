@@ -10,12 +10,13 @@ public class PlayerWeaponSwitcher : MonoBehaviour
 
     private void Update()
     {
-        if (InterfaceManager.IsInventoryOpen) return;
+        if (PauseMenu.IsGamePaused || InterfaceManager.IsInventoryOpen) return;
 
         if (Input.GetKeyDown(KeyCode.Alpha1)) Equip(0);
         else if (Input.GetKeyDown(KeyCode.Alpha2)) Equip(1);
         else if (Input.GetKeyDown(KeyCode.Q)) ToggleWeapon();
     }
+
 
     private void Equip(int index)
     {

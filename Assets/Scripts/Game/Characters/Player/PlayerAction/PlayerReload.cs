@@ -28,12 +28,13 @@ public class PlayerReload : WpnReloadBase
 
     protected override bool ShouldReload()
     {
+        if (PauseMenu.IsGamePaused) return false;
         if (InterfaceManager.IsInventoryOpen) return false;
+
         return Input.GetKeyDown(KeyCode.R) &&
                weaponRuntime != null &&
                weaponRuntime.CanReload(playerInventory);
     }
-
 
     protected override void FinishReload()
     {

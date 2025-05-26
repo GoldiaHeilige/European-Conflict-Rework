@@ -17,9 +17,6 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, 
     {
         Clear(); // remove old UI
 
-/*        Debug.Log($"[SetItem] Slot {slotIndex} ← ID: {item?.runtimeId} | dura: {item?.durability}");*/
-
-
         currentItem = item; // chỉ gán reference
 
         if (item == null || item.itemData == null)
@@ -30,8 +27,24 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, 
 
         if (iconHolderPrefab == null) return;
 
+        // ✅ Khởi tạo icon
         currentIconObj = Instantiate(iconHolderPrefab, transform);
 
+        // ✅ Đảm bảo icon nằm trong đúng Canvas (Interface)
+        var canvas = GetComponentInParent<Canvas>();
+        if (canvas != null)
+        {
+            // Nếu trong prefab còn sót Canvas phụ thì xóa đi
+            var innerCanvas = currentIconObj.GetComponent<Canvas>();
+            if (innerCanvas != null)
+            {
+                GameObject.Destroy(innerCanvas);
+            }
+
+            // Không cần set canvas lại vì nằm đúng hierarchy
+        }
+
+        // ✅ Gắn layout cho RectTransform
         RectTransform rt = currentIconObj.GetComponent<RectTransform>();
         if (rt != null)
         {
@@ -44,20 +57,47 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, 
             rt.offsetMax = Vector2.zero;
             rt.localScale = Vector3.one;
 
+            // Tùy chỉnh scale riêng cho giáp
             if (this is ArmorSlotUI armorSlot)
+            {
                 rt.localScale = armorSlot.armorSlotType == ArmorSlot.Head
                     ? new Vector3(1.8f, 1.8f, 1)
                     : new Vector3(1.5f, 1.5f, 1);
+            }
         }
 
+        // ✅ Cập nhật hình ảnh icon
         Image img = currentIconObj.GetComponentInChildren<Image>();
         if (img != null)
+        {
             img.sprite = item.itemData.icon;
+            img.raycastTarget = false; // tránh chặn raycast slot
+        }
 
+
+        // ✅ Hiển thị số lượng nếu stackable
         var text = currentIconObj.GetComponentInChildren<TextMeshProUGUI>();
         if (text != null)
-            text.text = item.itemData.stackable && item.quantity > 1 ? item.quantity.ToString() : "";
+        {
+            text.text = item.itemData.stackable && item.quantity > 1
+                ? item.quantity.ToString()
+                : "";
+        }
+
+        // ✅ Disable raycast cho toàn bộ Image trong icon
+        foreach (var imgElem in currentIconObj.GetComponentsInChildren<Image>(true))
+        {
+            imgElem.raycastTarget = false;
+        }
+
+        // ✅ Optional: nếu bạn dùng TextMeshProUGUI có Raycast Target
+        foreach (var tmp in currentIconObj.GetComponentsInChildren<TextMeshProUGUI>(true))
+        {
+            tmp.raycastTarget = false;
+        }
+
     }
+
 
     public virtual void Clear()
     {
@@ -203,14 +243,19 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, 
         if (draggingItem == null) return;
 
         bool isSwap = HasItem();
-        SlotHighlightPreview.Instance.Show(draggingItem.itemData.icon, isSwap);
-        SlotHighlightPreview.Instance.MoveTo(transform.position);
+        if (SlotHighlightPreview.Instance != null)
+        {
+            SlotHighlightPreview.Instance.Show(draggingItem.itemData.icon, isSwap);
+            SlotHighlightPreview.Instance.MoveTo(transform.position);
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        SlotHighlightPreview.Instance.Hide();
+        if (SlotHighlightPreview.Instance != null)
+            SlotHighlightPreview.Instance.Hide();
     }
+
 
     public InventoryItemRuntime GetItemFromInventorySlot()
     {

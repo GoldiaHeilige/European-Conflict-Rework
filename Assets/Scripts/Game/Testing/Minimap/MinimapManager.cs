@@ -34,19 +34,26 @@ public class MinimapManager : MonoBehaviour
         var prefab = GetIconPrefab(target.iconInfo);
         if (prefab == null) return;
 
-        var icon = Instantiate(prefab, minimapRect);
-        target.minimapIcon = icon.GetComponent<RectTransform>();
-        iconDict[target] = target.minimapIcon;
+        var icon = MinimapIconPool.Instance.GetIcon(target.iconInfo);
+        if (icon == null) return;
+
+        icon.SetParent(minimapRect, false); // Gắn vào nơi hiển thị
+        target.minimapIcon = icon;
+        iconDict[target] = icon;
     }
 
     public void UnregisterTarget(MinimapTarget target)
     {
         if (iconDict.TryGetValue(target, out var icon))
         {
-            Destroy(icon.gameObject);
+            // CHẶN truy cập nếu icon đã bị hủy
+            if (icon == null || icon.Equals(null)) return;
+
+            MinimapIconPool.Instance.ReturnIcon(target.iconInfo, icon.gameObject);
             iconDict.Remove(target);
         }
     }
+
 
     private GameObject GetIconPrefab(MinimapIconInfo info)
     {

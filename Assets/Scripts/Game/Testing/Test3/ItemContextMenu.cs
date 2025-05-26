@@ -104,7 +104,7 @@ public class ItemContextMenu : MonoBehaviour
 
 
 
-        // 🔥 Nếu là súng đang được cầm → cho phép đổi đạn
+        // Nếu là súng đang được cầm → cho phép đổi đạn
         if (currentItem is WeaponRuntimeItem weapon)
         {
             var equipped = PlayerWeaponCtrl.Instance?.runtimeItem;
@@ -132,7 +132,7 @@ public class ItemContextMenu : MonoBehaviour
 
         healingButton.gameObject.SetActive(false);
 
-        // ✅ Chỉ hiện nếu là item hồi máu
+        // Chỉ hiện nếu là item hồi máu
         if (item.itemData is HealingItemData)
         {
             healingButton.gameObject.SetActive(true);
@@ -147,7 +147,7 @@ public class ItemContextMenu : MonoBehaviour
         if (closeButton != null)
         {
             closeButton.onClick.RemoveAllListeners();
-            closeButton.onClick.AddListener(Close); // gọi hàm Close có sẵn
+            closeButton.onClick.AddListener(Close); 
         }
 
         // Đặt vị trí
@@ -170,8 +170,8 @@ public class ItemContextMenu : MonoBehaviour
         LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
         EventSystem.current.SetSelectedGameObject(null);
         StartCoroutine(EnableInteractionNextFrame());
-
-        UIStackClose.Push(this.gameObject);
+/*
+        UIStackClose.Push(this.gameObject);*/
     }
 
     private void DropItem()
@@ -208,7 +208,7 @@ public class ItemContextMenu : MonoBehaviour
         PlayerInventory.Instance.RemoveExactItem(currentItem);
         PlayerInventory.Instance.RaiseInventoryChanged("Drop item từ đúng slot");
 
-        // ✅ Trừ khỏi ammoCounts nếu là AmmoItemData
+        // Trừ khỏi ammoCounts nếu là AmmoItemData
         if (currentItem.itemData is AmmoItemData ammoItemData)
         {
             var matched = PlayerInventory.Instance.knownAmmoTypes
@@ -280,7 +280,7 @@ public class ItemContextMenu : MonoBehaviour
 
     public void Close()
     {
-        UIStackClose.Remove(this.gameObject);
+/*        UIStackClose.Remove(this.gameObject);*/
 
         if (currentOpenMenu == this)
             currentOpenMenu = null;
@@ -297,6 +297,6 @@ public class ItemContextMenu : MonoBehaviour
         if (changeAmmoButton != null)
             changeAmmoButton.interactable = true;
 
-        Debug.Log("[Popup] Buttons đã được bật tương tác.");
+/*        Debug.Log("[Popup] Buttons đã được bật tương tác.");*/
     }
 }

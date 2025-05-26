@@ -18,6 +18,8 @@ public class InventorySlotDragHandler : MonoBehaviour, IBeginDragHandler, IDragH
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        Debug.Log("[DEBUG] OnBeginDrag gọi");
+
         var parentSlot = GetComponentInParent<InventorySlot>();
 
         // Thêm check null để tránh crash

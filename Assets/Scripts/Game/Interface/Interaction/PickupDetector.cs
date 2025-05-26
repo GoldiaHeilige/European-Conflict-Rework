@@ -17,6 +17,7 @@ public class PickupDetector : MonoBehaviour
 
     private void Update()
     {
+        if (PauseMenu.IsGamePaused) return;
         if (InterfaceManager.IsInventoryOpen) return;
         DetectItemUnderMouse();
         HandlePickupInput();

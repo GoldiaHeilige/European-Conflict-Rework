@@ -111,7 +111,7 @@ public class ItemInspectUI : MonoBehaviour
         }
 
         panel.SetActive(true);
-        UIStackClose.Push(this.gameObject);
+/*        UIStackClose.Push(this.gameObject);*/
     }
 
     public static void InitIfNeeded()
@@ -128,7 +128,7 @@ public class ItemInspectUI : MonoBehaviour
 
     public void Hide()
     {
-        UIStackClose.Remove(this.gameObject);
+/*        UIStackClose.Remove(this.gameObject);*/
         panel.SetActive(false);
     }
 }

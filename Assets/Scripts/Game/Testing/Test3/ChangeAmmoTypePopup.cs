@@ -99,14 +99,14 @@ public class ChangeAmmoTypePopup : MonoBehaviour
             closeButton.onClick.RemoveAllListeners();
             closeButton.onClick.AddListener(() =>
             {
-                UIStackClose.Remove(this.gameObject);
+/*                UIStackClose.Remove(this.gameObject);*/
                 gameObject.SetActive(false);
             });
         }
 
 
         gameObject.SetActive(true);
-        UIStackClose.Push(this.gameObject);
+/*        UIStackClose.Push(this.gameObject);*/
         Debug.Log("[ChangeAmmoPopup] Popup hiển thị thành công");
     }
 

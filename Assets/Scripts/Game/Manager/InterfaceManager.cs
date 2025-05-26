@@ -1,7 +1,7 @@
 ﻿
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.LowLevel;
 
 public class InterfaceManager : MonoBehaviour
 {
@@ -9,6 +9,7 @@ public class InterfaceManager : MonoBehaviour
     [SerializeField] private GameObject hudUI;
     [SerializeField] private GameObject inventoryUI;
     [SerializeField] private GameObject overlayUI;
+    [SerializeField] private GameObject pauseMenu;
     [SerializeField] private InventoryUI inventoryUIHandler;
 
     private bool inventoryOpen = false;
@@ -17,28 +18,29 @@ public class InterfaceManager : MonoBehaviour
 
     private void Start()
     {
-        CloseInventory();
+        StartCoroutine(InitInventoryUI());
     }
+
+    private IEnumerator InitInventoryUI()
+    {
+        inventoryUI.SetActive(false);
+        overlayUI.SetActive(false);
+        hudUI.SetActive(true);
+        pauseMenu.SetActive(false);
+
+        yield return null;
+
+/*        inventoryUI.SetActive(false);
+        overlayUI.SetActive(false);*/
+    }
+
 
     private void Update()
     {
-        if (Keyboard.current.iKey.wasPressedThisFrame)
+        if (Input.GetKeyDown(KeyCode.I) && !PauseMenu.IsGamePaused)
         {
             ToggleInventoryUI();
         }
-
-        if (Keyboard.current.escapeKey.wasPressedThisFrame)
-        {
-            if (UIStackClose.HasPopup)
-            {
-                UIStackClose.PopTop();
-            }
-            else if (inventoryOpen)
-            {
-                CloseInventory();
-            }
-        }
-
     }
 
     public void ToggleInventoryUI()
@@ -60,6 +62,7 @@ public class InterfaceManager : MonoBehaviour
         PlayerRotation.allowMouseLook = false;
 
         if (inventoryUI != null) inventoryUI.SetActive(true);
+/*        UIStackClose.Push(inventoryUI);*/
 
         WeightDisplayHUD hud = inventoryUI.GetComponentInChildren<WeightDisplayHUD>(true);
         if (hud != null)
@@ -86,8 +89,6 @@ public class InterfaceManager : MonoBehaviour
         IsInventoryOpen = false;
         inventoryOpen = false;
         PlayerRotation.allowMouseLook = true;
-
-        UIStackClose.Clear();
 
         if (inventoryUI != null) inventoryUI.SetActive(false);
         if (overlayUI != null) overlayUI.SetActive(false);

@@ -26,12 +26,12 @@ public class DropAmountPopup : MonoBehaviour
         titleText.text = $"Drop how many? (max {item.quantity})";
         quantityInput.text = "1";
         gameObject.SetActive(true);
-        UIStackClose.Push(this.gameObject);
+/*        UIStackClose.Push(this.gameObject);*/
     }
 
     public void Hide()
     {
-        UIStackClose.Remove(this.gameObject);
+/*        UIStackClose.Remove(this.gameObject);*/
         gameObject.SetActive(false);
     }
 

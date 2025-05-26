@@ -46,10 +46,10 @@ public class WeaponSlotUI : InventorySlot
         var inv = PlayerInventory.Instance;
         int arrayIndex = GetWeaponArrayIndex();
 
-        // ❗ 1. Loại bỏ bản trùng ở items[] (kho)
+        // 1. Loại bỏ bản trùng ở items[] (kho)
         inv.RemoveExactItem(runtime);
 
-        // ❗ 2. Loại bỏ bản trùng ở mọi weaponSlots
+        // 2. Loại bỏ bản trùng ở mọi weaponSlots
         for (int i = 0; i < inv.weaponSlots.Length; i++)
         {
             if (inv.weaponSlots[i] != null && inv.weaponSlots[i].runtimeId == runtime.runtimeId)
@@ -59,8 +59,30 @@ public class WeaponSlotUI : InventorySlot
             }
         }
 
-        // ❗ 3. Nếu đang có vũ khí khác trong slot → trả lại về kho
+        // 3. Nếu đang có vũ khí khác trong slot → trả lại về kho
         var current = inv.weaponSlots[arrayIndex];
+
+        if (dragSource is WeaponSlotUI sourceWeaponSlot)
+        {
+            int sourceIndex = sourceWeaponSlot.GetWeaponArrayIndex();
+            var sourceItem = inv.weaponSlots[sourceIndex];
+
+            // Gán vũ khí hiện tại của đích về lại chỗ nguồn
+            if (current != null)
+            {
+                inv.weaponSlots[sourceIndex] = current;
+                sourceWeaponSlot.UpdateSlot();
+            }
+        }
+        else
+        {
+            // Nếu kéo từ kho đồ → vũ khí cũ trả lại kho
+            if (current != null)
+            {
+                inv.ReturnItemToInventory(current);
+            }
+        }
+
         /*        Debug.Log($"[DEBUG] So sánh: equipped {inv.equippedWeapon?.runtimeId} vs runtime {runtime.runtimeId}");*/
 
         if (inv.equippedWeapon != null && inv.equippedWeapon.runtimeId == runtime.runtimeId)

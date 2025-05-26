@@ -9,11 +9,16 @@ public class ArmorStatusUI : MonoBehaviour
 
     private void Start()
     {
-        armorMgr = FindObjectOfType<EquippedArmorManager>();
-        UpdateDisplay();
+        var player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+        {
+            armorMgr = player.GetComponentInChildren<EquippedArmorManager>();
+        }
 
+        UpdateDisplay();
         PlayerInventory.InventoryChanged += UpdateDisplay;
     }
+
 
     private void OnDestroy()
     {
