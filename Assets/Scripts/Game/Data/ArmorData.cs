@@ -14,6 +14,14 @@ public class ArmorData : InventoryItemData
     public float moveSpeedPenalty = 0f; // Áp dụng cho cả mũ và giáp
     public float zoomPenalty = 0f; // Chỉ dùng cho mũ (Helmet)
 
+    [Header("Armor Audio Keys")]
+    public string equipCategory = "UI";
+    public string equipSubKey = "Armor_Equip";
+
+    public string unequipCategory = "UI";
+    public string unequipSubKey = "Armor_Unequip";
+
+
     // Every 15 rating is a tier
 
     // 1 -> 15 = Tier 1

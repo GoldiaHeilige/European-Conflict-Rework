@@ -22,6 +22,10 @@ MonoBehaviour:
   worldPrefab: {fileID: 43732752975138493, guid: 11d8e0f6f2a937e4a84651350be09580, type: 3}
   stackable: 0
   maxStack: 1
+  pickupCategory: Item
+  pickupSubKey: Item_Pickup
+  dropCategory: Item
+  dropSubKey: Item_Drop
   equippable: 1
   armorSlot: 1
   armorRating: 55
@@ -29,3 +33,7 @@ MonoBehaviour:
   tier: 3
   moveSpeedPenalty: 0.3
   zoomPenalty: 0
+  equipCategory: UI
+  equipSubKey: Armor_Equip
+  unequipCategory: UI
+  unequipSubKey: Armor_Unequip

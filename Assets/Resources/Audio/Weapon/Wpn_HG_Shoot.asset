@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474d388463359a0439630c473d0761df, type: 3}
+  m_Name: Wpn_HG_Shoot
+  m_EditorClassIdentifier: 
+  key:
+    category: Shoot
+    subKey: HG_Shoot
+  clips:
+  - {fileID: 8300000, guid: 36569324c2ae549469eb3d419e95e7e2, type: 3}
+  - {fileID: 8300000, guid: edab8e4f3d4a2304bb049a8388ed7501, type: 3}
+  - {fileID: 8300000, guid: 99e9d486a1c6a5d4fb3aaa096d65c22c, type: 3}
+  - {fileID: 8300000, guid: 19bd60a13f0eda34a96de8c1b254ad66, type: 3}
+  volume: 1
+  playChance: 1

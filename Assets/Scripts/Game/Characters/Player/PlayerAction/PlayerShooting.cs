@@ -53,5 +53,12 @@ public class PlayerShooting : WpnShootingBase
 
         weaponRuntime.ConsumeBullet();
 PlayerWeaponCtrl.Instance?.runtimeItem?.OnAmmoChanged?.Invoke();
+
+        if (weaponRuntime?.baseData is WeaponData weaponData)
+        {
+            string prefix = weaponData.weaponPrefix;
+            AudioManager.Instance.Play("Shoot", $"{prefix}_Shoot");
+        }
+//
     }
 }

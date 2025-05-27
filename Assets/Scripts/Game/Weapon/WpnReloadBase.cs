@@ -43,6 +43,13 @@ public abstract class WpnReloadBase : MonoBehaviour
         isReloading = true;
         reloadTimer = weaponRuntime?.baseData.reloadTime ?? 1.5f;
         Debug.Log($"{gameObject.name} bắt đầu thay đạn...");
+
+        if (weaponRuntime?.baseData is WeaponData weaponData)
+        {
+            string prefix = weaponData.weaponPrefix;
+            AudioManager.Instance.PlayLooping("Reload", $"{prefix}_Reload");
+        }
+
     }
 
     protected virtual void FinishReload()
@@ -59,6 +66,7 @@ public abstract class WpnReloadBase : MonoBehaviour
             isReloading = false;
             reloadTimer = 0f;
             Debug.Log($"[Reload] Cancelled by weapon switch");
+/*            AudioManager.Instance.StopByTag("Reload");*/
         }
     }
 

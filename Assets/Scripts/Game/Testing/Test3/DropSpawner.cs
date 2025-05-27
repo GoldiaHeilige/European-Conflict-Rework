@@ -34,7 +34,16 @@ public class DropSpawner : MonoBehaviour
         }
 
         Vector3 position = dropOrigin.position;
-        Spawn(itemRuntime, position, isRuntimeSource); 
+        Spawn(itemRuntime, position, isRuntimeSource);
+
+        if (itemRuntime?.itemData != null)
+        {
+            AudioManager.Instance?.Play(
+                itemRuntime.itemData.dropCategory,
+                itemRuntime.itemData.dropSubKey
+            );
+        }
+
     }
 
     public void Spawn(InventoryItemRuntime itemRuntime, Vector3 position, bool isRuntimeSource = false)

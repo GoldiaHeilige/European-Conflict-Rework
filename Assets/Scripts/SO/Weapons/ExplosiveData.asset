@@ -22,10 +22,26 @@ MonoBehaviour:
   worldPrefab: {fileID: 4056907214347485379, guid: 7677fca89b5faa04daac21c5a817a239, type: 3}
   stackable: 0
   maxStack: 1
+  pickupCategory: Item
+  pickupSubKey: Item_Pickup
+  dropCategory: Item
+  dropSubKey: Item_Drop
   equippable: 1
   weaponClass: 3
   fireRate: 1
   ammoPerShot: 1
   reloadTime: 5
+  weaponPrefix: GL
   clipSize: 1
   defaultAmmoType: {fileID: 11400000, guid: d6c5238f8cd500c4a8928dfe9b9f5919, type: 2}
+  zoomBonus: 0
+  fireCategory: Shoot
+  fireSubKey: 
+  reloadCategory: Reload
+  reloadSubKey: 
+  chamberCategory: Reload
+  chamberSubKey: 
+  equipCategory: UI
+  equipSubKey: Wpn_Equip
+  unequipCategory: UI
+  unequipSubKey: Wpn_Unequip

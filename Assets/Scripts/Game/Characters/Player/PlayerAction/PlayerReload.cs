@@ -50,32 +50,32 @@ PlayerWeaponCtrl.Instance?.runtimeItem?.OnAmmoChanged?.Invoke();
         Debug.Log($"{gameObject.name} đã thay đạn xong.");
     }
 
-/*    protected override void Update()
-    {
-        if (isReloading)
+    /*    protected override void Update()
         {
-            reloadTimer -= Time.deltaTime;
-            if (reloadTimer <= 0f)
+            if (isReloading)
             {
-                FinishReload();
+                reloadTimer -= Time.deltaTime;
+                if (reloadTimer <= 0f)
+                {
+                    FinishReload();
+                }
+                return;
             }
-            return;
-        }
 
-        if (weaponRuntime == null)
-        {
-            return;
-        }
+            if (weaponRuntime == null)
+            {
+                return;
+            }
 
-        bool canReload = weaponRuntime.CanReload(playerInventory);
+            bool canReload = weaponRuntime.CanReload(playerInventory);
 
-        if (!canReload && lastCanReload)
-        {
-            Debug.Log("[Update] Không thể reload theo CanReload()");
-        }
+            if (!canReload && lastCanReload)
+            {
+                Debug.Log("[Update] Không thể reload theo CanReload()");
+            }
 
-        lastCanReload = canReload;
-    }*/
+            lastCanReload = canReload;
+        }*/
 
     private IEnumerator WaitForInventory()
     {

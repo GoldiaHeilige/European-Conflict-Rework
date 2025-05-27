@@ -21,6 +21,14 @@ public class InventoryItemData : ScriptableObject
     public bool stackable = true;
     public int maxStack = 99;
 
+    [Header("Audio Keys (Optional)")]
+    public string pickupCategory = "Item";
+    public string pickupSubKey = "Item_Pickup";
+
+    public string dropCategory = "Item";
+    public string dropSubKey = "Item_Drop";
+
+
     [Header("Equip")]
     public bool equippable;
 }

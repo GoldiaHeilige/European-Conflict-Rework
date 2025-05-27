@@ -58,12 +58,12 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, 
             rt.localScale = Vector3.one;
 
             // Tùy chỉnh scale riêng cho giáp
-            if (this is ArmorSlotUI armorSlot)
+/*            if (this is ArmorSlotUI armorSlot)
             {
                 rt.localScale = armorSlot.armorSlotType == ArmorSlot.Head
-                    ? new Vector3(1.8f, 1.8f, 1)
-                    : new Vector3(1.5f, 1.5f, 1);
-            }
+                    ? new Vector3(1.0f, 1.0f, 1)
+                    : new Vector3(1.0f, 1.0f, 1);
+            }*/
         }
 
         // ✅ Cập nhật hình ảnh icon

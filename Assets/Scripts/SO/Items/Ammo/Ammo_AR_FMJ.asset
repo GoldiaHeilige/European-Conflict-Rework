@@ -22,5 +22,11 @@ MonoBehaviour:
   worldPrefab: {fileID: 4056907214347485379, guid: ef0fb613c0415b048a637b0d6f6747f5, type: 3}
   stackable: 1
   maxStack: 60
+  pickupCategory: Item
+  pickupSubKey: Item_Pickup
+  dropCategory: Item
+  dropSubKey: Item_Drop
   equippable: 0
   linkedAmmoData: {fileID: 11400000, guid: 55db89c5d4ca3834e9fd47c1709a5b48, type: 2}
+  loadCategory: 
+  loadSubKey: 

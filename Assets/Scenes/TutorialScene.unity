@@ -775,6 +775,52 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1275302651701068810, guid: bff83f200e4220e4c876fffc03acfa1e, type: 3}
   m_PrefabInstance: {fileID: 28055509}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &159595673
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 159595674}
+  - component: {fileID: 159595675}
+  m_Layer: 0
+  m_Name: MusicStopper
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &159595674
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 159595673}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 528285994}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &159595675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 159595673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54573dd5f213cc245a4ecb8321faed84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  category: Music
+  subKey: BG_MainMenu_1
 --- !u!1001 &171539979
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3689,6 +3735,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 159595674}
   - {fileID: 1906257841}
   - {fileID: 1930026123}
   - {fileID: 1674585212}
@@ -16963,6 +17010,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1889318537}
     m_Modifications:
+    - target: {fileID: 456119259303896659, guid: 5b131ef16b0c94b42b0906800dd73731, type: 3}
+      propertyPath: reloadController
+      value: 
+      objectReference: {fileID: 4775680065513891201}
     - target: {fileID: 1985149294134619799, guid: 5b131ef16b0c94b42b0906800dd73731, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -17058,6 +17109,17 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 4398884374695790434}
   m_SourcePrefab: {fileID: 100100000, guid: 5b131ef16b0c94b42b0906800dd73731, type: 3}
+--- !u!114 &4775680065513891201 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1513689898316710226, guid: 5b131ef16b0c94b42b0906800dd73731, type: 3}
+  m_PrefabInstance: {fileID: 4775680065513891200}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15093d3e38f80c4449d8903d1498721a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &4896857034259794181
 MonoBehaviour:
   m_ObjectHideFlags: 0

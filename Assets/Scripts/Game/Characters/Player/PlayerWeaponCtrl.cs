@@ -138,14 +138,12 @@ public class PlayerWeaponCtrl : MonoBehaviour
             }
         }
 
-        // ✅ Đổi loại đạn và reset băng
+
         runtimeItem.currentAmmoType = pendingAmmoChange;
         runtimeItem.ammoInClip = 0;
 
         pendingAmmoChange = null;
+        ammoUI?.Bind(runtimeItem);
         runtimeItem.OnAmmoChanged?.Invoke();
-
-        ammoUI?.Bind(runtimeItem); // ✅ HUD cập nhật đúng ammo mới
     }
-
 }

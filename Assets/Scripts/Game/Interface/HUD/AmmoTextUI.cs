@@ -18,22 +18,19 @@ public class AmmoTextUI : MonoBehaviour
 
     public void Bind(WeaponRuntimeItem runtimeData)
     {
-
-        // Hủy đăng ký vũ khí cũ nếu có
+        // Gỡ vũ khí cũ nếu có
         if (runtime != null)
             runtime.OnAmmoChanged -= Refresh;
 
         runtime = runtimeData;
 
-        if (runtime == null || runtime.currentAmmoType == null)
-        {
-            clipText.text = "-- / --";
-            return;
-        }
+        // Luôn đăng ký lại event dù currentAmmoType null
+        if (runtime != null)
+            runtime.OnAmmoChanged += Refresh;
 
-        runtime.OnAmmoChanged += Refresh;
-        Refresh();
+        Refresh(); // luôn gọi dù ammoType có hay không
     }
+
 
     private void OnEnable()
     {

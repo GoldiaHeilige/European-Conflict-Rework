@@ -70,6 +70,11 @@ public class PickupItem : MonoBehaviour
         {
             PlayerInventory.InventoryChanged?.Invoke();
             Destroy(gameObject);
+
+            AudioManager.Instance?.Play(
+    item.itemData.pickupCategory,
+    item.itemData.pickupSubKey
+);
         }
         else
         {

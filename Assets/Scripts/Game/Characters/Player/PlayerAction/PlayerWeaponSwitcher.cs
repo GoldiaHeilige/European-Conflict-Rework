@@ -7,6 +7,7 @@ public class PlayerWeaponSwitcher : MonoBehaviour
     [Header("References")]
     public PlayerWeaponCtrl weaponController;
     public PlayerInventory inventory;
+    public PlayerReload reloadController;
 
     private void Update()
     {
@@ -16,7 +17,6 @@ public class PlayerWeaponSwitcher : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Alpha2)) Equip(1);
         else if (Input.GetKeyDown(KeyCode.Q)) ToggleWeapon();
     }
-
 
     private void Equip(int index)
     {
@@ -28,20 +28,28 @@ public class PlayerWeaponSwitcher : MonoBehaviour
         if (updatedWeapon == null || updatedWeapon.baseData == null)
         {
             weaponController.ClearWeapon();
-            if (PlayerWeaponCtrl.Instance != null)
-            {
-/*                Debug.LogWarning($"[PlayerWeaponSwitcher] GỌI ClearWeapon() → Ctrl ID từ Equip = {PlayerWeaponCtrl.Instance.GetInstanceID()}");*/
-                PlayerWeaponCtrl.Instance.ClearWeapon();
-            }
-            else
-            {
-                Debug.LogError("[PlayerWeaponSwitcher] PlayerWeaponCtrl.Instance == null → KHÔNG GỌI ĐƯỢC");
-            }
-
+            PlayerWeaponCtrl.Instance?.ClearWeapon();
             return;
         }
 
-        PlayerWeaponCtrl.Instance?.runtimeItem?.OnAmmoChanged?.Invoke();      
+        // ✅ Nếu đang reload thì cancel (súng cũ)
+        if (PlayerWeaponCtrl.Instance?.playerReload != null &&
+            PlayerWeaponCtrl.Instance.playerReload.IsReloading)
+        {
+            PlayerWeaponCtrl.Instance.playerReload.CancelReload();
+        }
+
+        // ✅ Phát âm chamber sound của súng mới
+        if (updatedWeapon.baseData is WeaponData weaponData)
+        {
+            string prefix = weaponData.weaponPrefix;
+            AudioManager.Instance.StopByTag("Reload"); // dừng reload sound còn sót
+            AudioManager.Instance.Play("Chamber", $"{prefix}_Chamber");
+            Debug.Log($"[Chamber Sound] GỌI → Prefix = {prefix}");
+        }
+
+        // ✅ Gán weapon mới
+        PlayerWeaponCtrl.Instance?.runtimeItem?.OnAmmoChanged?.Invoke();
         weaponController.EquipWeapon(updatedWeapon);
     }
 

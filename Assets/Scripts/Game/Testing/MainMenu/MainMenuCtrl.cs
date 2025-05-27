@@ -7,6 +7,11 @@ public class MainMenuController : MonoBehaviour
     public GameObject mainPanel;
     public GameObject mapSelectPanel;
 
+    void Start()
+    {
+        AudioManager.Instance.PlayMusic("Music", "BG_MainMenu_1");
+    }
+
     // Khi bấm nút Play
     public void OpenMapSelect()
     {

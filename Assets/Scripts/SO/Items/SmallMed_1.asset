@@ -15,12 +15,19 @@ MonoBehaviour:
   itemName: Small First aid Kit
   icon: {fileID: 21300000, guid: 75b9be5b01ad0d844bd9e9b9dbd3dbe9, type: 3}
   worldSprite: {fileID: 21300000, guid: 75b9be5b01ad0d844bd9e9b9dbd3dbe9, type: 3}
+  weightPerUnit: 0
   description: A small first aid kit.
   itemID: SmallMed_1
   category: 0
   worldPrefab: {fileID: 4056907214347485379, guid: 0f535de9ced07414e8c78ef9c06640d1, type: 3}
   stackable: 1
   maxStack: 4
+  pickupCategory: Item
+  pickupSubKey: Item_Pickup
+  dropCategory: Item
+  dropSubKey: Item_Drop
   equippable: 0
   healAmount: 25
   useDuration: 0.5
+  healCategory: 
+  healSubKey: 
